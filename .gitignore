@@ -1,0 +1,8 @@
+.DS_store
+.DS_Store
+.cache
+.envrc
+.venv/
+venv/
+logs/
+var/

@@ -12,7 +12,7 @@ Skibidi News is a modular, agentic pipeline that:
 4. Converts it to speech.
 5. (Optionally) turns speech + captions into short video.
 
-Each step is an **MCP (Model Context Protocol) server** that can be swapped or scaled independently. A central **Router Agent** orchestrates the flow based on a user/system prompt (aka “flavor”).
+Each step is an **MCP (Model Context Protocol) server** that can be swapped or scaled independently. A central **Router Agent** orchestrates the flow based on a user/system prompt.
 
 ## 2) Team & Responsibilities
 
@@ -26,7 +26,7 @@ Each step is an **MCP (Model Context Protocol) server** that can be swapped or s
 
 ## 3) High-level Architecture
 
-* **Router Agent (MCP client)**: Receives the user prompt + system flavor (tone/constraints). Chooses which MCP service(s) to call, merges results, and pushes outputs downstream.
+* **Router Agent (MCP client)**: Receives the user prompt + systemt (tone/constraints). Chooses which MCP service(s) to call, merges results, and pushes outputs downstream.
 * **MCP Servers** (swappable micro-services):
 
   * `mcp-news-aggr` (Owner: **Gabi**): crawl/ingest → clustered topics → summarized text.

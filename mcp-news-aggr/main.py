@@ -13,8 +13,7 @@ def main():
     combined_text = ""
     for idx, article in enumerate(all_articles, start=1):
         combined_text += f"Article {idx}:\n"
-        combined_text += f"Title: {article['title']}\n"
-        combined_text += f"Text: {article['summary']}\n"
+        combined_text += f"{article['title']}: {article['summary']}\n"
         combined_text += f"Source: {article['source']}\n\n"
 
     # Step 3: Ask AI to summarize all articles in one prompt
@@ -27,7 +26,6 @@ def main():
     ai_response = summarize_article(ai_prompt)
 
     # Step 4: Split AI response by lines to map summaries to articles
-    # Assumes AI returns numbered list like "1. Summary ...", "2. Summary ..."
     lines = [line.strip() for line in ai_response.split("\n") if line.strip()]
     summaries = {}
     for line in lines:
@@ -35,13 +33,13 @@ def main():
             num, summary = line.split(".", 1)
             summaries[int(num.strip())] = summary.strip()
 
-    # Step 5: Attach summaries back to articles
+    # Step 5: Attach summaries back, combining title + summary
     summarized_news = []
     for idx, article in enumerate(all_articles, start=1):
         summary_text = summaries.get(idx, "No summary generated.")
+        combined_text = f"{article['title']}: {summary_text}"
         summarized_news.append({
-            "title": article['title'],
-            "summary": summary_text,
+            "text": combined_text,
             "date": article['date'],
             "url": article['url'],
             "source": article['source']
@@ -53,8 +51,7 @@ def main():
 
     # Step 7: Print results
     for article in summarized_news:
-        print(f"{article['source']}: {article['title']}")
-        print(article['summary'])
+        print(f"{article['source']}: {article['text']}")
         print("-" * 80)
 
 

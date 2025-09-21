@@ -2,14 +2,14 @@ import requests
 from config import GUARDIAN_API_KEY
 from datetime import datetime
 
-def fetch_guardian_news(section="world", page_size=10):
+def fetch_guardian_news(page_size):
     today = datetime.now().strftime("%Y-%m-%d")
     url = "https://content.guardianapis.com/search"
     params = {
         "api-key": GUARDIAN_API_KEY,
-        "section": section,
+        #"section": section,
         "page-size": page_size,
-        "orderBy": "relevance", #newest, oldest, relevance only
+        "order-by": "relevance", #newest, oldest, relevance only
         "show-fields": "headline,trailText,webPublicationDate,shortUrl",
         "from-date": today,
         "to-date": today

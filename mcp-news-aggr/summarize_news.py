@@ -23,7 +23,7 @@ def summarize_article(article_text):
         model="gpt-4o-mini",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.5,
-        max_tokens=500
+        max_tokens=1500
 )
         summary = response['choices'][0]['message']['content'].strip()
         return summary

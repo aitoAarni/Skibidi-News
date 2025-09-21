@@ -1,22 +1,28 @@
 from fetch_news.fetch_guardian import fetch_guardian_news
 from fetch_news.fetch_nytimes import fetch_nytimes_news
+from fetch_news.fetch_yle import fetch_yle_news
+from fetch_news.fetch_google_news import fetch_google_news
+
 from summarize_news import summarize_article
 import json
 
 def main():
-    # Step 1: Fetch articles
+    #Fetch articles
     guardian_articles = fetch_guardian_news(page_size=5)
     nytimes_articles = fetch_nytimes_news(page_size=5)
-    all_articles = guardian_articles + nytimes_articles
+    yle_articles = fetch_yle_news(page_size=5)
+    google_articles = fetch_google_news(page_size=5)
+    all_articles = guardian_articles + nytimes_articles + yle_articles + google_articles
 
-    # Step 2: Prepare combined prompt for AI
+
+    #Prepare combined prompt for AI
     combined_text = ""
     for idx, article in enumerate(all_articles, start=1):
         combined_text += f"Article {idx}:\n"
         combined_text += f"{article['title']}: {article['summary']}\n"
         combined_text += f"Source: {article['source']}\n\n"
 
-    # Step 3: Ask AI to summarize all articles in one prompt
+    #Ask AI to summarize all articles in one prompt
     ai_prompt = (
         "Summarize each of the following news articles separately in 2-3 sentences each. "
         "Return the summaries as a numbered list corresponding to the article numbers.\n\n"
@@ -25,7 +31,7 @@ def main():
 
     ai_response = summarize_article(ai_prompt)
 
-    # Step 4: Split AI response by lines to map summaries to articles
+    #Split AI response by lines to map summaries to articles
     lines = [line.strip() for line in ai_response.split("\n") if line.strip()]
     summaries = {}
     for line in lines:
@@ -33,7 +39,7 @@ def main():
             num, summary = line.split(".", 1)
             summaries[int(num.strip())] = summary.strip()
 
-    # Step 5: Attach summaries back, combining title + summary
+    #Attach summaries back, combining title + summary
     summarized_news = []
     for idx, article in enumerate(all_articles, start=1):
         summary_text = summaries.get(idx, "No summary generated.")
@@ -45,11 +51,11 @@ def main():
             "source": article['source']
         })
 
-    # Step 6: Save JSON
+    #Save JSON
     with open("mcp-news-aggr/summarized_news.json", "w", encoding="utf-8") as f:
         json.dump(summarized_news, f, ensure_ascii=False, indent=2)
 
-    # Step 7: Print results
+    #Print results
     for article in summarized_news:
         print(f"{article['source']}: {article['text']}")
         print("-" * 80)

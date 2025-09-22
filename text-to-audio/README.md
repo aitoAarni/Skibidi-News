@@ -11,13 +11,6 @@ This component will produce an audio file from the given text input.
 | Polly Neural         | Good    | Yes  | 1M chars/mo for 1y | $0.02/1k chars        |
 | Google Cloud Chirp 3 | Good    | No   | 1M chars/mo        | $0.03/1k chars        |
 
-## Tools available
-
-- Google Cloud Text-to-Speech
-  - SSML: https://docs.aws.amazon.com/polly/latest/dg/supportedtags.html
-- Polly
-  - SSML: https://docs.aws.amazon.com/polly/latest/dg/supportedtags.html
-
 ## Getting started
 
 Install `uv`: https://docs.astral.sh/uv/#highlights  

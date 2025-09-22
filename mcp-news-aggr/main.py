@@ -2,6 +2,7 @@ from fetch_news.fetch_guardian import fetch_guardian_news
 from fetch_news.fetch_nytimes import fetch_nytimes_news
 from fetch_news.fetch_yle import fetch_yle_news
 from fetch_news.fetch_google_news import fetch_google_news
+from fetch_news.fetch_duckduckgo import fetch_duckduckgo
 
 from summarize_news import summarize_article
 import json
@@ -12,8 +13,8 @@ def main():
     nytimes_articles = fetch_nytimes_news(page_size=5)
     yle_articles = fetch_yle_news(page_size=5)
     google_articles = fetch_google_news(page_size=5)
-    all_articles = guardian_articles + nytimes_articles + yle_articles + google_articles
-
+    #duckduckgo_articles = fetch_duckduckgo(page_size=5)
+    all_articles = guardian_articles + nytimes_articles + yle_articles + google_articles #+ duckduckgo_articles
 
     #Prepare combined prompt for AI
     combined_text = ""

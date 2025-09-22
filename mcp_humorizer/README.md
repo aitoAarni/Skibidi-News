@@ -6,13 +6,18 @@ This repository contains a Python MCP server that receives summarized news text 
 - Safe, deterministic offline fallback humorizer (no API key required)
 - Exposes MCP tools over stdio using the Python `mcp` package (FastMCP)
 
-## Features
+## ✨ Features
 
-- Input: summarized text
-- Processing: humor prompt templates + strategies (style configurable)
-- Output: comedic text, short and platform-ready
-- Production-ready knobs: model, temperature, max tokens, timeout, seed, humor style
-- Minimal, deterministic fallback when no model provider is configured
+* Humor Engine MCP server for summarized text → comedic rewrite
+* Exposes two MCP tools:
+
+  * `comedicize(id, summarized_text)` → comedic rewrite
+  * `health()` → server status & config
+* Pluggable LLM backends via environment variables (OpenAI, Anthropic)
+* Deterministic offline humorizer when no provider is configured
+* CLI interface for local testing
+* Configurable knobs: humor style, provider, model, temperature, max tokens, seed, etc.
+* Ready for integration with MCP-compatible clients (e.g. Claude VSCode / Cline)
 
 ## Folder Layout
 
@@ -52,9 +57,29 @@ cp mcp_humorizer/.env.example mcp_humorizer/.env
 Stdio servers run as local subprocesses and communicate via standard input/output streams. These are typically used for local tools.
 
 
-4) Run the MCP server (stdio):
+## 🚀 Usage
+
+### Run MCP Server
+
 ```bash
 python -m mcp_humorizer.mcp_server
+```
+
+This starts the server over stdio for integration with MCP clients.
+
+### Run CLI (local testing)
+
+```bash
+python -m mcp_humorizer.cli -t "The economy shrank by 2% last quarter."
+```
+
+Example output:
+
+```json
+{
+  "id": "local-test",
+  "comedic_text": "The economy shrank by 2% last quarter. On the bright side, my diet is shrinking faster. Perfect for a 15-second attention span recap."
+}
 ```
 
 The process will wait on stdio for MCP clients. You can integrate it with compatible clients (e.g., Cline/Claude VSCode extension) via MCP settings (see below).
@@ -178,6 +203,14 @@ text = comedicize_text("The economy shrank by 2% last quarter.", settings)
 print(text)
 ```
 
+## 🧪 Testing
+
+Run all tests with `pytest`:
+
+```bash
+pytest -v
+```
+
 ## Safety and Content Notes
 
 - The humorizer avoids slurs, targeted harassment, or fabrications.
@@ -190,6 +223,3 @@ print(text)
 - Ensure your Python environment is using the correct interpreter with required packages installed.
 - For MCP client configuration, verify the `command`, `args`, and environment values.
 
-## License
-
-Proprietary or per-repo default. Replace with your license of choice if needed.

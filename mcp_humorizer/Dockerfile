@@ -25,4 +25,4 @@ ENV MODEL_PROVIDER=none \
     TEMPERATURE=0.7
 
 # Run MCP server over stdio
-ENTRYPOINT ["python", "-m", "mcp_summarizedText_ComedicText.mcp_server"]
+ENTRYPOINT ["python", "-m", "mcp_humorizer.mcp_server"]

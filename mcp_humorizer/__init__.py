@@ -1,5 +1,5 @@
 """
-mcp_summarizedText_ComedicText
+mcp-humorizer
 
 MCP Server – Summarized Text → Comedic Text
 - Receives summarized news text and transforms it into comedic text.

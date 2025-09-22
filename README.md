@@ -40,4 +40,4 @@ All services speak MCP over stdio/HTTP and return typed JSON payloads.
 
 ## 4) Planning and notes
 
-[whiteboard](https://excalidraw.com/#room=8ab7fd80a6478ecadd3a,NhxRJTbuG_3k4mELiwvICg)
+[whiteboard](https://excalidraw.com/#room=d46c315fa785495794e0,P0k_98fYWU7qJUFfmorItA)

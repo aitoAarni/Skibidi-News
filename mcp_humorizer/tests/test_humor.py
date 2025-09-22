@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 
-from mcp_summarizedText_ComedicText.humor import humorous_rewrite
+from mcp_humorizer.humor import humorous_rewrite
 
 
 def _count_sentences(text: str) -> int:

@@ -36,7 +36,7 @@ This MCP server receives **summarized news text** and transforms it into **comed
 
 ## Connection with Router Agent
 
-* Registered as an MCP Server (`mcp_summarizedText_ComedicText`).
+* Registered as an MCP Server (`mcp-humorizer`).
 * Communicates with Router Agent to receive jobs and return results.
 * AI model (LLM) can be swapped easily thanks to containerization.
 

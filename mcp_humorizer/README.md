@@ -23,7 +23,7 @@ This repository contains a Python MCP server that receives summarized news text 
 - `mcp_server.py` – MCP server entrypoint (FastMCP) exposing tools over stdio
 - `requirements.txt` – Python dependencies
 - `README.md` – this file
-- `mcp_summarizedText_ComedicText.md` – architecture/contract document (to be added)
+- `mcp-humorizer.md` – architecture/contract document (to be added)
 
 ## Requirements
 
@@ -41,18 +41,20 @@ source .venv/bin/activate
 
 2) Install dependencies:
 ```bash
-pip install -r mcp_summarizedText_ComedicText/requirements.txt
+pip install -r mcp_humorizer/requirements.txt
 ```
 
 3) (Optional) Copy and update environment variables:
 ```bash
-cp mcp_summarizedText_ComedicText/.env.example mcp_summarizedText_ComedicText/.env
+cp mcp_humorizer/.env.example mcp_humorizer/.env
 # edit .env with your preferred MODEL_PROVIDER, API_KEY, HUMOR_STYLE, etc.
 ```
+Stdio servers run as local subprocesses and communicate via standard input/output streams. These are typically used for local tools.
+
 
 4) Run the MCP server (stdio):
 ```bash
-python -m mcp_summarizedText_ComedicText.mcp_server
+python -m mcp_humorizer.mcp_server
 ```
 
 The process will wait on stdio for MCP clients. You can integrate it with compatible clients (e.g., Cline/Claude VSCode extension) via MCP settings (see below).
@@ -106,9 +108,9 @@ Example:
 ```json
 {
   "mcpServers": {
-    "mcp_summarizedText_ComedicText": {
+    "mcp-humorizer": {
       "command": "python",
-      "args": ["-m", "mcp_summarizedText_ComedicText.mcp_server"],
+      "args": ["-m", "mcp_humorizer.mcp_server"],
       "env": {
         "MODEL_PROVIDER": "none",
         "HUMOR_STYLE": "light",
@@ -149,7 +151,7 @@ After saving, the MCP client should launch the server and list its tools. If it 
 A `Dockerfile` is provided in this folder. Build and run:
 
 ```bash
-docker build -f mcp_summarizedText_ComedicText/Dockerfile -t mcp-comedy mcp_summarizedText_ComedicText
+docker build -f mcp_humorizer/Dockerfile -t mcp-comedy mcp_humorizer
 docker run --rm -e MODEL_PROVIDER=none mcp-comedy
 ```
 
@@ -169,7 +171,7 @@ Note: The container runs the MCP server over stdio; integrate with a client that
 
 You can import and use the engine directly:
 ```python
-from mcp_summarizedText_ComedicText import Settings, comedicize_text
+from mcp_humorizer import Settings, comedicize_text
 
 settings = Settings.from_env()
 text = comedicize_text("The economy shrank by 2% last quarter.", settings)

@@ -8,7 +8,7 @@ try:
     from mcp.server.fastmcp import FastMCP  # type: ignore
 except Exception as e:  # pragma: no cover
     print("ERROR: Missing or incompatible 'mcp' Python package. Please install with:")
-    print("  pip install -r mcp_summarizedText_ComedicText/requirements.txt")
+    print("  pip install -r mcp_humorizer/requirements.txt")
     print(f"Details: {e}")
     sys.exit(1)
 
@@ -18,7 +18,7 @@ from .engine import comedicize_text
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
-app = FastMCP("mcp_summarizedText_ComedicText")
+app = FastMCP("mcp-humorizer")
 
 
 @app.tool()
@@ -51,7 +51,7 @@ def health() -> dict:
     """
     settings = Settings.from_env()
     return {
-        "name": "mcp_summarizedText_ComedicText",
+        "name": "mcp-humorizer",
         "provider": settings.model_provider,
         "humor_style": settings.humor_style,
         "status": "ok",

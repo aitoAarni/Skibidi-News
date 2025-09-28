@@ -1,10 +1,25 @@
 from engines import main
 import boto3
+import os
 
 
 class PollyClient(main.Engine):
     def __init__(self):
-        self.polly_client = boto3.client("polly")
+        # AWS credentials and configuration from environment variables
+        aws_config = {}
+
+        # Required AWS credentials
+        if os.getenv("AWS_ACCESS_KEY_ID"):
+            aws_config["aws_access_key_id"] = os.getenv("AWS_ACCESS_KEY_ID")
+        if os.getenv("AWS_SECRET_ACCESS_KEY"):
+            aws_config["aws_secret_access_key"] = os.getenv("AWS_SECRET_ACCESS_KEY")
+        if os.getenv("AWS_SESSION_TOKEN"):
+            aws_config["aws_session_token"] = os.getenv("AWS_SESSION_TOKEN")
+
+        # AWS region (default to us-east-1 if not specified)
+        aws_config["region_name"] = os.getenv("AWS_REGION", "us-east-1")
+
+        self.polly_client = boto3.client("polly", **aws_config)
         super(PollyClient, self).__init__()
 
     def synthesize(self, text, engine="neural", voice="Matthew", lang_code=None):

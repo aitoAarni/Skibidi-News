@@ -7,6 +7,7 @@ def main():
     client = polly.PollyClient()
     filename = f"{uuid.uuid4()}.mp3"
     client.synthesize(text).save_as(filename)
+    # print(client.voices())
 
 
 if __name__ == "__main__":

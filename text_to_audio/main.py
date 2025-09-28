@@ -1,21 +1,16 @@
 # from engines import polly, gcp
 from fastmcp import FastMCP
+from fastmcp.utilities.types import Audio
+from engines import polly
 
-# import uuid
-
-mcp = FastMCP("My MCP Server")
+mcp = FastMCP("Text to Audio MCP Service")
 
 
 @mcp.tool
-def synthesize(text: str) -> str:
-    return "Synthesized"
-
-
-# def main():
-#    text = "Hey everyone on TikTok, I'm GCP and I'm here to bring you Skibidi News."
-#    client = polly.PollyClient()
-#    filename = f"{uuid.uuid4()}.mp3"
-#    client.synthesize(text).save_as(filename)
+def synthesize(text: str) -> Audio:
+    """Synthesize text to speech as an MP3 audio file."""
+    audio_bytes = polly.PollyClient().synthesize(text).get_bytes()
+    return Audio(data=audio_bytes, media_type="audio/mpeg")
 
 
 if __name__ == "__main__":

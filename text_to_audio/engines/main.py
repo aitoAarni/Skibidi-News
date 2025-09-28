@@ -14,3 +14,6 @@ class Engine:
     def save_as(self, filename: str):
         with open(filename, "wb") as out:
             out.write(self.synthesis)
+
+    def get_bytes(self) -> bytes:
+        return self.synthesis

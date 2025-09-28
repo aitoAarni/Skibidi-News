@@ -24,8 +24,11 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 FROM python:alpine3.22 AS runner
 
-# Copy the environment, but not the source code
-COPY --from=builder --chown=app:app /app/.venv /app/.venv
+# Set working directory
+WORKDIR /app
+
+# Copy the environment and the source code
+COPY --from=builder --chown=app:app /app /app
 
 # Setup a non-root user in alpine
 RUN apk add --update sudo
@@ -36,4 +39,5 @@ RUN adduser -D mcp \
 # Use the non-root user to run our application
 USER mcp
 
-CMD ["/app/.venv/bin/fastmcp", "run"]
+# Run the main.py file directly using the virtual environment's Python
+CMD ["/app/.venv/bin/python", "main.py"]

@@ -32,6 +32,7 @@ def fetch_google_news(page_size):
     """
     googlenews = GoogleNews(lang='en', region='US')
     googlenews.search("breaking news today") 
+    #googlenews.top_news()
 
     results = googlenews.result()  # list of articles
     articles = []

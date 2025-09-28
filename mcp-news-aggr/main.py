@@ -9,12 +9,13 @@ import json
 
 def main():
     #Fetch articles
-    guardian_articles = fetch_guardian_news(page_size=5)
-    nytimes_articles = fetch_nytimes_news(page_size=5)
-    yle_articles = fetch_yle_news(page_size=5)
-    google_articles = fetch_google_news(page_size=5)
+   #guardian_articles = fetch_guardian_news(page_size=5)
+   #nytimes_articles = fetch_nytimes_news(page_size=5)
+   #yle_articles = fetch_yle_news(page_size=5)
+    google_articles = fetch_google_news(page_size=20)
     #duckduckgo_articles = fetch_duckduckgo(page_size=5)
-    all_articles = guardian_articles + nytimes_articles + yle_articles + google_articles #+ duckduckgo_articles
+    #all_articles = guardian_articles + nytimes_articles + yle_articles + google_articles #+ duckduckgo_articles
+    all_articles = google_articles
 
     #Prepare combined prompt for AI
     combined_text = ""

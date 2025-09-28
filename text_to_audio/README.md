@@ -69,8 +69,22 @@ aws configure
 aws sts get-caller-identity
 ```
 
-### Running the program
+### Running the mcp server
 
 ```
 uv run main.py
+```
+
+### Running a test synthesis
+
+```
+uv run synth.py
+```
+
+## Docker
+
+Building the app:
+
+```
+DOCKER_BUILDKIT=1 docker build . -t "text-to-audio"
 ```

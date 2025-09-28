@@ -24,12 +24,10 @@ class GoogleTextToSpeechClient(main.Engine):
             self.synthesis = response.audio_content
             return self
         except Exception:
-            print("Something went wrong.")
             raise
 
     def voices(self):
         try:
             return str(self.gcp_tts_client.list_voices())
         except Exception:
-            print("Something went wrong.")
             raise

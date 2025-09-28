@@ -35,7 +35,6 @@ class PollyClient(main.Engine):
             self.synthesis = audio_stream.read()
             return self
         except Exception:
-            print("Something went wrong.")
             raise
 
     def voices(self):
@@ -48,5 +47,4 @@ class PollyClient(main.Engine):
             response = self.polly_client.describe_voices()
             return response["Voices"]
         except Exception:
-            print("Couldn't get voice metadata.")
             raise

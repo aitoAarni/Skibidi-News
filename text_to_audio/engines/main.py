@@ -14,4 +14,3 @@ class Engine:
     def save_as(self, filename: str):
         with open(filename, "wb") as out:
             out.write(self.synthesis)
-            print(f"Audio content written to file {filename}")

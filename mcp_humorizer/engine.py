@@ -135,23 +135,20 @@ def comedicize_text(summarized_text: str, settings: Settings) -> str:
     provider = settings.model_provider
     if provider == "openai":
         try:
-            comedy_card = _generate_with_openai(build_system_prompt(settings.humor_style))
+            comedy_card = _generate_with_openai(summarized_text="", settings=settings, system_prompt=build_system_prompt(settings.humor_style))
         except GenerationError as e:
             logger.warning("OpenAI failed, using humor fallback: %s", e)
-            comedy_card = _card_fallback()
-    elif provider == "anthropic":        
+            comedy_card = _card_fallback(style=settings.humor_style)
+    elif provider == "anthropic":
         try:
-            comedy_card = _generate_with_anthropic(build_system_prompt(settings.humor_style))
+            comedy_card = _generate_with_anthropic(summarized_text="", settings=settings, system_prompt=build_system_prompt(settings.humor_style))
         except GenerationError as e:
             logger.warning("OpenAI failed, using humor fallback: %s", e)
-            comedy_card = _card_fallback()
+            comedy_card = _card_fallback(style=settings.humor_style)
     else:
-        # No provider configured; use local humorous card
-        return _card_fallback(summarized_text, settings.humor_style)
+        comedy_card = _card_fallback(style=settings.humor_style)
 
     system_prompt = build_system_prompt(comedy_card)
-
-    provider = settings.model_provider
     if provider == "openai":
         try:
             return _generate_with_openai(summarized_text, settings, system_prompt)

@@ -20,16 +20,14 @@ def parse_date(date_str):
 
 def fetch_google_news(page_size=10):
     googlenews = GoogleNews(lang='en', period='1d')
-    
-    
-    googlenews.set_topic("Worls News")
+    googlenews.set_topic("World News")
     googlenews.search("World News")
-    
 
     for i in range(1, 4):
-         googlenews.get_page(i)
+        googlenews.get_page(i)
+
     results = googlenews.result()
-    
+
     articles = []
     for item in results[:page_size]:
         title = item.get("title", "No title")

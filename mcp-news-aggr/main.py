@@ -1,66 +1,34 @@
-from fetch_news.fetch_guardian import fetch_guardian_news
-from fetch_news.fetch_nytimes import fetch_nytimes_news
-from fetch_news.fetch_yle import fetch_yle_news
-from fetch_news.fetch_google_news import fetch_google_news
-from fetch_news.fetch_duckduckgo import fetch_duckduckgo
-
-from summarize_news import summarize_article
+from fetch_google_news import fetch_google_news
+from summarize_news import summarize_all_articles
 import json
 
 def main():
-    #Fetch articles
-   #guardian_articles = fetch_guardian_news(page_size=5)
-   #nytimes_articles = fetch_nytimes_news(page_size=5)
-   #yle_articles = fetch_yle_news(page_size=5)
+    # Fetch articles
     google_articles = fetch_google_news(page_size=20)
-    #duckduckgo_articles = fetch_duckduckgo(page_size=5)
-    #all_articles = guardian_articles + nytimes_articles + yle_articles + google_articles #+ duckduckgo_articles
-    all_articles = google_articles
 
-    #Prepare combined prompt for AI
+    # Combine all article texts into a single string for summarization
     combined_text = ""
-    for idx, article in enumerate(all_articles, start=1):
+    for idx, article in enumerate(google_articles, start=1):
         combined_text += f"Article {idx}:\n"
-        combined_text += f"{article['title']}: {article['summary']}\n"
+        combined_text += f"Title: {article['title']}\n"
+        combined_text += f"Summary: {article['summary']}\n"
         combined_text += f"Source: {article['source']}\n\n"
 
-    #Ask AI to summarize all articles in one prompt
-    ai_prompt = (
-        "Summarize each of the following news articles separately in 2-3 sentences each. "
-        "Return the summaries as a numbered list corresponding to the article numbers.\n\n"
-        f"{combined_text}"
-    )
+    # Generate one long, full-text summary for all articles
+    full_summary = summarize_all_articles([combined_text])
 
-    ai_response = summarize_article(ai_prompt)
+    # Prepare JSON with the combined summary
+    summarized_news = {
+        "summary": full_summary
+    }
 
-    #Split AI response by lines to map summaries to articles
-    lines = [line.strip() for line in ai_response.split("\n") if line.strip()]
-    summaries = {}
-    for line in lines:
-        if line[0].isdigit() and "." in line:
-            num, summary = line.split(".", 1)
-            summaries[int(num.strip())] = summary.strip()
-
-    #Attach summaries back, combining title + summary
-    summarized_news = []
-    for idx, article in enumerate(all_articles, start=1):
-        summary_text = summaries.get(idx, "No summary generated.")
-        combined_text = f"{article['title']}: {summary_text}"
-        summarized_news.append({
-            "text": combined_text,
-            "date": article['date'],
-            "url": article['url'],
-            "source": article['source']
-        })
-
-    #Save JSON
+    # Save JSON
     with open("mcp-news-aggr/summarized_news.json", "w", encoding="utf-8") as f:
         json.dump(summarized_news, f, ensure_ascii=False, indent=2)
 
-    #Print results
-    for article in summarized_news:
-        print(f"{article['source']}: {article['text']}")
-        print("-" * 80)
+    # Print the full summary
+    print("=== Full Combined Summary ===")
+    print(full_summary)
 
 
 if __name__ == "__main__":

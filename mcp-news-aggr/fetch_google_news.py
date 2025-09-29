@@ -21,8 +21,6 @@ def parse_date(date_str):
 def fetch_google_news(page_size=10):
     googlenews = GoogleNews(lang='en', period='1d')
     
-    # Fetch top news instead of empty search
-    #googlenews.search("")   
     
     googlenews.set_topic("Worls News")
     googlenews.search("World News")

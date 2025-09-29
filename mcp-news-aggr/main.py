@@ -14,7 +14,6 @@ def main():
         combined_text += f"Summary: {article['summary']}\n"
         combined_text += f"Source: {article['source']}\n\n"
 
-    # Generate one long, full-text summary for all articles
     full_summary = summarize_all_articles([combined_text])
 
     # Prepare JSON with the combined summary

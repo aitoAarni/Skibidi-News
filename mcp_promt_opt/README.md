@@ -1,146 +1,160 @@
-# MCP Server – Summarized Text → Comedic Text (Python)
+# MCP Server – Prompt Optimizer (Python)
 
-This repository contains a Python MCP server that receives summarized news text and transforms it into comedic text, preserving meaning while injecting punchy humor suited for short-form content. It’s the Humor Engine for Skibidi News.
+This repository contains a Python MCP server that **selects or quickly optimizes the best prompt pack** for a given task. It supports a fast path that chooses the top prompt from your saved leaderboard, and an optional quick tournament that generates a few challengers, A/B judges them, and returns the winner.
 
-- Pluggable LLM backends (OpenAI, Anthropic) via environment configuration
-- Safe, deterministic offline fallback humorizer (no API key required)
+- Pluggable LLM backends (OpenAI today; extensible)
+- On-demand **quick optimization** (A/B + Elo pruning)
+- **Library-first**: reuses your best existing prompts for speed/cost
 - Exposes MCP tools over stdio using the Python `mcp` package (FastMCP)
 
 ## ✨ Features
 
-* Humor Engine MCP server for summarized text → comedic rewrite
-* Exposes two MCP tools:
-
-  * `comedicize(id, summarized_text)` → comedic rewrite
-  * `health()` → server status & config
-* Pluggable LLM backends via environment variables (OpenAI, Anthropic)
-* Deterministic offline humorizer when no provider is configured
-* CLI interface for local testing
-* Configurable knobs: humor style, provider, model, temperature, max tokens, seed, etc.
-* Ready for integration with MCP-compatible clients (e.g. Claude VSCode / Cline)
+- **Prompt Optimizer MCP server** for `prompt + summary → best prompt pack`
+- Exposes MCP tools:
+  - `best_prompt(prompt, summary, allow_quick_opt=true)` → returns the best available prompt pack (library first; optional quick optimize)
+  - `optimize(prompt, summary, n_new=12, iterations=2, ...)` → force a short tournament and return the winner + mini leaderboard
+  - `health()` → server status & library counts
+- **Elo-based A/B** judging pipeline (pairwise judge, confidence-weighted Elo updates)
+- **Checkpointed** evolution (variants + leaderboards on disk)
+- Configurable knobs: population size, iterations, pairings, survivors, temperature, etc.
+- Ready for integration with MCP-compatible clients (Claude VSCode / Cline)
 
 ## Folder Layout
 
-- `__init__.py` – package metadata/exports
-- `config.py` – env-driven settings and system prompt builder
-- `engine.py` – provider selection and generation flow (OpenAI, Anthropic, fallback)
-- `humor.py` – deterministic humorizer used for offline fallback
-- `mcp_server.py` – MCP server entrypoint (FastMCP) exposing tools over stdio
+- `_prompt_factory.py` – generates **prompt packs** (meta-system prompt → variants)
+- `_optimizer.py` – Elo tournament, judge calls, mutation, shortlist, logging
+- `mcp_prompt_opt/mcp_server.py` – MCP server entrypoint (FastMCP) exposing tools
+- `variants.json` – seed library
+- `opt_logs/` – iteration logs & `leaderboard_iter_*.json` / `leaderboard_final.json`
 - `requirements.txt` – Python dependencies
 - `README.md` – this file
-- `mcp-humorizer.md` – architecture/contract document (to be added)
+
+> Adjust names/paths if your modules differ — these are aligned with the code you shared.
 
 ## Requirements
-
 - Python 3.10+
-- pip
-- (Optional) API key for selected model provider
+- `uv`
+- API key for your chosen model provider (e.g., OpenAI)
 
 ## Quickstart (Local)
-
-1) Create and activate a virtual environment:
+1) Create & activate a virtual env:
 ```bash
-python -m venv .venv
+uv init
 source .venv/bin/activate
+# or: uv venv && source .venv/bin/activate
 ```
 
-2) Install dependencies:
+2) Install deps:
 ```bash
-pip install -r mcp_humorizer/requirements.txt
+uv add -r requirements.txt
 ```
 
-3) (Optional) Copy and update environment variables:
+3) Set environment:
 ```bash
-cp mcp_humorizer/.env.example mcp_humorizer/.env
-# edit .env with your preferred MODEL_PROVIDER, API_KEY, HUMOR_STYLE, etc.
+export OPENAI_API_KEY=sk-...
+export MODEL_NAME=gpt-4o-mini
+# Optional:
+export PROMPT_LIBRARY=variants.json
+export PROMPT_LEADERBOARD=opt_logs/leaderboard_final.json
 ```
-Stdio servers run as local subprocesses and communicate via standard input/output streams. These are typically used for local tools.
 
-
-## 🚀 Usage
-
-### Run MCP Server
-
+4) Run the MCP server:
 ```bash
-python -m mcp_humorizer.mcp_server
+python -m mcp_prompt_opt.server
 ```
 
-This starts the server over stdio for integration with MCP clients.
+This starts the server over stdio for MCP clients.
 
-### Run CLI (local testing)
+## 🧰 MCP Tools
 
-```bash
-python -m mcp_humorizer.cli -t "The economy shrank by 2% last quarter."
+### `best_prompt`
+Fast path: pick a winning prompt pack from your leaderboard/library. If `allow_quick_opt=true` and no confident champ exists, it will run a **tiny optimization pass** (generate a few challengers, 1–2 iterations) and return the winner.
+
+**Signature**
+```
+best_prompt(prompt: string, summary: string, allow_quick_opt: bool = true)
+→ { "prompt_pack": { ... }, "note": "selected_from_library|quick_optimized|selected_from_library_low_confidence" }
 ```
 
-Example output:
-
+**Example input**
 ```json
 {
-  "id": "local-test",
-  "comedic_text": "The economy shrank by 2% last quarter. On the bright side, my diet is shrinking faster. Perfect for a 15-second attention span recap."
+  "prompt": "Make a witty short about elevator small talk.",
+  "summary": "People feel awkward; ~30s; silence vs forced chat; doors ding; everyone stares ahead."
 }
 ```
 
-The process will wait on stdio for MCP clients. You can integrate it with compatible clients (e.g., Cline/Claude VSCode extension) via MCP settings (see below).
+**Example output (truncated)**
+```json
+{
+  "prompt_pack": {
+    "prompt_id": "pp-8d3a9c",
+    "style": "satirical",
+    "structure": "Setup→Turn→Tag",
+    "devices": ["Irony", "Analogy"],
+    "writer_system": "...meta-system here...",
+    "writer_user_template": "PROMPT: {{prompt}}\nSUMMARY: {{summary}}\nTASK: ...",
+    "decode_prefs": {"temperature": 0.6, "top_p": 0.9},
+    "elo": 1127.4,
+    "wins": 28,
+    "losses": 13
+  },
+  "note": "selected_from_library"
+}
+```
+
+### `optimize`
+Force a short optimization (generate `n_new` challengers and run a compact tournament). Returns the **best** prompt pack plus a **top-10 leaderboard**.
+
+**Signature**
+```
+optimize(prompt: string, summary: string, n_new = 12, iterations = 2, samples_per_input = 2, pairings = 1)
+→ { "best": { ...prompt_pack... }, "leaderboard_top10": [ { prompt_id, elo, wins, losses }, ... ] }
+```
+
+### `health`
+Basic service & library stats.
+
+```
+health() → { "name": "mcp-prompt-opt", "library_prompts": 24, "status": "ok" }
+```
 
 ## Environment Variables
 
-- `MODEL_PROVIDER`: one of `openai`, `anthropic`, `none` (default: `none`)
-- `API_KEY`: generic API key (falls back to `OPENAI_API_KEY` / `ANTHROPIC_API_KEY`)
-- `OPENAI_API_KEY`: provider-specific key (optional)
-- `ANTHROPIC_API_KEY`: provider-specific key (optional)
-- `HUMOR_STYLE`: one of `sarcastic|light|absurd|deadpan|wholesome|satirical|roast|random` (default: `light`)
-- `MODEL_NAME`: override the backend model (e.g., `gpt-4o-mini`, `claude-3-5-sonnet-latest`)
-- `HTTP_TIMEOUT`: HTTP timeout seconds (default: `30`)
-- `MAX_OUTPUT_TOKENS`: upper bound on output tokens (default: `400`)
-- `TEMPERATURE`: sampling temperature (default: `0.7`)
-- `SEED`: optional deterministic seed if supported (default: unset)
+Core:
+- `OPENAI_API_KEY` – OpenAI key
+- `MODEL_NAME` – e.g., `gpt-4o-mini`
 
-A ready-to-edit `.env.example` is provided in this folder.
+Library & logs:
+- `PROMPT_LIBRARY` – path to variants file (default: `variants.json`)
+- `PROMPT_LEADERBOARD` – path to leaderboard file (default: `opt_logs/leaderboard_final.json`)
 
-## MCP Tools
-
-The server exposes two tools:
-
-- `comedicize(id: string, summarized_text: string) -> { id, comedic_text }`
-- `health() -> { name, provider, humor_style, status }`
-
-### API Contract
-
-Input:
-```json
-{
-  "id": "uuid",
-  "summarized_text": "The economy shrank by 2% last quarter."
-}
-```
-
-Output:
-```json
-{
-  "id": "uuid",
-  "comedic_text": "The economy shrank by 2%. Don’t worry, my diet is shrinking faster!"
-}
-```
+Quick optimize knobs (server defaults used if unset):
+- `FAST_ITERATIONS` (default: `1`)
+- `FAST_SAMPLES_PER_INPUT` (default: `2`)
+- `FAST_PAIRINGS` (default: `1`)
+- `FAST_SURVIVORS` (default: `8`)
+- `FAST_MUTANTS_PER_SURVIVOR` (default: `1`)
 
 ## Configure in Cline (VSCode) MCP Settings
 
-Add a server entry to your MCP settings file:
-`/home/duha/.vscode-server/data/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`
+Add to:
+`~/.vscode-server/data/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json` (path may vary)
 
-Example:
 ```json
 {
   "mcpServers": {
-    "mcp-humorizer": {
+    "mcp-prompt-opt": {
       "command": "python",
-      "args": ["-m", "mcp_humorizer.mcp_server"],
+      "args": ["-m", "mcp_prompt_opt.server"],
       "env": {
-        "MODEL_PROVIDER": "none",
-        "HUMOR_STYLE": "light",
-        "MAX_OUTPUT_TOKENS": "400",
-        "TEMPERATURE": "0.7"
+        "OPENAI_API_KEY": "sk-...",
+        "MODEL_NAME": "gpt-4o-mini",
+        "PROMPT_LIBRARY": "variants.json",
+        "PROMPT_LEADERBOARD": "opt_logs/leaderboard_final.json",
+        "FAST_ITERATIONS": "1",
+        "FAST_SAMPLES_PER_INPUT": "2",
+        "FAST_PAIRINGS": "1"
       },
       "disabled": false,
       "autoApprove": []
@@ -149,77 +163,75 @@ Example:
 }
 ```
 
-- If using OpenAI:
-```json
-"env": {
-  "MODEL_PROVIDER": "openai",
-  "API_KEY": "sk-...",
-  "MODEL_NAME": "gpt-4o-mini",
-  "HUMOR_STYLE": "satirical"
-}
-```
+After saving, your MCP client should launch the server and list the tools.
 
-- If using Anthropic:
-```json
-"env": {
-  "MODEL_PROVIDER": "anthropic",
-  "API_KEY": "anthropic_api_key",
-  "MODEL_NAME": "claude-3-5-sonnet-latest",
-  "HUMOR_STYLE": "light"
-}
-```
+## Usage Flow
 
-After saving, the MCP client should launch the server and list its tools. If it shows “not connected”, double-check the `args` path/module and Python environment.
+1) **Seed your library**  
+    Generate variants once:
+    ```bash
+    python -m prompt_factory > variants.json
+    ```
+    Or run your overnight optimizer to produce `opt_logs/leaderboard_final.json`.
+
+2) **Serve prompts via MCP**  
+   - Call `best_prompt(prompt, summary)` to get a ready **prompt pack** instantly.
+   - If the note returns **low confidence**, allow `quick_opt` or call `optimize(...)`.
+
+3) **Periodically refresh**  
+   Rerun your optimizer (longer iterations) to improve the leaderboard. The MCP server will automatically use the latest leaderboard/library on disk.
 
 ## Docker
 
-A `Dockerfile` is provided in this folder. Build and run:
+A simple Dockerfile can run the MCP server over stdio:
 
 ```bash
-docker build -f mcp_humorizer/Dockerfile -t mcp-comedy mcp_humorizer
-docker run --rm -e MODEL_PROVIDER=none mcp-comedy
+docker build -t mcp-prompt-opt .
+docker run --rm   -e OPENAI_API_KEY=sk-...   -e MODEL_NAME=gpt-4o-mini   -e PROMPT_LIBRARY=/app/variants.json   -e PROMPT_LEADERBOARD=/app/opt_logs/leaderboard_final.json   mcp-prompt-opt
 ```
 
-For OpenAI:
-```bash
-docker run --rm \
-  -e MODEL_PROVIDER=openai \
-  -e API_KEY=sk-... \
-  -e MODEL_NAME=gpt-4o-mini \
-  -e HUMOR_STYLE=satirical \
-  mcp-comedy
-```
-
-Note: The container runs the MCP server over stdio; integrate with a client that supports spawning containers or redirect stdio as needed.
+Integrate with an MCP client that can spawn containers or forward stdio.
 
 ## Local Programmatic Use
 
-You can import and use the engine directly:
+If you want to drive the optimizer without MCP:
+
 ```python
-from mcp_humorizer import Settings, comedicize_text
+from _prompt_factory import ask_prompt_generator, Request
+from _optimizer import PromptPack, InputItem, tournament
 
-settings = Settings.from_env()
-text = comedicize_text("The economy shrank by 2% last quarter.", settings)
-print(text)
+# generate candidates
+packs_raw = await ask_prompt_generator(Request(
+    prompt="Make a witty short about elevator small talk.",
+    summary="People feel awkward; ~30s; silence vs forced chat; doors ding; everyone stares ahead."
+), n=12)
+
+packs = [PromptPack(**p) for p in packs_raw]
+inputs = [InputItem(prompt="...", summary="..."), ...]
+
+final = await tournament(
+    packs=packs,
+    inputs=inputs,
+    iterations=2,
+    samples_per_input=2,
+    pairings=1,
+    survivors=8,
+    mutants_per_survivor=1,
+    logdir="opt_logs",
+)
+best = final[0]
+print(best.prompt_id, best.elo)
 ```
 
-## 🧪 Testing
+## Safety & Evaluation Notes
 
-Run all tests with `pytest`:
-
-```bash
-pytest -v
-```
-
-## Safety and Content Notes
-
-- The humorizer avoids slurs, targeted harassment, or fabrications.
-- Keep output aligned with the summarized facts.
-- Use `HUMOR_STYLE` to tune tone; `random` will pick a style deterministically.
+- Judge rubric emphasizes **humor insight & originality**, **execution & craft**, **safety**, and **fidelity**.
+- Elo updates are **confidence-weighted**; multiple inputs reduce noise.
+- Library-first selection avoids unnecessary spend; quick optimize only when needed.
 
 ## Troubleshooting
 
-- If OpenAI/Anthropic calls fail or keys are missing, the engine falls back to the deterministic humorizer.
-- Ensure your Python environment is using the correct interpreter with required packages installed.
-- For MCP client configuration, verify the `command`, `args`, and environment values.
-
+- **No prompts found**: ensure `variants.json` or `opt_logs/leaderboard_final.json` exists and is readable.
+- **429/limits**: lower concurrency/pairings and/or add exponential backoff in API call layer.
+- **Model errors**: verify `OPENAI_API_KEY` and `MODEL_NAME`.
+- **MCP not connecting**: confirm `command`, `args`, and env vars in your MCP settings; ensure venv Python matches installed packages.

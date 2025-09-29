@@ -26,8 +26,7 @@ ANGLE / FORM CATALOG (pick 1; max 2)
 • Angles: Hypocrisy, Math Gag, Euphemism Translation, Analogy/Mapping, Timeline Crunch, Compare/Contrast, Process Farce, Jargon Parody
 • Structures: Setup→Turn→Tag | Rule of Three | Angle–Example–Zinger | Thesis→3 Receipts→Kicker
 • Devices (choose 1–3):
-  Logic/Pattern — Incongruity–Resolution, Benign Violation, Relief Valve, Frame Shift, Confident Wrongness,
-                   Over-Precision, Under/Over-Reaction, Literalism
+  Logic/Pattern — Incongruity–Resolution, Benign Violation, Relief Valve, Frame Shift, Confident Wrongness, Over-Precision, Under/Over-Reaction, Literalism
   Language — Pun/Double Entendre, Register Clash, Paraprosdokian, Anaphora/Alliteration, Bathos
   Framing — Parody-Legalese, Press-Release, FAQ Satire, Terms & Conditions
   Topical/Data — Euphemism Translation, Numbers as Characters, Data Personification

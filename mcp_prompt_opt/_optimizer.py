@@ -305,6 +305,7 @@ async def tournament(
     return final
 
 
+
 def _coerce_pack_defaults(p: PromptPack) -> PromptPack:
     if p.elo is None or not isinstance(p.elo, (int, float)):
         p.elo = 1000.0

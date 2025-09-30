@@ -1,484 +1,78 @@
 [
   {
-    "prompt_id": "elevator-small-talk-parable-dup",
-    "safety_profile": "brand_safe",
-    "style": "satirical",
-    "angle": "Analogy/Mapping",
-    "structure": "Setup→Turn→Tag",
-    "devices": [
-      "Analogy/Metaphor",
-      "Paraprosdokian"
-    ],
-    "word_cap": 60,
-    "receipts_target": 1,
-    "writer_system": "You are a comedy writer. Your joke must: 1) Use only facts from the SUMMARY. 2) Follow safety constraints (no slurs/hate, punch up, avoid victim-blame). 3) Think through steps internally without revealing reasoning.",
-    "writer_user_template": "Write a satirical 30-60 word joke using the {{summary}} and {{prompt}}. Structure: Setup→Turn→Tag. Map elevator small talk to an absurd scenario. Keep quotes and 30-second timeframe intact. End with a punchline that subverts expectations.",
-    "few_shots": [
-      {
-        "summary": "People avoid eye contact on elevators but panic when someone talks",
-        "output": "Setup: The elevator's 'How's the weather?' ritual feels cozy until someone actually mentions the AC malfunction. Turn: Suddenly you're trapped with a meteorologist. Tag: Now you wish the silence was just awkward."
-      },
-      {
-        "summary": "Elevator buttons labeled with motivational phrases instead of floors",
-        "output": "Setup: Modern elevators now say 'AMBITION' and 'HOPE' instead of floor numbers. Turn: But when you press 'HOPE,' it just goes in circles. Tag: Just like your small talk about 'the weather.'"
-      }
-    ],
-    "decode_prefs": {
-      "temperature": 0.7,
-      "top_p": 0.8,
-      "presence_penalty": 0.3,
-      "frequency_penalty": 0.2,
-      "n": 1,
-      "stop": [
-        "\n",
-        "(parody)"
-      ]
-    },
-    "audit": {
-      "mode": "parody_news",
-      "numbers_policy": "keep 30-second timeframe literal",
-      "attribution_policy": "omit",
-      "failover": "if contradictions → parody_news and append (parody)"
-    },
-    "eval_checks": [
-      "Fidelity: mentions 30-second timeframe and door dings",
-      "Form: 3-part structure with clear punchline",
-      "Safety: mocks social rituals, not individuals",
-      "Device fit: analogy to recognizable scenarios + unexpected twist",
-      "Receipts: 0 receipts in final output (plain_text)"
-    ],
-    "elo": 1013.0183236021558,
-    "wins": 7,
-    "losses": 0
-  },
-  {
-    "prompt_id": "07c3136c",
-    "safety_profile": "brand_safe",
-    "style": "sarcastic",
-    "angle": "Compare/Contrast",
-    "structure": "Setup→Turn→Tag",
-    "devices": [
-      "Incongruity-Resolution",
-      "Literalism",
-      "Register Clash"
-    ],
-    "word_cap": 60,
-    "receipts_target": 1,
-    "writer_system": "You are a comedy writer. Prioritize safety: no slurs, hate, or cruelty. Punch up at societal norms, not individuals. Use only facts from provided summary. Think through steps internally without revealing reasoning.",
-    "writer_user_template": "Write a sarcastic 30-second elevator small talk joke (60 words max). Structure: Setup→Turn→Tag. Contrast forced conversation with awkward silence. Include one supporting detail from {{summary}}. Format as plain text.",
-    "few_shots": [
-      {
-        "summary": "Passengers avoid eye contact during subway rides despite sitting inches apart",
-        "output": "Setup: You'd think subway commuters could bond over shared humanity. Turn: Instead they play Candy Crush like it's the Great Game of 1839. Tag: No wonder they call it 'social distancing with sound effects.'"
-      }
-    ],
-    "decode_prefs": {
-      "temperature": 0.5,
-      "top_p": 0.8,
-      "presence_penalty": 0.3,
-      "frequency_penalty": 0.0,
-      "n": 1
-    },
-    "audit": {
-      "mode": "parody_news",
-      "numbers_policy": "normalize; no invention; use ranges if inconsistent",
-      "attribution_policy": "omit unless caller asked",
-      "failover": "if contradictions → parody_news and append (parody)"
-    },
-    "eval_checks": [
-      "Fidelity: uses only SUMMARY specifics; no invented facts",
-      "Form: 3-part structure with 1–2 sentences per component",
-      "Safety: avoids cruelty, focuses on social behaviors",
-      "Device fit: incongruity/literalism/register clash evident",
-      "Receipts: ≤1 metaphorical reference to elevator sounds/behavior"
-    ],
-    "elo": 1005.3403969521262,
-    "wins": 4,
-    "losses": 1
-  },
-  {
-    "prompt_id": "elevator_small_talk_satire-dup",
-    "safety_profile": "brand_safe",
-    "style": "satirical",
-    "angle": "Hypocrisy",
-    "structure": "Setup→Turn→Tag",
-    "devices": [
-      "Irony",
-      "Analogy/Metaphor"
-    ],
-    "word_cap": 60,
-    "receipts_target": 1,
-    "writer_system": "You are a satirical humorist. Prioritize safety: no slurs, cruelty, or targeting protected classes. Use only provided context. Think through steps internally without exposing reasoning.",
-    "writer_user_template": "Write a satirical joke about elevator small talk using the {{summary}} and {{prompt}}. Structure: Setup→Turn→Tag. Keep it under 60 words. Highlight hypocrisy in forced politeness vs. social detachment. Use irony and analogy. Example format: 'Setup: [situation]. Turn: [twist]. Tag: [punchline].'",
-    "few_shots": [
-      {
-        "summary": "Office workers avoid eye contact while pretending to read phones in elevators",
-        "output": "Setup: You step into an elevator where everyone’s 'deeply focused' on their phones. Turn: One person looks up and asks, 'Going up?' Tag: Suddenly you’re all experts in elevator etiquette… and pretending to ignore each other."
-      }
-    ],
-    "decode_prefs": {
-      "temperature": 0.6,
-      "top_p": 0.8,
-      "presence_penalty": 0.3,
-      "frequency_penalty": 0.5,
-      "n": 1
-    },
-    "audit": {
-      "mode": "real_news",
-      "numbers_policy": "normalize; no invention; use ranges if inconsistent",
-      "attribution_policy": "omit",
-      "failover": "if contradictions → parody_news and append (parody)"
-    },
-    "eval_checks": [
-      "Fidelity: references elevator silence/forced chat dynamics",
-      "Form: strict Setup→Turn→Tag structure",
-      "Safety: no victim-blaming, focuses on situational absurdity",
-      "Device fit: visible irony (forced chat vs avoidance) and analogy to etiquette performance",
-      "Receipts: 1 concise setup/turn/tag sequence"
-    ],
-    "elo": 1005.2469023396117,
-    "wins": 5,
-    "losses": 2
-  },
-  {
-    "prompt_id": "elevator_small_talk_roast",
-    "safety_profile": "brand_safe",
-    "style": "sarcastic",
-    "angle": "Process Farce",
-    "structure": "Setup→Turn→Tag",
-    "devices": [
-      "Incongruity–Resolution",
-      "Literalism"
-    ],
-    "word_cap": 60,
-    "receipts_target": 1,
-    "writer_system": "You are a comedian writing short, brand-safe jokes. Ensure no slurs/hate, punch up at social norms, and avoid invented facts. Think through steps internally without exposing reasoning.",
-    "writer_user_template": "Write a sarcastic joke about elevator small talk in ~60 words. Use the Setup→Turn→Tag structure. Highlight absurdity of etiquette rituals in confined spaces. Mention 30-second ride duration, forced conversation attempts, and 'staring ahead' behavior. Output only the joke, no explanations.",
-    "few_shots": [
-      {
-        "summary": "Office workers forced to make eye contact during printer jams",
-        "output": "Why do elevators make us turn into living statues? Because nothing says 'socially acceptable' like staring at a stranger's forehead while they nervously announce, 'Sure is nice weather... for a May 2nd in July!'"
-      },
-      {
-        "summary": "People pretending not to notice others in grocery store checkout lines",
-        "output": "The 'small talk' dance: a 30-second ritual where participants decide whether 'Nice dog!' (even if there's no dog) is worth the risk of eternal elevator eye contact."
-      }
-    ],
-    "decode_prefs": {
-      "temperature": 0.7,
-      "top_p": 0.8,
-      "presence_penalty": 0.3,
-      "frequency_penalty": 0.2,
-      "n": 1,
-      "stop": [
-        "\n",
-        "(parody)"
-      ]
-    },
-    "audit": {
-      "mode": "real_news",
-      "numbers_policy": "normalize; no invention; use ranges if inconsistent",
-      "attribution_policy": "omit unless caller asked",
-      "failover": "if contradictions → parody_news and append (parody)"
-    },
-    "eval_checks": [
-      "Fidelity: only uses elevator ride duration and social behaviors from SUMMARY",
-      "Form: strict Setup→Turn→Tag structure",
-      "Safety: mocks situations not people",
-      "Device fit: visible incongruity and literal interpretations of etiquette",
-      "Receipts: 0-1 subtle references to social norms"
-    ],
-    "elo": 1003.7028110857168,
-    "wins": 3,
-    "losses": 1
-  },
-  {
-    "prompt_id": "elevator-small-talk-satire-dup",
-    "safety_profile": "brand_safe",
-    "style": "satirical",
-    "angle": "Hypocrisy",
-    "structure": "Setup→Turn→Tag",
-    "devices": [
-      "Incongruity-Resolution",
-      "Paraprosdokian"
-    ],
-    "word_cap": 60,
-    "receipts_target": 1,
-    "writer_system": "You are a comedy writer. Only use facts from the provided summary. Avoid slurs, cruelty, and target behaviors, not protected classes. Think through steps internally; do not include reasoning in the output.",
-    "writer_user_template": "Craft a satirical joke about elevator small talk using the provided summary and prompt. Keep it under 60 words. Follow the Setup→Turn→Tag structure. Include 1 receipts. Punch up at social norms, avoid harm.",
-    "few_shots": [
-      {
-        "summary": "Office workers avoid eye contact during elevator rides but feel obligated to make small talk.",
-        "output": "Setup: You’re crammed with strangers, all masters of the 'staring-at-floor-buttons' technique. Turn: One brave soul mutters, 'Nice weather for...' before realizing you’ve already mentally labeled them 'Elevator Chatterer'. Tag: Congrats, you’ve just participated in humanity’s most high-stakes game of charades. Receipt: 1. Silence is golden, but elevator small talk is 30 seconds of 'Why did the chicken cross the road?' with no punchline."
-      }
-    ],
-    "decode_prefs": {
-      "temperature": 0.7,
-      "top_p": 0.8,
-      "presence_penalty": 0.3,
-      "frequency_penalty": 0.5,
-      "n": 1
-    },
-    "audit": {
-      "mode": "parody_news",
-      "numbers_policy": "normalize; no invention; use ranges if inconsistent",
-      "attribution_policy": "omit unless caller asked",
-      "failover": "if contradictions → parody_news and append (parody)"
-    },
-    "eval_checks": [
-      "Fidelity: uses only SUMMARY specifics; no invented facts",
-      "Form: 1–4 sentences; matches structure",
-      "Safety: punches up; no slurs/hate",
-      "Device fit: incongruity and unexpected twist visible",
-      "Receipts: ≤1, terse"
-    ],
-    "elo": 1003.2634871436212,
-    "wins": 5,
-    "losses": 3
-  },
-  {
-    "prompt_id": "elevator_small_talk",
-    "safety_profile": "brand_safe",
-    "style": "sarcastic",
-    "angle": "Hypocrisy",
-    "structure": "Setup→Turn→Tag",
-    "devices": [
-      "Incongruity–Resolution",
-      "Register Clash"
-    ],
-    "word_cap": 140,
-    "receipts_target": 2,
-    "writer_system": "You are a comedy writer. Prioritize safety, avoid harm, and stay fact-based. Think through steps internally without revealing reasoning. Keep output concise.",
-    "writer_user_template": "Write a sarcastic elevator small talk joke using {{summary}}. Structure: Setup→Turn→Tag. Under 140 words. Mention 2 receipts. Punch up societal norms, not individuals.",
-    "few_shots": [
-      {
-        "summary": "Office workers forced to make eye contact with elevator buttons during awkward silence",
-        "output": "Why do elevators have mirrors? So you can admire your courage while discussing the weather with a stranger. 'Lovely cloud coverage today!' Ding. No one laughs. (Receipts: Hypocrisy, Benign Violation)"
-      },
-      {
-        "summary": "People pretending not to hear 'Did you take the stairs?' in elevators",
-        "output": "Elevator small talk: the art of asking 'How’s the weather?' while checking your phone for any sign of mercy. When the doors open, you both breathe a sigh of relief — and regret the calories burned escaping. (Receipts: Analogy/Mapping, Register Clash)"
-      }
-    ],
-    "decode_prefs": {
-      "temperature": 0.6,
-      "top_p": 0.9,
-      "presence_penalty": 0.0,
-      "frequency_penalty": 0.2,
-      "n": 1,
-      "stop": []
-    },
-    "audit": {
-      "mode": "real_news",
-      "numbers_policy": "normalize; no invention; use ranges if inconsistent",
-      "attribution_policy": "omit unless caller asked",
-      "failover": "if contradictions → parody_news and append (parody)"
-    },
-    "eval_checks": [
-      "Fidelity: uses only SUMMARY specifics; no invented facts",
-      "Form: 1–4 sentences; matches structure",
-      "Safety: punches up; no slurs/hate",
-      "Device fit: chosen devices are visible",
-      "Receipts: ≤ 2, terse"
-    ],
-    "elo": 1001.3905532548727,
-    "wins": 4,
-    "losses": 3
-  },
-  {
-    "prompt_id": "elevator_small_talk",
-    "safety_profile": "brand_safe",
-    "style": "satirical",
-    "angle": "Compare/Contrast",
-    "structure": "Setup→Turn→Tag",
-    "devices": [
-      "Analogy/Metaphor",
-      "Paraprosdokian"
-    ],
-    "word_cap": 60,
-    "receipts_target": 1,
-    "writer_system": "You are a satirical humorist. Keep jokes concise, factual, and brand-safe. Avoid slurs/hate, target behaviors not individuals. Think through steps internally without revealing reasoning.",
-    "writer_user_template": "Write a 1–2 sentence satirical joke using {{summary}} and {{prompt}}, contrasting the awkwardness of elevator silence vs forced small talk. Structure: Setup→Turn→Tag. Include 1 terse receipt. Example style: 'Elevator small talk is like speed-dating... except no one’s remotely interested in your life—and the doors judge you when they close.'",
-    "few_shots": [
-      {
-        "summary": "Elevator ride lasts 20 seconds; passengers avoid eye contact",
-        "output": "Elevator small talk is like playing 'Never Have I Ever' with strangers—except everyone’s too busy checking their phone to admit they’ve never mastered the art of polite silence."
-      },
-      {
-        "summary": "Office workers forced to make conversation in tight spaces",
-        "output": "Why do elevators have mirrors? So you can practice your 'I didn’t hear that weird cough' face while pretending not to notice the awkwardness around you."
-      }
-    ],
-    "decode_prefs": {
-      "temperature": 0.7,
-      "top_p": 0.8,
-      "presence_penalty": 0.3,
-      "frequency_penalty": 0.3,
-      "n": 1,
-      "stop": [
-        "\n",
-        "(parody)"
-      ]
-    },
-    "audit": {
-      "mode": "real_news",
-      "numbers_policy": "normalize; no invention; use ranges if inconsistent",
-      "attribution_policy": "omit unless caller asked",
-      "failover": "if contradictions → parody_news and append (parody)"
-    },
-    "eval_checks": [
-      "Fidelity: uses only SUMMARY specifics; no invented facts",
-      "Form: matches Setup→Turn→Tag structure",
-      "Safety: brand-safe and non-cruel",
-      "Device fit: analogy/metaphor and paraprosdokian visible",
-      "Receipts: ≤1 concise explanation"
-    ],
-    "elo": 997.0092532191677,
-    "wins": 5,
-    "losses": 6
-  },
-  {
-    "prompt_id": "46366f57-dup",
+    "prompt_id": "elevator_small_talk-m6486",
     "safety_profile": "clean",
     "style": "sarcastic",
     "angle": "Compare/Contrast",
-    "structure": "Setup→Turn→Tag",
+    "structure": "Angle–Example–Zinger",
     "devices": [
-      "Incongruity–Resolution",
-      "Paraprosdokian",
-      "Literalism"
-    ],
-    "word_cap": 60,
-    "receipts_target": 1,
-    "writer_system": "You are a comedy writer. Strictly adhere to safety constraints: no slurs, cruelty, or attacks on protected traits. Punch up at societal norms. Think through steps internally without exposing reasoning.",
-    "writer_user_template": "Write a 30-second sarcastic joke comparing elevator silence and forced small talk using setup→turn→tag structure. Incorporate {{summary}} details like door dings and stares. Keep under {{word_cap}} words. Include {{receipts_target}} receipts explaining the humor mechanism.",
-    "few_shots": null,
-    "decode_prefs": null,
-    "audit": null,
-    "eval_checks": null,
-    "elo": 989.1215908341492,
-    "wins": 1,
-    "losses": 6
-  },
-  {
-    "prompt_id": "elevator-small-talk-parable-dup-m45ef",
-    "safety_profile": "brand_safe",
-    "style": "satirical",
-    "angle": "Analogy/Mapping",
-    "structure": "Setup→Turn→Tag",
-    "devices": [
-      "Analogy/Metaphor",
+      "Register Clash",
       "Paraprosdokian"
     ],
     "word_cap": 60,
     "receipts_target": 1,
-    "writer_system": "You are a comedy writer. Your joke must: 1) Use only facts from the SUMMARY. 2) Follow safety constraints (no slurs/hate, punch up, avoid victim-blame). 3) Think through steps internally without revealing reasoning.",
-    "writer_user_template": "Write a satirical 30-60 word joke using the {{summary}} and {{prompt}}. Structure: Setup→Turn→Tag. Map elevator small talk to an absurd scenario. Keep quotes and 30-second timeframe intact. End with a punchline that subverts expectations.",
+    "writer_system": "You are a comedian crafting clean, behavior-focused humor. Follow safety constraints: no slurs, punch up only, target situational absurdity. Use hidden CoT for planning.",
+    "writer_user_template": "Write a sarcastic 3-part rule for elevator small talk using {{summary}}. Keep under 60 words. Structure: Setup→Turn→Tag. Example format: 'Rule of Three: 1) [Action], 2) [Unexpected twist], 3) [Zinger].' Avoid invented details.",
     "few_shots": [
       {
-        "summary": "People avoid eye contact on elevators but panic when someone talks",
-        "output": "Setup: The elevator's 'How's the weather?' ritual feels cozy until someone actually mentions the AC malfunction. Turn: Suddenly you're trapped with a meteorologist. Tag: Now you wish the silence was just awkward."
+        "summary": "People awkwardly avoid eye contact in elevators while pretending to read manuals",
+        "output": "Elevator etiquette rule #3: When forced to chat, always mention the weather... of the ventilation system. Because 'Lovely day!' sounds less fake when directed at metal walls."
       },
       {
-        "summary": "Elevator buttons labeled with motivational phrases instead of floors",
-        "output": "Setup: Modern elevators now say 'AMBITION' and 'HOPE' instead of floor numbers. Turn: But when you press 'HOPE,' it just goes in circles. Tag: Just like your small talk about 'the weather.'"
+        "summary": "Elevator passengers use 'Great meeting!' as a greeting even without prior interaction",
+        "output": "The secret elevator code: 1) Mumble about non-existent meetings, 2) Stare at shoelaces with laser focus, 3) Exit pretending you've known the stranger since kindergarten."
       }
     ],
     "decode_prefs": {
-      "temperature": 0.5,
+      "temperature": 0.7,
       "top_p": 0.8,
       "presence_penalty": 0.3,
-      "frequency_penalty": 0.2,
-      "n": 1,
-      "stop": [
-        "\n",
-        "(parody)"
-      ]
+      "frequency_penalty": 0.5,
+      "n": 1
     },
     "audit": {
-      "mode": "parody_news",
-      "numbers_policy": "keep 30-second timeframe literal",
+      "mode": "real_news",
+      "numbers_policy": "normalize durations; no invention",
       "attribution_policy": "omit",
-      "failover": "if contradictions → parody_news and append (parody)"
+      "failover": "if contradictions → parody_news"
     },
     "eval_checks": [
-      "Fidelity: mentions 30-second timeframe and door dings",
-      "Form: 3-part structure with clear punchline",
-      "Safety: mocks social rituals, not individuals",
-      "Device fit: analogy to recognizable scenarios + unexpected twist",
-      "Receipts: 0 receipts in final output (plain_text)"
+      "Fidelity: references elevator awkwardness/silence dynamics",
+      "Form: exactly three numbered rules with punchline progression",
+      "Safety: mocks situations not individuals",
+      "Device fit: formal instruction contrasted with absurd content",
+      "Receipts: 0-1 subtle references"
     ],
-    "elo": 963.0183236021558,
-    "wins": 0,
-    "losses": 0
+    "elo": 993.6690693176889,
+    "wins": 70,
+    "losses": 43
   },
   {
-    "prompt_id": "07c3136c-mcd81",
-    "safety_profile": "brand_safe",
+    "prompt_id": "elevator_small_talk-mf5c6",
+    "safety_profile": "clean",
     "style": "sarcastic",
     "angle": "Compare/Contrast",
-    "structure": "Setup→Turn→Tag",
+    "structure": "Rule of Three",
     "devices": [
-      "Incongruity-Resolution",
-      "Literalism",
-      "Register Clash"
+      "Register Clash",
+      "Paraprosdokian"
     ],
     "word_cap": 60,
     "receipts_target": 1,
-    "writer_system": "You are a comedy writer. Prioritize safety: no slurs, hate, or cruelty. Punch up at societal norms, not individuals. Use only facts from provided summary. Think through steps internally without revealing reasoning.",
-    "writer_user_template": "Write a sarcastic 30-second elevator small talk joke (60 words max). Structure: Setup→Turn→Tag. Contrast forced conversation with awkward silence. Include one supporting detail from {{summary}}. Format as plain text.",
+    "writer_system": "You are a comedian crafting clean, behavior-focused humor. Follow safety constraints: no slurs, punch up only, target situational absurdity. Use hidden CoT for planning.",
+    "writer_user_template": "Write a sarcastic 3-part rule for elevator small talk using {{summary}}. Keep under 60 words. Structure: Setup→Turn→Tag. Example format: 'Rule of Three: 1) [Action], 2) [Unexpected twist], 3) [Zinger].' Avoid invented details.",
     "few_shots": [
       {
-        "summary": "Passengers avoid eye contact during subway rides despite sitting inches apart",
-        "output": "Setup: You'd think subway commuters could bond over shared humanity. Turn: Instead they play Candy Crush like it's the Great Game of 1839. Tag: No wonder they call it 'social distancing with sound effects.'"
+        "summary": "People awkwardly avoid eye contact in elevators while pretending to read manuals",
+        "output": "Elevator etiquette rule #3: When forced to chat, always mention the weather... of the ventilation system. Because 'Lovely day!' sounds less fake when directed at metal walls."
+      },
+      {
+        "summary": "Elevator passengers use 'Great meeting!' as a greeting even without prior interaction",
+        "output": "The secret elevator code: 1) Mumble about non-existent meetings, 2) Stare at shoelaces with laser focus, 3) Exit pretending you've known the stranger since kindergarten."
       }
     ],
     "decode_prefs": {
-      "temperature": 0.3,
-      "top_p": 0.8,
-      "presence_penalty": 0.3,
-      "frequency_penalty": 0.0,
-      "n": 1
-    },
-    "audit": {
-      "mode": "parody_news",
-      "numbers_policy": "normalize; no invention; use ranges if inconsistent",
-      "attribution_policy": "omit unless caller asked",
-      "failover": "if contradictions → parody_news and append (parody)"
-    },
-    "eval_checks": [
-      "Fidelity: uses only SUMMARY specifics; no invented facts",
-      "Form: 3-part structure with 1–2 sentences per component",
-      "Safety: avoids cruelty, focuses on social behaviors",
-      "Device fit: incongruity/literalism/register clash evident",
-      "Receipts: ≤1 metaphorical reference to elevator sounds/behavior"
-    ],
-    "elo": 955.3403969521262,
-    "wins": 0,
-    "losses": 0
-  },
-  {
-    "prompt_id": "elevator_small_talk_satire-dup-m1471",
-    "safety_profile": "brand_safe",
-    "style": "satirical",
-    "angle": "Hypocrisy",
-    "structure": "Setup→Turn→Tag",
-    "devices": [
-      "Irony",
-      "Analogy/Metaphor"
-    ],
-    "word_cap": 60,
-    "receipts_target": 1,
-    "writer_system": "You are a satirical humorist. Prioritize safety: no slurs, cruelty, or targeting protected classes. Use only provided context. Think through steps internally without exposing reasoning.",
-    "writer_user_template": "Write a satirical joke about elevator small talk using the {{summary}} and {{prompt}}. Structure: Setup→Turn→Tag. Keep it under 60 words. Highlight hypocrisy in forced politeness vs. social detachment. Use irony and analogy. Example format: 'Setup: [situation]. Turn: [twist]. Tag: [punchline].'",
-    "few_shots": [
-      {
-        "summary": "Office workers avoid eye contact while pretending to read phones in elevators",
-        "output": "Setup: You step into an elevator where everyone’s 'deeply focused' on their phones. Turn: One person looks up and asks, 'Going up?' Tag: Suddenly you’re all experts in elevator etiquette… and pretending to ignore each other."
-      }
-    ],
-    "decode_prefs": {
-      "temperature": 0.8,
+      "temperature": 0.7,
       "top_p": 0.8,
       "presence_penalty": 0.3,
       "frequency_penalty": 0.5,
@@ -486,26 +80,26 @@
     },
     "audit": {
       "mode": "real_news",
-      "numbers_policy": "normalize; no invention; use ranges if inconsistent",
+      "numbers_policy": "normalize durations; no invention",
       "attribution_policy": "omit",
-      "failover": "if contradictions → parody_news and append (parody)"
+      "failover": "if contradictions → parody_news"
     },
     "eval_checks": [
-      "Fidelity: references elevator silence/forced chat dynamics",
-      "Form: strict Setup→Turn→Tag structure",
-      "Safety: no victim-blaming, focuses on situational absurdity",
-      "Device fit: visible irony (forced chat vs avoidance) and analogy to etiquette performance",
-      "Receipts: 1 concise setup/turn/tag sequence"
+      "Fidelity: references elevator awkwardness/silence dynamics",
+      "Form: exactly three numbered rules with punchline progression",
+      "Safety: mocks situations not individuals",
+      "Device fit: formal instruction contrasted with absurd content",
+      "Receipts: 0-1 subtle references"
     ],
-    "elo": 955.2469023396117,
-    "wins": 0,
-    "losses": 0
+    "elo": 989.648181410509,
+    "wins": 88,
+    "losses": 70
   },
   {
-    "prompt_id": "elevator_small_talk_roast-mbf27",
+    "prompt_id": "elevator_small_talk_sarcastic-dup",
     "safety_profile": "brand_safe",
     "style": "sarcastic",
-    "angle": "Process Farce",
+    "angle": "Hypocrisy",
     "structure": "Setup→Turn→Tag",
     "devices": [
       "Incongruity–Resolution",
@@ -513,211 +107,671 @@
     ],
     "word_cap": 60,
     "receipts_target": 1,
-    "writer_system": "You are a comedian writing short, brand-safe jokes. Ensure no slurs/hate, punch up at social norms, and avoid invented facts. Think through steps internally without exposing reasoning.",
-    "writer_user_template": "Write a sarcastic joke about elevator small talk in ~60 words. Use the Setup→Turn→Tag structure. Highlight absurdity of etiquette rituals in confined spaces. Mention 30-second ride duration, forced conversation attempts, and 'staring ahead' behavior. Output only the joke, no explanations.",
+    "writer_system": "You are a comedy writer. Follow these rules strictly: (1) Never invent facts beyond the given summary. (2) Punch up at social norms, not individuals. (3) Use hidden CoT: Think through steps internally without revealing reasoning.",
+    "writer_user_template": "Write a sarcastic joke about elevator small talk using the Setup→Turn→Tag structure. Keep it under {{word_cap}} words. Example angle: Hypocrisy of pretending to want conversation while avoiding eye contact. Receipts: {{receipts_target}} terse fact-based tagline if needed. Focus on {{summary}} details like awkward silence and forced stares.",
     "few_shots": [
       {
-        "summary": "Office workers forced to make eye contact during printer jams",
-        "output": "Why do elevators make us turn into living statues? Because nothing says 'socially acceptable' like staring at a stranger's forehead while they nervously announce, 'Sure is nice weather... for a May 2nd in July!'"
+        "summary": "Office workers pretend to ignore each other in elevators while subtly checking phones to avoid conversation",
+        "output": "Why do elevators have mirrors? So you can practice your 'How’s the weather?' face without committing to actual small talk. #FirstWorldProblems"
       },
       {
-        "summary": "People pretending not to notice others in grocery store checkout lines",
-        "output": "The 'small talk' dance: a 30-second ritual where participants decide whether 'Nice dog!' (even if there's no dog) is worth the risk of eternal elevator eye contact."
+        "summary": "People say 'going up?' in crowded elevators despite knowing destinations are obvious",
+        "output": "Elevator small talk’s greatest mystery: If we’re all going up, why does the question sound like an accusation? ‘Going up? Looks like your floor is stained glass now...’"
       }
     ],
     "decode_prefs": {
-      "temperature": 0.7,
-      "top_p": 0.8,
-      "presence_penalty": 0.3,
-      "frequency_penalty": 0.2,
-      "n": 1,
-      "stop": [
-        "\n",
-        "(parody)"
-      ]
-    },
-    "audit": {
-      "mode": "real_news",
-      "numbers_policy": "normalize; no invention; use ranges if inconsistent",
-      "attribution_policy": "omit unless caller asked",
-      "failover": "if contradictions → parody_news and append (parody)"
-    },
-    "eval_checks": [
-      "Fidelity: only uses elevator ride duration and social behaviors from SUMMARY",
-      "Form: strict Setup→Turn→Tag structure",
-      "Safety: mocks situations not people",
-      "Device fit: visible incongruity and literal interpretations of etiquette",
-      "Receipts: 0-1 subtle references to social norms"
-    ],
-    "elo": 953.7028110857168,
-    "wins": 0,
-    "losses": 0
-  },
-  {
-    "prompt_id": "elevator-small-talk-satire-dup-m8074",
-    "safety_profile": "brand_safe",
-    "style": "satirical",
-    "angle": "Hypocrisy",
-    "structure": "Setup→Turn→Tag",
-    "devices": [
-      "Incongruity-Resolution",
-      "Paraprosdokian"
-    ],
-    "word_cap": 60,
-    "receipts_target": 1,
-    "writer_system": "You are a comedy writer. Only use facts from the provided summary. Avoid slurs, cruelty, and target behaviors, not protected classes. Think through steps internally; do not include reasoning in the output.",
-    "writer_user_template": "Craft a satirical joke about elevator small talk using the provided summary and prompt. Keep it under 60 words. Follow the Setup→Turn→Tag structure. Include 1 receipts. Punch up at social norms, avoid harm.",
-    "few_shots": [
-      {
-        "summary": "Office workers avoid eye contact during elevator rides but feel obligated to make small talk.",
-        "output": "Setup: You’re crammed with strangers, all masters of the 'staring-at-floor-buttons' technique. Turn: One brave soul mutters, 'Nice weather for...' before realizing you’ve already mentally labeled them 'Elevator Chatterer'. Tag: Congrats, you’ve just participated in humanity’s most high-stakes game of charades. Receipt: 1. Silence is golden, but elevator small talk is 30 seconds of 'Why did the chicken cross the road?' with no punchline."
-      }
-    ],
-    "decode_prefs": {
-      "temperature": 0.8,
-      "top_p": 0.8,
-      "presence_penalty": 0.3,
-      "frequency_penalty": 0.5,
-      "n": 1
-    },
-    "audit": {
-      "mode": "parody_news",
-      "numbers_policy": "normalize; no invention; use ranges if inconsistent",
-      "attribution_policy": "omit unless caller asked",
-      "failover": "if contradictions → parody_news and append (parody)"
-    },
-    "eval_checks": [
-      "Fidelity: uses only SUMMARY specifics; no invented facts",
-      "Form: 1–4 sentences; matches structure",
-      "Safety: punches up; no slurs/hate",
-      "Device fit: incongruity and unexpected twist visible",
-      "Receipts: ≤1, terse"
-    ],
-    "elo": 953.2634871436212,
-    "wins": 0,
-    "losses": 0
-  },
-  {
-    "prompt_id": "elevator_small_talk-m8e4b",
-    "safety_profile": "brand_safe",
-    "style": "sarcastic",
-    "angle": "Hypocrisy",
-    "structure": "Setup→Turn→Tag",
-    "devices": [
-      "Incongruity–Resolution",
-      "Register Clash"
-    ],
-    "word_cap": 140,
-    "receipts_target": 2,
-    "writer_system": "You are a comedy writer. Prioritize safety, avoid harm, and stay fact-based. Think through steps internally without revealing reasoning. Keep output concise.",
-    "writer_user_template": "Write a sarcastic elevator small talk joke using {{summary}}. Structure: Setup→Turn→Tag. Under 140 words. Mention 2 receipts. Punch up societal norms, not individuals.",
-    "few_shots": [
-      {
-        "summary": "Office workers forced to make eye contact with elevator buttons during awkward silence",
-        "output": "Why do elevators have mirrors? So you can admire your courage while discussing the weather with a stranger. 'Lovely cloud coverage today!' Ding. No one laughs. (Receipts: Hypocrisy, Benign Violation)"
-      },
-      {
-        "summary": "People pretending not to hear 'Did you take the stairs?' in elevators",
-        "output": "Elevator small talk: the art of asking 'How’s the weather?' while checking your phone for any sign of mercy. When the doors open, you both breathe a sigh of relief — and regret the calories burned escaping. (Receipts: Analogy/Mapping, Register Clash)"
-      }
-    ],
-    "decode_prefs": {
-      "temperature": 0.7,
+      "temperature": 0.6,
       "top_p": 0.9,
       "presence_penalty": 0.0,
       "frequency_penalty": 0.2,
       "n": 1,
-      "stop": []
+      "stop": [
+        "\n",
+        "#",
+        "Q:",
+        "A:"
+      ]
     },
     "audit": {
       "mode": "real_news",
       "numbers_policy": "normalize; no invention; use ranges if inconsistent",
-      "attribution_policy": "omit unless caller asked",
-      "failover": "if contradictions → parody_news and append (parody)"
+      "attribution_policy": "omit",
+      "failover": "(none triggered)"
     },
     "eval_checks": [
-      "Fidelity: uses only SUMMARY specifics; no invented facts",
-      "Form: 1–4 sentences; matches structure",
-      "Safety: punches up; no slurs/hate",
-      "Device fit: chosen devices are visible",
-      "Receipts: ≤ 2, terse"
+      "Fidelity: Uses elevator mirrors, silence, and forced stares from summary",
+      "Form: Exactly 3-part structure within 60 words",
+      "Safety: Mocks social rituals without targeting individuals",
+      "Device fit: Incongruity between etiquette and behavior + literal mirror use",
+      "Receipts: ≤1 hashtag-style tagline if included"
     ],
-    "elo": 951.3905532548727,
-    "wins": 0,
-    "losses": 0
+    "elo": 983.4994670295918,
+    "wins": 103,
+    "losses": 93
   },
   {
-    "prompt_id": "elevator_small_talk-mcb3e",
-    "safety_profile": "brand_safe",
-    "style": "satirical",
+    "prompt_id": "elevator_small_talk-m5f72",
+    "safety_profile": "clean",
+    "style": "sarcastic",
     "angle": "Compare/Contrast",
     "structure": "Thesis→3 Receipts→Kicker",
     "devices": [
-      "Analogy/Metaphor",
+      "Register Clash",
       "Paraprosdokian"
     ],
-    "word_cap": 140,
+    "word_cap": 60,
     "receipts_target": 1,
-    "writer_system": "You are a satirical humorist. Keep jokes concise, factual, and brand-safe. Avoid slurs/hate, target behaviors not individuals. Think through steps internally without revealing reasoning.",
-    "writer_user_template": "Write a 1–2 sentence satirical joke using {{summary}} and {{prompt}}, contrasting the awkwardness of elevator silence vs forced small talk. Structure: Setup→Turn→Tag. Include 1 terse receipt. Example style: 'Elevator small talk is like speed-dating... except no one’s remotely interested in your life—and the doors judge you when they close.'",
+    "writer_system": "You are a comedian crafting clean, behavior-focused humor. Follow safety constraints: no slurs, punch up only, target situational absurdity. Use hidden CoT for planning.",
+    "writer_user_template": "Write a sarcastic 3-part rule for elevator small talk using {{summary}}. Keep under 60 words. Structure: Setup→Turn→Tag. Example format: 'Rule of Three: 1) [Action], 2) [Unexpected twist], 3) [Zinger].' Avoid invented details.",
     "few_shots": [
       {
-        "summary": "Elevator ride lasts 20 seconds; passengers avoid eye contact",
-        "output": "Elevator small talk is like playing 'Never Have I Ever' with strangers—except everyone’s too busy checking their phone to admit they’ve never mastered the art of polite silence."
+        "summary": "People awkwardly avoid eye contact in elevators while pretending to read manuals",
+        "output": "Elevator etiquette rule #3: When forced to chat, always mention the weather... of the ventilation system. Because 'Lovely day!' sounds less fake when directed at metal walls."
       },
       {
-        "summary": "Office workers forced to make conversation in tight spaces",
-        "output": "Why do elevators have mirrors? So you can practice your 'I didn’t hear that weird cough' face while pretending not to notice the awkwardness around you."
+        "summary": "Elevator passengers use 'Great meeting!' as a greeting even without prior interaction",
+        "output": "The secret elevator code: 1) Mumble about non-existent meetings, 2) Stare at shoelaces with laser focus, 3) Exit pretending you've known the stranger since kindergarten."
       }
     ],
     "decode_prefs": {
       "temperature": 0.6,
       "top_p": 0.8,
       "presence_penalty": 0.3,
-      "frequency_penalty": 0.3,
-      "n": 1,
-      "stop": [
-        "\n",
-        "(parody)"
-      ]
+      "frequency_penalty": 0.5,
+      "n": 1
     },
     "audit": {
       "mode": "real_news",
+      "numbers_policy": "normalize durations; no invention",
+      "attribution_policy": "omit",
+      "failover": "if contradictions → parody_news"
+    },
+    "eval_checks": [
+      "Fidelity: references elevator awkwardness/silence dynamics",
+      "Form: exactly three numbered rules with punchline progression",
+      "Safety: mocks situations not individuals",
+      "Device fit: formal instruction contrasted with absurd content",
+      "Receipts: 0-1 subtle references"
+    ],
+    "elo": 969.6365396529408,
+    "wins": 78,
+    "losses": 73
+  },
+  {
+    "prompt_id": "elevator_small_talk",
+    "safety_profile": "brand_safe",
+    "style": "satirical",
+    "angle": "Hypocrisy",
+    "structure": "Setup→Turn→Tag",
+    "devices": [
+      "Incongruity–Resolution",
+      "Frame Shift",
+      "Literalism"
+    ],
+    "word_cap": 60,
+    "receipts_target": 1,
+    "writer_system": "You are a comedy writer. Your joke must be short, safe, and factual. Punch up at ideas/behaviors, not protected classes. Use only {{summary}} and {{prompt}}. Think through steps internally; do not include reasoning in the output.",
+    "writer_user_template": "Write a satirical joke about elevator small talk using the Setup→Turn→Tag structure. Stay under 60 words. Highlight hypocrisy in forced politeness vs. physical avoidance. Include {{receipts_target}} receipt(s).",
+    "few_shots": [
+      {
+        "summary": "People avoid eye contact in elevators but ask 'how are you?'",
+        "output": "Setup: You finally make eye contact in an elevator. Turn: They say 'Hi!' with a smile so fake, it could double as a textbook example. Tag: Receipt: (1/1) Small talk: humanity's way of saying 'I see you' while screaming 'DON’T TALK TO ME.'"
+      }
+    ],
+    "decode_prefs": {
+      "temperature": 0.6,
+      "top_p": 0.9,
+      "presence_penalty": 0.0,
+      "frequency_penalty": 0.2,
+      "n": 1,
+      "stop": []
+    },
+    "audit": {
+      "mode": "parody_news",
       "numbers_policy": "normalize; no invention; use ranges if inconsistent",
       "attribution_policy": "omit unless caller asked",
       "failover": "if contradictions → parody_news and append (parody)"
     },
     "eval_checks": [
       "Fidelity: uses only SUMMARY specifics; no invented facts",
-      "Form: matches Setup→Turn→Tag structure",
-      "Safety: brand-safe and non-cruel",
-      "Device fit: analogy/metaphor and paraprosdokian visible",
-      "Receipts: ≤1 concise explanation"
+      "Form: 1–4 sentences; matches structure",
+      "Safety: punches up; no slurs/hate",
+      "Device fit: incongruity/resolution visible",
+      "Receipts: ≤1, concise"
     ],
-    "elo": 947.0092532191677,
-    "wins": 0,
+    "elo": 959.6627569054664,
+    "wins": 164,
+    "losses": 166
+  },
+  {
+    "prompt_id": "elevator_small_talk-m6486-m0ad5",
+    "safety_profile": "clean",
+    "style": "sarcastic",
+    "angle": "Compare/Contrast",
+    "structure": "Thesis→3 Receipts→Kicker",
+    "devices": [
+      "Register Clash",
+      "Paraprosdokian"
+    ],
+    "word_cap": 60,
+    "receipts_target": 1,
+    "writer_system": "You are a comedian crafting clean, behavior-focused humor. Follow safety constraints: no slurs, punch up only, target situational absurdity. Use hidden CoT for planning.",
+    "writer_user_template": "Write a sarcastic 3-part rule for elevator small talk using {{summary}}. Keep under 60 words. Structure: Setup→Turn→Tag. Example format: 'Rule of Three: 1) [Action], 2) [Unexpected twist], 3) [Zinger].' Avoid invented details.",
+    "few_shots": [
+      {
+        "summary": "People awkwardly avoid eye contact in elevators while pretending to read manuals",
+        "output": "Elevator etiquette rule #3: When forced to chat, always mention the weather... of the ventilation system. Because 'Lovely day!' sounds less fake when directed at metal walls."
+      },
+      {
+        "summary": "Elevator passengers use 'Great meeting!' as a greeting even without prior interaction",
+        "output": "The secret elevator code: 1) Mumble about non-existent meetings, 2) Stare at shoelaces with laser focus, 3) Exit pretending you've known the stranger since kindergarten."
+      }
+    ],
+    "decode_prefs": {
+      "temperature": 0.8,
+      "top_p": 0.8,
+      "presence_penalty": 0.3,
+      "frequency_penalty": 0.5,
+      "n": 1
+    },
+    "audit": {
+      "mode": "real_news",
+      "numbers_policy": "normalize durations; no invention",
+      "attribution_policy": "omit",
+      "failover": "if contradictions → parody_news"
+    },
+    "eval_checks": [
+      "Fidelity: references elevator awkwardness/silence dynamics",
+      "Form: exactly three numbered rules with punchline progression",
+      "Safety: mocks situations not individuals",
+      "Device fit: formal instruction contrasted with absurd content",
+      "Receipts: 0-1 subtle references"
+    ],
+    "elo": 953.0630208811583,
+    "wins": 6,
+    "losses": 1
+  },
+  {
+    "prompt_id": "elevator_small_talk",
+    "safety_profile": "clean",
+    "style": "sarcastic",
+    "angle": "Compare/Contrast",
+    "structure": "Rule of Three",
+    "devices": [
+      "Register Clash",
+      "Paraprosdokian"
+    ],
+    "word_cap": 60,
+    "receipts_target": 1,
+    "writer_system": "You are a comedian crafting clean, behavior-focused humor. Follow safety constraints: no slurs, punch up only, target situational absurdity. Use hidden CoT for planning.",
+    "writer_user_template": "Write a sarcastic 3-part rule for elevator small talk using {{summary}}. Keep under 60 words. Structure: Setup→Turn→Tag. Example format: 'Rule of Three: 1) [Action], 2) [Unexpected twist], 3) [Zinger].' Avoid invented details.",
+    "few_shots": [
+      {
+        "summary": "People awkwardly avoid eye contact in elevators while pretending to read manuals",
+        "output": "Elevator etiquette rule #3: When forced to chat, always mention the weather... of the ventilation system. Because 'Lovely day!' sounds less fake when directed at metal walls."
+      },
+      {
+        "summary": "Elevator passengers use 'Great meeting!' as a greeting even without prior interaction",
+        "output": "The secret elevator code: 1) Mumble about non-existent meetings, 2) Stare at shoelaces with laser focus, 3) Exit pretending you've known the stranger since kindergarten."
+      }
+    ],
+    "decode_prefs": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "presence_penalty": 0.3,
+      "frequency_penalty": 0.5,
+      "n": 1
+    },
+    "audit": {
+      "mode": "real_news",
+      "numbers_policy": "normalize durations; no invention",
+      "attribution_policy": "omit",
+      "failover": "if contradictions → parody_news"
+    },
+    "eval_checks": [
+      "Fidelity: references elevator awkwardness/silence dynamics",
+      "Form: exactly three numbered rules with punchline progression",
+      "Safety: mocks situations not individuals",
+      "Device fit: formal instruction contrasted with absurd content",
+      "Receipts: 0-1 subtle references"
+    ],
+    "elo": 952.3670459176989,
+    "wins": 156,
+    "losses": 159
+  },
+  {
+    "prompt_id": "elevator_small_talk-m6486-md02f",
+    "safety_profile": "clean",
+    "style": "sarcastic",
+    "angle": "Compare/Contrast",
+    "structure": "Angle–Example–Zinger",
+    "devices": [
+      "Register Clash",
+      "Paraprosdokian"
+    ],
+    "word_cap": 60,
+    "receipts_target": 1,
+    "writer_system": "You are a comedian crafting clean, behavior-focused humor. Follow safety constraints: no slurs, punch up only, target situational absurdity. Use hidden CoT for planning.",
+    "writer_user_template": "Write a sarcastic 3-part rule for elevator small talk using {{summary}}. Keep under 60 words. Structure: Setup→Turn→Tag. Example format: 'Rule of Three: 1) [Action], 2) [Unexpected twist], 3) [Zinger].' Avoid invented details.",
+    "few_shots": [
+      {
+        "summary": "People awkwardly avoid eye contact in elevators while pretending to read manuals",
+        "output": "Elevator etiquette rule #3: When forced to chat, always mention the weather... of the ventilation system. Because 'Lovely day!' sounds less fake when directed at metal walls."
+      },
+      {
+        "summary": "Elevator passengers use 'Great meeting!' as a greeting even without prior interaction",
+        "output": "The secret elevator code: 1) Mumble about non-existent meetings, 2) Stare at shoelaces with laser focus, 3) Exit pretending you've known the stranger since kindergarten."
+      }
+    ],
+    "decode_prefs": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "presence_penalty": 0.3,
+      "frequency_penalty": 0.5,
+      "n": 1
+    },
+    "audit": {
+      "mode": "real_news",
+      "numbers_policy": "normalize durations; no invention",
+      "attribution_policy": "omit",
+      "failover": "if contradictions → parody_news"
+    },
+    "eval_checks": [
+      "Fidelity: references elevator awkwardness/silence dynamics",
+      "Form: exactly three numbered rules with punchline progression",
+      "Safety: mocks situations not individuals",
+      "Device fit: formal instruction contrasted with absurd content",
+      "Receipts: 0-1 subtle references"
+    ],
+    "elo": 949.4924756142619,
+    "wins": 3,
     "losses": 0
   },
   {
-    "prompt_id": "46366f57-dup-m071f",
+    "prompt_id": "elevator_small_talk-m6486-md2f0",
     "safety_profile": "clean",
     "style": "sarcastic",
     "angle": "Compare/Contrast",
     "structure": "Setup→Turn→Tag",
     "devices": [
+      "Register Clash",
+      "Paraprosdokian"
+    ],
+    "word_cap": 60,
+    "receipts_target": 1,
+    "writer_system": "You are a comedian crafting clean, behavior-focused humor. Follow safety constraints: no slurs, punch up only, target situational absurdity. Use hidden CoT for planning.",
+    "writer_user_template": "Write a sarcastic 3-part rule for elevator small talk using {{summary}}. Keep under 60 words. Structure: Setup→Turn→Tag. Example format: 'Rule of Three: 1) [Action], 2) [Unexpected twist], 3) [Zinger].' Avoid invented details.",
+    "few_shots": [
+      {
+        "summary": "People awkwardly avoid eye contact in elevators while pretending to read manuals",
+        "output": "Elevator etiquette rule #3: When forced to chat, always mention the weather... of the ventilation system. Because 'Lovely day!' sounds less fake when directed at metal walls."
+      },
+      {
+        "summary": "Elevator passengers use 'Great meeting!' as a greeting even without prior interaction",
+        "output": "The secret elevator code: 1) Mumble about non-existent meetings, 2) Stare at shoelaces with laser focus, 3) Exit pretending you've known the stranger since kindergarten."
+      }
+    ],
+    "decode_prefs": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "presence_penalty": 0.3,
+      "frequency_penalty": 0.5,
+      "n": 1
+    },
+    "audit": {
+      "mode": "real_news",
+      "numbers_policy": "normalize durations; no invention",
+      "attribution_policy": "omit",
+      "failover": "if contradictions → parody_news"
+    },
+    "eval_checks": [
+      "Fidelity: references elevator awkwardness/silence dynamics",
+      "Form: exactly three numbered rules with punchline progression",
+      "Safety: mocks situations not individuals",
+      "Device fit: formal instruction contrasted with absurd content",
+      "Receipts: 0-1 subtle references"
+    ],
+    "elo": 943.6690693176889,
+    "wins": 0,
+    "losses": 0
+  },
+  {
+    "prompt_id": "elevator_small_talk-mf5c6-m80cc",
+    "safety_profile": "clean",
+    "style": "sarcastic",
+    "angle": "Compare/Contrast",
+    "structure": "Rule of Three",
+    "devices": [
+      "Register Clash",
+      "Paraprosdokian"
+    ],
+    "word_cap": 60,
+    "receipts_target": 1,
+    "writer_system": "You are a comedian crafting clean, behavior-focused humor. Follow safety constraints: no slurs, punch up only, target situational absurdity. Use hidden CoT for planning.",
+    "writer_user_template": "Write a sarcastic 3-part rule for elevator small talk using {{summary}}. Keep under 60 words. Structure: Setup→Turn→Tag. Example format: 'Rule of Three: 1) [Action], 2) [Unexpected twist], 3) [Zinger].' Avoid invented details.",
+    "few_shots": [
+      {
+        "summary": "People awkwardly avoid eye contact in elevators while pretending to read manuals",
+        "output": "Elevator etiquette rule #3: When forced to chat, always mention the weather... of the ventilation system. Because 'Lovely day!' sounds less fake when directed at metal walls."
+      },
+      {
+        "summary": "Elevator passengers use 'Great meeting!' as a greeting even without prior interaction",
+        "output": "The secret elevator code: 1) Mumble about non-existent meetings, 2) Stare at shoelaces with laser focus, 3) Exit pretending you've known the stranger since kindergarten."
+      }
+    ],
+    "decode_prefs": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "presence_penalty": 0.3,
+      "frequency_penalty": 0.5,
+      "n": 1
+    },
+    "audit": {
+      "mode": "real_news",
+      "numbers_policy": "normalize durations; no invention",
+      "attribution_policy": "omit",
+      "failover": "if contradictions → parody_news"
+    },
+    "eval_checks": [
+      "Fidelity: references elevator awkwardness/silence dynamics",
+      "Form: exactly three numbered rules with punchline progression",
+      "Safety: mocks situations not individuals",
+      "Device fit: formal instruction contrasted with absurd content",
+      "Receipts: 0-1 subtle references"
+    ],
+    "elo": 939.648181410509,
+    "wins": 0,
+    "losses": 0
+  },
+  {
+    "prompt_id": "elevator_small_talk_sarcastic-dup-m792f",
+    "safety_profile": "brand_safe",
+    "style": "sarcastic",
+    "angle": "Hypocrisy",
+    "structure": "Setup→Turn→Tag",
+    "devices": [
       "Incongruity–Resolution",
-      "Paraprosdokian",
       "Literalism"
     ],
     "word_cap": 60,
     "receipts_target": 1,
-    "writer_system": "You are a comedy writer. Strictly adhere to safety constraints: no slurs, cruelty, or attacks on protected traits. Punch up at societal norms. Think through steps internally without exposing reasoning.",
-    "writer_user_template": "Write a 30-second sarcastic joke comparing elevator silence and forced small talk using setup→turn→tag structure. Incorporate {{summary}} details like door dings and stares. Keep under {{word_cap}} words. Include {{receipts_target}} receipts explaining the humor mechanism.",
-    "few_shots": null,
-    "decode_prefs": null,
-    "audit": null,
-    "eval_checks": null,
-    "elo": 939.1215908341492,
+    "writer_system": "You are a comedy writer. Follow these rules strictly: (1) Never invent facts beyond the given summary. (2) Punch up at social norms, not individuals. (3) Use hidden CoT: Think through steps internally without revealing reasoning.",
+    "writer_user_template": "Write a sarcastic joke about elevator small talk using the Setup→Turn→Tag structure. Keep it under {{word_cap}} words. Example angle: Hypocrisy of pretending to want conversation while avoiding eye contact. Receipts: {{receipts_target}} terse fact-based tagline if needed. Focus on {{summary}} details like awkward silence and forced stares.",
+    "few_shots": [
+      {
+        "summary": "Office workers pretend to ignore each other in elevators while subtly checking phones to avoid conversation",
+        "output": "Why do elevators have mirrors? So you can practice your 'How’s the weather?' face without committing to actual small talk. #FirstWorldProblems"
+      },
+      {
+        "summary": "People say 'going up?' in crowded elevators despite knowing destinations are obvious",
+        "output": "Elevator small talk’s greatest mystery: If we’re all going up, why does the question sound like an accusation? ‘Going up? Looks like your floor is stained glass now...’"
+      }
+    ],
+    "decode_prefs": {
+      "temperature": 0.6,
+      "top_p": 0.9,
+      "presence_penalty": 0.0,
+      "frequency_penalty": 0.2,
+      "n": 1,
+      "stop": [
+        "\n",
+        "#",
+        "Q:",
+        "A:"
+      ]
+    },
+    "audit": {
+      "mode": "real_news",
+      "numbers_policy": "normalize; no invention; use ranges if inconsistent",
+      "attribution_policy": "omit",
+      "failover": "(none triggered)"
+    },
+    "eval_checks": [
+      "Fidelity: Uses elevator mirrors, silence, and forced stares from summary",
+      "Form: Exactly 3-part structure within 60 words",
+      "Safety: Mocks social rituals without targeting individuals",
+      "Device fit: Incongruity between etiquette and behavior + literal mirror use",
+      "Receipts: ≤1 hashtag-style tagline if included"
+    ],
+    "elo": 933.4994670295918,
+    "wins": 0,
+    "losses": 0
+  },
+  {
+    "prompt_id": "elevator_small_talk-m5f72-mfb7e",
+    "safety_profile": "clean",
+    "style": "sarcastic",
+    "angle": "Compare/Contrast",
+    "structure": "Thesis→3 Receipts→Kicker",
+    "devices": [
+      "Register Clash",
+      "Paraprosdokian"
+    ],
+    "word_cap": 60,
+    "receipts_target": 1,
+    "writer_system": "You are a comedian crafting clean, behavior-focused humor. Follow safety constraints: no slurs, punch up only, target situational absurdity. Use hidden CoT for planning.",
+    "writer_user_template": "Write a sarcastic 3-part rule for elevator small talk using {{summary}}. Keep under 60 words. Structure: Setup→Turn→Tag. Example format: 'Rule of Three: 1) [Action], 2) [Unexpected twist], 3) [Zinger].' Avoid invented details.",
+    "few_shots": [
+      {
+        "summary": "People awkwardly avoid eye contact in elevators while pretending to read manuals",
+        "output": "Elevator etiquette rule #3: When forced to chat, always mention the weather... of the ventilation system. Because 'Lovely day!' sounds less fake when directed at metal walls."
+      },
+      {
+        "summary": "Elevator passengers use 'Great meeting!' as a greeting even without prior interaction",
+        "output": "The secret elevator code: 1) Mumble about non-existent meetings, 2) Stare at shoelaces with laser focus, 3) Exit pretending you've known the stranger since kindergarten."
+      }
+    ],
+    "decode_prefs": {
+      "temperature": 0.5,
+      "top_p": 0.8,
+      "presence_penalty": 0.3,
+      "frequency_penalty": 0.5,
+      "n": 1
+    },
+    "audit": {
+      "mode": "real_news",
+      "numbers_policy": "normalize durations; no invention",
+      "attribution_policy": "omit",
+      "failover": "if contradictions → parody_news"
+    },
+    "eval_checks": [
+      "Fidelity: references elevator awkwardness/silence dynamics",
+      "Form: exactly three numbered rules with punchline progression",
+      "Safety: mocks situations not individuals",
+      "Device fit: formal instruction contrasted with absurd content",
+      "Receipts: 0-1 subtle references"
+    ],
+    "elo": 919.6365396529408,
+    "wins": 0,
+    "losses": 0
+  },
+  {
+    "prompt_id": "elevator_small_talk-m87e6",
+    "safety_profile": "brand_safe",
+    "style": "satirical",
+    "angle": "Hypocrisy",
+    "structure": "Setup→Turn→Tag",
+    "devices": [
+      "Incongruity–Resolution",
+      "Frame Shift",
+      "Literalism"
+    ],
+    "word_cap": 60,
+    "receipts_target": 1,
+    "writer_system": "You are a comedy writer. Your joke must be short, safe, and factual. Punch up at ideas/behaviors, not protected classes. Use only {{summary}} and {{prompt}}. Think through steps internally; do not include reasoning in the output.",
+    "writer_user_template": "Write a satirical joke about elevator small talk using the Setup→Turn→Tag structure. Stay under 60 words. Highlight hypocrisy in forced politeness vs. physical avoidance. Include {{receipts_target}} receipt(s).",
+    "few_shots": [
+      {
+        "summary": "People avoid eye contact in elevators but ask 'how are you?'",
+        "output": "Setup: You finally make eye contact in an elevator. Turn: They say 'Hi!' with a smile so fake, it could double as a textbook example. Tag: Receipt: (1/1) Small talk: humanity's way of saying 'I see you' while screaming 'DON’T TALK TO ME.'"
+      }
+    ],
+    "decode_prefs": {
+      "temperature": 0.6,
+      "top_p": 0.9,
+      "presence_penalty": 0.0,
+      "frequency_penalty": 0.2,
+      "n": 1,
+      "stop": []
+    },
+    "audit": {
+      "mode": "parody_news",
+      "numbers_policy": "normalize; no invention; use ranges if inconsistent",
+      "attribution_policy": "omit unless caller asked",
+      "failover": "if contradictions → parody_news and append (parody)"
+    },
+    "eval_checks": [
+      "Fidelity: uses only SUMMARY specifics; no invented facts",
+      "Form: 1–4 sentences; matches structure",
+      "Safety: punches up; no slurs/hate",
+      "Device fit: incongruity/resolution visible",
+      "Receipts: ≤1, concise"
+    ],
+    "elo": 909.6627569054664,
+    "wins": 0,
+    "losses": 0
+  },
+  {
+    "prompt_id": "elevator_small_talk-m6486-m0ad5-me64b",
+    "safety_profile": "clean",
+    "style": "sarcastic",
+    "angle": "Compare/Contrast",
+    "structure": "Thesis→3 Receipts→Kicker",
+    "devices": [
+      "Register Clash",
+      "Paraprosdokian"
+    ],
+    "word_cap": 60,
+    "receipts_target": 1,
+    "writer_system": "You are a comedian crafting clean, behavior-focused humor. Follow safety constraints: no slurs, punch up only, target situational absurdity. Use hidden CoT for planning.",
+    "writer_user_template": "Write a sarcastic 3-part rule for elevator small talk using {{summary}}. Keep under 60 words. Structure: Setup→Turn→Tag. Example format: 'Rule of Three: 1) [Action], 2) [Unexpected twist], 3) [Zinger].' Avoid invented details.",
+    "few_shots": [
+      {
+        "summary": "People awkwardly avoid eye contact in elevators while pretending to read manuals",
+        "output": "Elevator etiquette rule #3: When forced to chat, always mention the weather... of the ventilation system. Because 'Lovely day!' sounds less fake when directed at metal walls."
+      },
+      {
+        "summary": "Elevator passengers use 'Great meeting!' as a greeting even without prior interaction",
+        "output": "The secret elevator code: 1) Mumble about non-existent meetings, 2) Stare at shoelaces with laser focus, 3) Exit pretending you've known the stranger since kindergarten."
+      }
+    ],
+    "decode_prefs": {
+      "temperature": 0.8,
+      "top_p": 0.8,
+      "presence_penalty": 0.3,
+      "frequency_penalty": 0.5,
+      "n": 1
+    },
+    "audit": {
+      "mode": "real_news",
+      "numbers_policy": "normalize durations; no invention",
+      "attribution_policy": "omit",
+      "failover": "if contradictions → parody_news"
+    },
+    "eval_checks": [
+      "Fidelity: references elevator awkwardness/silence dynamics",
+      "Form: exactly three numbered rules with punchline progression",
+      "Safety: mocks situations not individuals",
+      "Device fit: formal instruction contrasted with absurd content",
+      "Receipts: 0-1 subtle references"
+    ],
+    "elo": 903.0630208811583,
+    "wins": 0,
+    "losses": 0
+  },
+  {
+    "prompt_id": "elevator_small_talk-m377e",
+    "safety_profile": "clean",
+    "style": "sarcastic",
+    "angle": "Compare/Contrast",
+    "structure": "Rule of Three",
+    "devices": [
+      "Register Clash",
+      "Paraprosdokian"
+    ],
+    "word_cap": 60,
+    "receipts_target": 1,
+    "writer_system": "You are a comedian crafting clean, behavior-focused humor. Follow safety constraints: no slurs, punch up only, target situational absurdity. Use hidden CoT for planning.",
+    "writer_user_template": "Write a sarcastic 3-part rule for elevator small talk using {{summary}}. Keep under 60 words. Structure: Setup→Turn→Tag. Example format: 'Rule of Three: 1) [Action], 2) [Unexpected twist], 3) [Zinger].' Avoid invented details.",
+    "few_shots": [
+      {
+        "summary": "People awkwardly avoid eye contact in elevators while pretending to read manuals",
+        "output": "Elevator etiquette rule #3: When forced to chat, always mention the weather... of the ventilation system. Because 'Lovely day!' sounds less fake when directed at metal walls."
+      },
+      {
+        "summary": "Elevator passengers use 'Great meeting!' as a greeting even without prior interaction",
+        "output": "The secret elevator code: 1) Mumble about non-existent meetings, 2) Stare at shoelaces with laser focus, 3) Exit pretending you've known the stranger since kindergarten."
+      }
+    ],
+    "decode_prefs": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "presence_penalty": 0.3,
+      "frequency_penalty": 0.5,
+      "n": 1
+    },
+    "audit": {
+      "mode": "real_news",
+      "numbers_policy": "normalize durations; no invention",
+      "attribution_policy": "omit",
+      "failover": "if contradictions → parody_news"
+    },
+    "eval_checks": [
+      "Fidelity: references elevator awkwardness/silence dynamics",
+      "Form: exactly three numbered rules with punchline progression",
+      "Safety: mocks situations not individuals",
+      "Device fit: formal instruction contrasted with absurd content",
+      "Receipts: 0-1 subtle references"
+    ],
+    "elo": 902.3670459176989,
+    "wins": 0,
+    "losses": 0
+  },
+  {
+    "prompt_id": "elevator_small_talk-m6486-md02f-m08e5",
+    "safety_profile": "clean",
+    "style": "sarcastic",
+    "angle": "Compare/Contrast",
+    "structure": "Angle–Example–Zinger",
+    "devices": [
+      "Register Clash",
+      "Paraprosdokian"
+    ],
+    "word_cap": 60,
+    "receipts_target": 1,
+    "writer_system": "You are a comedian crafting clean, behavior-focused humor. Follow safety constraints: no slurs, punch up only, target situational absurdity. Use hidden CoT for planning.",
+    "writer_user_template": "Write a sarcastic 3-part rule for elevator small talk using {{summary}}. Keep under 60 words. Structure: Setup→Turn→Tag. Example format: 'Rule of Three: 1) [Action], 2) [Unexpected twist], 3) [Zinger].' Avoid invented details.",
+    "few_shots": [
+      {
+        "summary": "People awkwardly avoid eye contact in elevators while pretending to read manuals",
+        "output": "Elevator etiquette rule #3: When forced to chat, always mention the weather... of the ventilation system. Because 'Lovely day!' sounds less fake when directed at metal walls."
+      },
+      {
+        "summary": "Elevator passengers use 'Great meeting!' as a greeting even without prior interaction",
+        "output": "The secret elevator code: 1) Mumble about non-existent meetings, 2) Stare at shoelaces with laser focus, 3) Exit pretending you've known the stranger since kindergarten."
+      }
+    ],
+    "decode_prefs": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "presence_penalty": 0.3,
+      "frequency_penalty": 0.5,
+      "n": 1
+    },
+    "audit": {
+      "mode": "real_news",
+      "numbers_policy": "normalize durations; no invention",
+      "attribution_policy": "omit",
+      "failover": "if contradictions → parody_news"
+    },
+    "eval_checks": [
+      "Fidelity: references elevator awkwardness/silence dynamics",
+      "Form: exactly three numbered rules with punchline progression",
+      "Safety: mocks situations not individuals",
+      "Device fit: formal instruction contrasted with absurd content",
+      "Receipts: 0-1 subtle references"
+    ],
+    "elo": 900.0,
     "wins": 0,
     "losses": 0
   }

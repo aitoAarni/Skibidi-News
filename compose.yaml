@@ -1,0 +1,76 @@
+name: skibidinews
+
+x-common-env: &common_env
+  BASE_URL: "${BASE_URL:-}"
+  API_KEY: "${API_KEY:-}"
+  MODEL_NAME: "${MODEL_NAME:-}"
+  MODEL_PROVIDER: "${MODEL_PROVIDER:-none}"
+
+services:
+  mcp_router_agent:
+    build:
+      context: ./router_agent
+      dockerfile: Dockerfile
+    env_file: ./router_agent/.env.example
+    environment:
+      <<: *common_env
+      ROUTER_BIND_HOST: "0.0.0.0"
+      ROUTER_BIND_PORT: "${ROUTER_PORT:-6969}"
+    depends_on:
+      - mcp_prompt_opt
+      - mcp_text_to_audio
+      - mcp_humorizer
+      - mcp_new_aggr
+    ports:
+    - "${ROUTER_PORT:-6969}:6969"
+    networks:
+      - appnet
+    restart: unless-stopped
+
+  mcp_humorizer:
+    build:
+      context: ./mcp_humorizer
+      dockerfile: Dockerfile
+    env_file: ./mcp_humorizer/.env.example
+    environment:
+      <<: *common_env
+    networks:
+      - appnet
+    restart: unless-stopped
+
+  mcp_new_aggr:
+    build:
+      context: ./mcp_news_aggr
+      dockerfile: Dockerfile
+    env_file: ./mcp_news_aggr/.env.example
+    environment:
+      <<: *common_env
+    networks:
+      - appnet
+    restart: unless-stopped
+
+  mcp_prompt_opt:
+    build:
+      context: ./mcp_prompt_opt
+      dockerfile: Dockerfile
+    env_file: ./mcp_prompt_opt/.env.example
+    environment:
+      <<: *common_env
+    networks:
+      - appnet
+    restart: unless-stopped
+
+  mcp_text_to_audio:
+    build: 
+      context: ./text_to_audio
+      dockerfile: Dockerfile
+    env_file: ./text_to_audio/.env.example
+    environment:
+      <<: *common_env
+    networks:
+      - appnet
+    restart: unless-stopped
+
+networks:
+  appnet:
+    driver: bridge

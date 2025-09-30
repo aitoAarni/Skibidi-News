@@ -16,11 +16,10 @@ COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
 # Copy the server package
-COPY . /app
+COPY . /app/mcp_prompt_opt
 
 # Default environment (can be overridden at runtime)
 ENV MODEL_PROVIDER=none \
-    HUMOR_STYLE=light \
     MAX_OUTPUT_TOKENS=400 \
     TEMPERATURE=0.7
 

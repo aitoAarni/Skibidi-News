@@ -101,6 +101,29 @@ def _humor_fallback(summarized_text: str, style: str) -> str:
     return humorous_rewrite(summarized_text, style)
 
 
+def _card_fallback(style: str) -> str:
+    """
+    Lightweight, deterministic humour card to ensure offline functionality.
+    """
+    return """
+        [Title]: Cached Punchline
+        Style: absurd
+        Angle: Process Farce
+        Structure: Setup→Turn→Tag
+        Devices: Confident Wrongness; Analogy
+        Receipts: none
+        Safety: brand_safe
+        Parody: yes
+        WordCap: 60
+        ToneNotes: light, timeless, self-referential
+        Beats:
+        1) Setup: Announce a “lightweight, deterministic humor module.”
+        2) Turn: Compare it to comedy that runs even in airplane mode.
+        3) Tag: “All jokes pre-downloaded for your convenience.”
+        DoNotDo: No politics, no identities, no tragedy references.
+        """
+
+
 def comedicize_text(summarized_text: str, settings: Settings) -> str:
     """
     Main entry point for generating comedic text with graceful fallback.
@@ -109,9 +132,23 @@ def comedicize_text(summarized_text: str, settings: Settings) -> str:
     if not summarized_text:
         return "No input provided. Punchline withheld until further notice."
 
-    system_prompt = build_system_prompt(settings.humor_style)
-
     provider = settings.model_provider
+    if provider == "openai":
+        try:
+            comedy_card = _generate_with_openai(summarized_text="", settings=settings, system_prompt=build_system_prompt(settings.humor_style))
+        except GenerationError as e:
+            logger.warning("OpenAI failed, using humor fallback: %s", e)
+            comedy_card = _card_fallback(style=settings.humor_style)
+    elif provider == "anthropic":
+        try:
+            comedy_card = _generate_with_anthropic(summarized_text="", settings=settings, system_prompt=build_system_prompt(settings.humor_style))
+        except GenerationError as e:
+            logger.warning("OpenAI failed, using humor fallback: %s", e)
+            comedy_card = _card_fallback(style=settings.humor_style)
+    else:
+        comedy_card = _card_fallback(style=settings.humor_style)
+
+    system_prompt = build_system_prompt(comedy_card)
     if provider == "openai":
         try:
             return _generate_with_openai(summarized_text, settings, system_prompt)

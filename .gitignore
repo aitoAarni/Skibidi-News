@@ -8,3 +8,4 @@ logs/
 var/
 __pycache__
 .env
+*.env

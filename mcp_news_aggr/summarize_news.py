@@ -1,4 +1,5 @@
 import openai
+#from config import OPENAI_API_KEY
 from mcp_news_aggr.config import OPENAI_API_KEY
 
 # Set OpenAI key

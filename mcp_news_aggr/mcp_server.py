@@ -10,7 +10,7 @@ except Exception as e:
     print(f"Details: {e}")
     sys.exit(1)
 
-from mcp_news_aggr.fetch_google_news import fetch_google_news
+from mcp_news_aggr.fetch_news.fetch_all_news import fetch_all_news
 from mcp_news_aggr.summarize_news import summarize_all_articles
 
 logger = logging.getLogger(__name__)
@@ -19,9 +19,9 @@ logging.basicConfig(level=logging.INFO)
 app = FastMCP("mcp-news-aggr")
 
 @app.tool()
-def aggregate_news(page_size: int = 20) -> dict:
+def aggregate_news(page_size: int = 20, lang: str = "en") -> dict:
     try:
-        articles = fetch_google_news(page_size=page_size)
+        articles = fetch_all_news(page_size=page_size, lang=lang)
         if not articles:
             return {"summary": "No articles found."}
 
@@ -33,7 +33,10 @@ def aggregate_news(page_size: int = 20) -> dict:
             )
 
         summary = summarize_all_articles(combined_texts)
-        return {"summary": summary}
+        return {
+            "summary": summary,
+            "articles": [{"title": a["title"], "source": a["source"], "url": a["url"]} for a in articles]
+        }
 
     except Exception as e:
         logger.exception("Error in aggregate_news tool")
@@ -44,7 +47,7 @@ def health() -> dict:
     return {
         "name": "mcp-news-aggr",
         "status": "ok",
-        "articles_provider": "Google News",
+        "articles_provider": ["Google News", "Yle News"],
     }
 
 def main() -> None:
@@ -53,4 +56,5 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 
-#python3 -m mcp_news_aggr.mcp_server
+# Run with:
+# python3 -m mcp_news_aggr.mcp_server

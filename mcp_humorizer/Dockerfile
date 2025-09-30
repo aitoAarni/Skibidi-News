@@ -16,7 +16,7 @@ COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
 # Copy the server package
-COPY . /app
+COPY . /app/mcp_humorizer
 
 # Default environment (can be overridden at runtime)
 ENV MODEL_PROVIDER=none \

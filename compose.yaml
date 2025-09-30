@@ -20,7 +20,7 @@ services:
       - mcp_prompt_opt
       - mcp_text_to_audio
       - mcp_humorizer
-      - mcp_new_aggr
+      - mcp_news_aggr
     ports:
     - "${ROUTER_PORT:-6969}:6969"
     networks:
@@ -38,7 +38,7 @@ services:
       - appnet
     restart: unless-stopped
 
-  mcp_new_aggr:
+  mcp_news_aggr:
     build:
       context: ./mcp_news_aggr
       dockerfile: Dockerfile
@@ -53,9 +53,9 @@ services:
     build:
       context: ./mcp_prompt_opt
       dockerfile: Dockerfile
-    env_file: ./mcp_prompt_opt/.env.example
-    environment:
-      <<: *common_env
+    env_file: ./mcp_prompt_opt/.env
+    #environment:
+      #<<: *common_env
     networks:
       - appnet
     restart: unless-stopped

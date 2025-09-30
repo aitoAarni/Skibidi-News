@@ -12,8 +12,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 
 # Install dependencies first for better layer caching
-COPY requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r /app/requirements.txt
+COPY pyproject.toml pyproject.toml
+COPY opt_logs/* ./opt_logs/
+COPY variants.json .
+COPY meta_system.txt .
+COPY judge_prompt.txt .
+
+RUN pip install uv
+RUN uv sync
 
 # Copy the server package
 COPY . /app/mcp_prompt_opt
@@ -24,4 +30,4 @@ ENV MODEL_PROVIDER=none \
     TEMPERATURE=0.7
 
 # Run MCP server over stdio
-ENTRYPOINT ["python", "-m", "mcp_prompt_opt.mcp_server"]
+ENTRYPOINT ["uv", "run", "python", "-m", "mcp_prompt_opt.mcp_server"]

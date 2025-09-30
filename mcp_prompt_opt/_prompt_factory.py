@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 from agents import Agent, OpenAIChatCompletionsModel, Runner
 
-from _client import client
+from mcp_prompt_opt._client import client
 
 MODEL = os.getenv("MODEL_NAME") or "gpt-4o-mini"
 if not MODEL:

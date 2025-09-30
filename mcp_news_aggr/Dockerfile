@@ -24,4 +24,4 @@ ENV MODEL_PROVIDER=none \
     TEMPERATURE=0.7
 
 # Run MCP server over stdio
-ENTRYPOINT ["python", "-m", "news_aggr.mcp_server"]
+ENTRYPOINT ["python", "-m", "mcp_news_aggr.mcp_server"]

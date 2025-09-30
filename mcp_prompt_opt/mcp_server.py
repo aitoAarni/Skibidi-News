@@ -7,8 +7,8 @@ import logging
 
 from mcp.server.fastmcp import FastMCP
 
-from _prompt_factory import ask_prompt_generator, Request
-from _optimizer import PromptPack, InputItem, tournament
+from mcp_prompt_opt._prompt_factory import ask_prompt_generator, Request
+from mcp_prompt_opt._optimizer import PromptPack, InputItem, tournament
 
 logger = logging.getLogger("mcp-prompt-opt")
 logging.basicConfig(level=logging.INFO)
@@ -319,3 +319,7 @@ def optimize(
 
 def main():
     app.run()
+
+
+if __name__ == "__main__":
+    main()

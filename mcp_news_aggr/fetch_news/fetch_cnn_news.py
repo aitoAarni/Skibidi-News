@@ -21,7 +21,7 @@ def parse_date(date_str):
 def fetch_cnn_news(page_size=10):
     googlenews = GoogleNews(lang='en', period='1d')
     #googlenews.set_topic("World News")
-    googlenews.search("site:bbc.com")
+    googlenews.search("site:cnn.com")
     #googlenews.search("world news")
     #googlenews.search("breaking")
 

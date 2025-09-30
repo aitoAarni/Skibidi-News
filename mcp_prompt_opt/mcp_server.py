@@ -65,35 +65,72 @@ def _load_leaderboard(path: str) -> List[Dict[str, Any]]:
 
 
 def _packs_from_json(arr: List[Dict[str, Any]]) -> List[PromptPack]:
-    out = []
-    for p in arr:
-        keep = {
-            k: p.get(k)
-            for k in [
-                "prompt_id",
-                "safety_profile",
-                "style",
-                "angle",
-                "structure",
-                "devices",
-                "word_cap",
-                "receipts_target",
-                "writer_system",
-                "writer_user_template",
-                "few_shots",
-                "decode_prefs",
-                "audit",
-                "eval_checks",
-                "elo",
-                "wins",
-                "losses",
-            ]
-        }
+    def _coerce_num(x, default):
+        try:
+            return float(x) if isinstance(default, float) else int(x)
+        except Exception:
+            return default
 
-        keep["prompt_id"] = keep["prompt_id"] or f"pp-{str(uuid.uuid4())[:8]}"
-        keep["elo"] = keep.get("elo", 1000.0)
-        keep["wins"] = keep.get("wins", 0)
-        keep["losses"] = keep.get("losses", 0)
+    out: List[PromptPack] = []
+    for p in arr:
+        prompt_id = p.get("prompt_id") or f"pp-{str(uuid.uuid4())[:8]}"
+        safety_profile = p.get("safety_profile") or "standard"
+        style = p.get("style") or "satirical"
+        angle = p.get("angle") or "Compare/Contrast"
+        structure = p.get("structure") or "Setup→Turn→Tag"
+        devices = p.get("devices") or ["Irony"]
+        word_cap = int(p.get("word_cap") or 60)
+        receipts_target = int(p.get("receipts_target") or 2)
+        writer_system = p.get("writer_system") or (
+            "You are a concise comedy writer. Preserve supplied facts; do not invent. "
+            "Think internally; do not show reasoning. Output 1–4 sentences, clear setup and punch. "
+            "If facts conflict, switch to (parody)."
+        )
+        writer_user_template = p.get("writer_user_template") or (
+            "PROMPT: {{prompt}}\nSUMMARY: {{summary}}\n"
+            "TASK: Write a short caption (≤60 words) using Setup→Turn→Tag. "
+            "Include up to 2 brief receipts only from SUMMARY. Output plain text only."
+        )
+
+        few_shots = p.get("few_shots") or []
+        decode_prefs = p.get("decode_prefs") or {}
+        decode_prefs.setdefault("temperature", 0.6)
+        decode_prefs.setdefault("top_p", 0.9)
+
+        audit = p.get("audit") or {
+            "mode": "real_news",
+            "numbers_policy": "normalize; no invention",
+            "attribution_policy": "omit unless asked",
+            "failover": "contradictions → (parody)",
+        }
+        eval_checks = p.get("eval_checks") or ["Fidelity","Form","Safety","Device fit","Receipts"]
+
+        elo = p.get("elo")
+        wins = p.get("wins")
+        losses = p.get("losses")
+        elo = _coerce_num(elo, 1000.0) if elo is not None else 1000.0
+        wins = _coerce_num(wins, 0) if wins is not None else 0
+        losses = _coerce_num(losses, 0) if losses is not None else 0
+
+        keep = {
+            "prompt_id": prompt_id,
+            "safety_profile": safety_profile,
+            "style": style,
+            "angle": angle,
+            "structure": structure,
+            "devices": devices,
+            "word_cap": word_cap,
+            "receipts_target": receipts_target,
+            "writer_system": writer_system,
+            "writer_user_template": writer_user_template,
+            "few_shots": few_shots,
+            "decode_prefs": decode_prefs,
+            "audit": audit,
+            "eval_checks": eval_checks,
+            "elo": elo,
+            "wins": wins,
+            "losses": losses,
+        }
         out.append(PromptPack(**keep))
     return out
 
@@ -203,8 +240,8 @@ def best_prompt(
     raw = _load_leaderboard(LEADERBOARD_PATH)
     if not raw:
         raw = _load_variants(LIBRARY_PATH)
-    packs = _packs_from_json(raw)
 
+    packs = _packs_from_json(raw)
     if not packs:
         return {
             "error": "No prompt library found. Generate variants first (variants.json or leaderboard)."
@@ -282,7 +319,3 @@ def optimize(
 
 def main():
     app.run()
-
-
-if __name__ == "__main__":
-    main()

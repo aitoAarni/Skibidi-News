@@ -60,7 +60,7 @@ export PROMPT_LEADERBOARD=opt_logs/leaderboard_final.json
 
 4) Run the MCP server:
 ```bash
-python -m mcp_prompt_opt.server
+uv run python -m mcp_server
 ```
 
 This starts the server over stdio for MCP clients.
@@ -136,10 +136,6 @@ Quick optimize knobs (server defaults used if unset):
 - `FAST_SURVIVORS` (default: `8`)
 - `FAST_MUTANTS_PER_SURVIVOR` (default: `1`)
 
-## Configure in Cline (VSCode) MCP Settings
-
-Add to:
-`~/.vscode-server/data/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json` (path may vary)
 
 ```json
 {
@@ -219,6 +215,7 @@ final = await tournament(
     mutants_per_survivor=1,
     logdir="opt_logs",
 )
+
 best = final[0]
 print(best.prompt_id, best.elo)
 ```

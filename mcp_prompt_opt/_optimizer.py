@@ -74,7 +74,28 @@ def k_factor(elo: float) -> float:
 
 
 def elo_update(a: PromptPack, b: PromptPack, winner_id: str, conf: float = 0.7):
-    Ra, Rb = a.elo, b.elo
+    if not a.elo:
+        Ra = 1000.0
+    else:
+        Ra = a.elo
+
+    if not b.elo:
+        Rb = 1000.0
+    else:
+        Rb = b.elo
+
+    if not b.wins:
+        b.wins = 0
+
+    if not b.losses:
+        b.losses = 0
+
+    if not a.wins:
+        a.wins = 0
+
+    if not a.losses:
+        a.losses = 0
+
     Ea = 1.0 / (1.0 + 10 ** ((Rb - Ra) / 400))
     Eb = 1.0 / (1.0 + 10 ** ((Ra - Rb) / 400))
     Ka, Kb = k_factor(Ra), k_factor(Rb)
@@ -107,6 +128,7 @@ def mutate(pack: PromptPack, p: float = 0.25) -> PromptPack:
         )
     if random.random() < p:
         new.word_cap = random.choice([60, 140, new.word_cap])
+
     if random.random() < p:
         alt = [
             "Setup→Turn→Tag",
@@ -116,9 +138,11 @@ def mutate(pack: PromptPack, p: float = 0.25) -> PromptPack:
         ]
         alt.remove(new.structure) if new.structure in alt else None
         new.structure = random.choice(alt)
+
     new.elo = max(
         900.0, new.elo - 50.0
-    )  # exploration penalty so mutants need to prove themselves
+    )
+
     new.wins = new.losses = 0
     return new
 
@@ -281,9 +305,25 @@ async def tournament(
     return final
 
 
+def _coerce_pack_defaults(p: PromptPack) -> PromptPack:
+    if p.elo is None or not isinstance(p.elo, (int, float)):
+        p.elo = 1000.0
+    if p.wins is None or not isinstance(p.wins, int):
+        p.wins = 0
+    if p.losses is None or not isinstance(p.losses, int):
+        p.losses = 0
+    if p.decode_prefs is None:
+        p.decode_prefs = {"temperature": 0.6, "top_p": 0.9}
+    else:
+        p.decode_prefs.setdefault("temperature", 0.6)
+        p.decode_prefs.setdefault("top_p", 0.9)
+    return p
+
+
+
 async def main():
     packs_raw = json.load(open("variants.json"))
-    packs = [PromptPack(**p) for p in packs_raw]
+    packs = [_coerce_pack_defaults(PromptPack(**p)) for p in packs_raw]
 
     inputs = [
         InputItem(

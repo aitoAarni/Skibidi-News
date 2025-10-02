@@ -22,7 +22,6 @@ def clear_json_file():
 
 def main():
     # Always clear file at start
-    clear_json_file()
 
     articles = []
     try:
@@ -45,6 +44,8 @@ def main():
 
     # Summarize
     full_summary = summarize_all_articles(combined_texts)
+
+    clear_json_file()
 
     # Save JSON
     summarized_news = {

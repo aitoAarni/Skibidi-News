@@ -18,17 +18,17 @@ def parse_date(date_str):
         except:
             return today.strftime("%Y-%m-%d")
 
-def fetch_bbc_news(page_size=10):
+def fetch_bbc_news(page_size):
     googlenews = GoogleNews(lang='en', period='1d')
     #googlenews.set_topic("World News")
     googlenews.search("site:bbc.com")
     #googlenews.search("world news")
     #googlenews.search("breaking")
 
-    """for i in range(1,2):
-        googlenews.get_page(i)"""
+    for i in range(1,3):
+        googlenews.get_page(i)
     
-    googlenews.get_page(1)
+    #googlenews.get_page(1)
 
     results = googlenews.result()
 

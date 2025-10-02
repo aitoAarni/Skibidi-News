@@ -18,7 +18,7 @@ def parse_date(date_str):
         except:
             return today.strftime("%Y-%m-%d")
 
-def fetch_yle_news(page_size=10):
+def fetch_yle_news(page_size):
     googlenews = GoogleNews(lang='en', period='1d')
     #googlenews.set_topic("World News")
     googlenews.search("site:yle.fi")

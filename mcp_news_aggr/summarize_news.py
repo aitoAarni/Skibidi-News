@@ -20,6 +20,7 @@ def summarize_all_articles(articles):
         "- Cover all main events across the articles.\n"
         "- Highlight key players, locations, and timelines.\n"
         "- Explain the broader context and significance.\n"
+        "- Do not skip any articles or information.\n"
         "- Be written in a clear, neutral, professional tone.\n\n"
         f"Articles:\n{combined_text}\n\n"
         "Now write the full summary:"
@@ -30,7 +31,7 @@ def summarize_all_articles(articles):
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.5,
-            max_tokens=1500
+            max_tokens=2000
         )
         summary = response['choices'][0]['message']['content'].strip()
         return summary

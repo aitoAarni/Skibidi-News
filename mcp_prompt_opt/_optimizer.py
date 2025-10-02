@@ -2,7 +2,7 @@ import re
 import os, json, math, random, asyncio, uuid, time
 from dataclasses import dataclass, asdict
 from typing import List, Dict, Any, Tuple, Optional
-from _client import client as _client
+from mcp_prompt_opt._client import client as _client
 
 
 PROMPT_JUDGE_SYSTEM_PROMPT = open("judge_prompt.txt").read()
@@ -303,6 +303,7 @@ async def tournament(
     with open(os.path.join(logdir, "leaderboard_final.json"), "w") as f:
         f.write(json.dumps([asdict(p) for p in final], ensure_ascii=False, indent=2))
     return final
+
 
 
 def _coerce_pack_defaults(p: PromptPack) -> PromptPack:

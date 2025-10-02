@@ -1,6 +1,6 @@
 import json, asyncio
-from _optimizer import InputItem, PromptPack, tournament
-from _prompt_factory import ask_prompt_generator, Request
+from mcp_prompt_opt._optimizer import InputItem, PromptPack, tournament
+from mcp_prompt_opt._prompt_factory import ask_prompt_generator, Request
 
 async def main():
     req = Request(

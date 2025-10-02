@@ -23,7 +23,7 @@ class PollyClient(main.Engine):
         super(PollyClient, self).__init__()
 
     def synthesize(
-        self, text, sslm=True, engine="neural", voice="Matthew", lang_code=None
+        self, text_bits, ssml=True, engine="neural", voice="Matthew", lang_code=None
     ):
         """
         Synthesizes speech or speech marks from text, using the specified voice.
@@ -37,23 +37,25 @@ class PollyClient(main.Engine):
         :return: The audio stream that contains the synthesized speech and a list
                  of visemes that are associated with the speech audio.
         """
-        try:
-            kwargs = {
-                "Engine": engine,
-                "OutputFormat": "mp3",
-                "Text": text,
-                "TextType": "ssml" if sslm else "text",
-                "VoiceId": voice,
-            }
-            if lang_code is not None:
-                kwargs["LanguageCode"] = lang_code
-            response = self.polly_client.synthesize_speech(**kwargs)
-            audio_stream = response["AudioStream"]
 
-            self.synthesis = audio_stream.read()
-            return self
-        except Exception:
-            raise
+        for text in text_bits:
+            try:
+                kwargs = {
+                    "Engine": engine,
+                    "OutputFormat": "mp3",
+                    "Text": text,
+                    "TextType": "ssml" if ssml else "text",
+                    "VoiceId": voice,
+                }
+                if lang_code is not None:
+                    kwargs["LanguageCode"] = lang_code
+                response = self.polly_client.synthesize_speech(**kwargs)
+                audio_stream = response["AudioStream"]
+
+                self.syntheses.append(audio_stream.read())
+            except Exception:
+                raise
+        return self
 
     def voices(self):
         """

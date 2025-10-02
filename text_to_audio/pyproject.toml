@@ -5,8 +5,11 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "audioop-lts>=0.2.2",
     "boto3>=1.40.40",
     "fastmcp>=2.12.4",
+    "ffmpeg>=1.4",
     "google-cloud-texttospeech>=2.31.0",
     "openai>=2.0.1",
+    "pydub>=0.25.1",
 ]

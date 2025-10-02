@@ -1,0 +1,29 @@
+<speak>
+    <amazon:domain name="news">
+        <s>In the realm of sports, the ICC Women's Cricket World Cup 2025 is currently underway.</s>
+        <s>India faces Sri Lanka in a highly anticipated match.</s>
+        <break time='0.2s'/>
+        <s>Live scores, commentary, and video highlights are being provided by major news outlets.</s>
+        <s>This illustrates the growing interest in women's cricket on a global scale.</s>
+    </amazon:domain>
+</speak>
+
+<speak>
+    <amazon:domain name="news">
+        <s>In a shocking development, South Africa's ambassador to France was found dead at the Hyatt Regency hotel in Paris on Tuesday.</s>
+        <break time='0.2s'/>
+        <s>This incident follows a report of the ambassador being missing by his wife.</s>
+        <s>It raises significant concerns regarding the safety and security of diplomatic personnel abroad.</s>
+        <s>The circumstances surrounding his death are under investigation.</s>
+        <s>This event highlights the vulnerabilities faced by diplomats in foreign assignments.</s>
+    </amazon:domain>
+</speak>
+
+<speak>
+    <amazon:domain name="news">
+        <s>This digest encapsulates a range of significant events from sports to international diplomacy.</s>
+        <s>Each story reflects broader themes of security, cultural expression, and the interconnectedness of global issues.</s>
+        <break time='0.1s'/>
+        <s>It emphasizes the importance of staying informed in a rapidly changing world.</s>
+    </amazon:domain>
+</speak>

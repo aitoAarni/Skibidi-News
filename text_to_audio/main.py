@@ -11,7 +11,16 @@ mcp = FastMCP("Text to Audio MCP Service")
 def synthesize(text: str) -> Audio:
     """Synthesize text to speech as an MP3 audio file."""
     # Hard limit of 10k chars for Polly
-    audio_bytes = polly.PollyClient().synthesize(text[:10000]).get_bytes()
+    # Make separate synthesis tasks for every 2 newlines in a row
+    # e.g.
+    # <speak>
+    #   <s>What up?</s>
+    # </speak>
+    #
+    # <speak> ...
+    parts = text[:10000].split("\n\n")
+
+    audio_bytes = polly.PollyClient().synthesize(text_bits=parts).get_bytes()
     return Audio(data=audio_bytes, media_type="audio/mpeg")
 
 

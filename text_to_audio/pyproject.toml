@@ -8,4 +8,5 @@ dependencies = [
     "boto3>=1.40.40",
     "fastmcp>=2.12.4",
     "google-cloud-texttospeech>=2.31.0",
+    "openai>=2.0.1",
 ]

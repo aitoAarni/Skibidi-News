@@ -22,7 +22,9 @@ class PollyClient(main.Engine):
         self.polly_client = boto3.client("polly", **aws_config)
         super(PollyClient, self).__init__()
 
-    def synthesize(self, text, engine="neural", voice="Matthew", lang_code=None):
+    def synthesize(
+        self, text, sslm=True, engine="neural", voice="Matthew", lang_code=None
+    ):
         """
         Synthesizes speech or speech marks from text, using the specified voice.
 
@@ -40,6 +42,7 @@ class PollyClient(main.Engine):
                 "Engine": engine,
                 "OutputFormat": "mp3",
                 "Text": text,
+                "TextType": "ssml" if sslm else "text",
                 "VoiceId": voice,
             }
             if lang_code is not None:

@@ -39,20 +39,17 @@ async def test_mcp_server(url: str):
                     f"  {health_result.content[0].text if health_result.content else 'No content'}"
                 )
 
-                # Test the comedicize tool
                 print("\n😄 Testing 'comedicize' tool...")
                 test_text = "The economy shrank by 2% last quarter."
                 comedic_result = await session.call_tool(
                     "comedicize", {"id": "test-123", "summarized_text": test_text}
                 )
-                print(f"✅ Comedicize result:")
                 if comedic_result.content:
                     print(f"  Original: {test_text}")
                     print(f"  Comedic: {comedic_result.content[0].text}")
                 else:
                     print("  No content returned")
 
-                print("\n🎉 All tests passed!")
 
     except Exception as e:
         print(f"❌ Error: {type(e).__name__}: {e}")

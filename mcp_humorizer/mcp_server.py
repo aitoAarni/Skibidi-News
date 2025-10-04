@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import sys
 import logging
 
@@ -59,8 +60,13 @@ def health() -> dict:
 
 
 def main() -> None:
-    # Runs an MCP server over stdio
-    app.run()
+    # Runs an MCP server over http
+    host = os.getenv("MCP_HOST", "0.0.0.0")
+    port = int(os.getenv("MCP_PORT", 8000))
+    logger.info(f"Starting MCP Humorizer on {host}:{port}")
+    app.settings.host = host
+    app.settings.port = port
+    app.run(transport="streamable-http")
 
 
 if __name__ == "__main__":

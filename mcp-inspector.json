@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "humorizer": {
+      "command": "python",
+      "args": ["-m", "mcp_humorizer.mcp_server"]
+    }
+  }
+}

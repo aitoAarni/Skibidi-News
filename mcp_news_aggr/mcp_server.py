@@ -1,74 +1,72 @@
-from __future__ import annotations
+# mcp_news_aggr/mcp_server.py
 
 import os
-import sys
 import json
 import logging
+from fastmcp import FastMCP
+#from fastmcp.utilities.types import Text
 
-try:
-    # FastMCP is the ergonomic Python helper for building MCP servers
-    from mcp.server.fastmcp import FastMCP  # type: ignore
-except Exception as e:  # pragma: no cover
-    print("ERROR: Missing or incompatible 'mcp' Python package. Please install with:")
-    print("  pip install mcp")
-    print(f"Details: {e}")
-    sys.exit(1)
+from .fetch_news.fetch_all_news import fetch_all_news
+from .summarize_news import summarize_all_articles
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
-# Initialize the MCP application
-app = FastMCP("mcp-news-aggregator")
+JSON_FILE = os.path.join(os.path.dirname(__file__), "summarized_news.json")
 
+app = FastMCP("MCP News Aggregator Service")
 
-@app.tool()
+def clear_json_file():
+    with open(JSON_FILE, "w", encoding="utf-8") as f:
+        json.dump({}, f)
+
+@app.tool
 def aggregate_news() -> dict:
+    """Fetch, summarize, and store news."""
+    articles = fetch_all_news(page_size=10, lang="en")
+    if not articles:
+        return {"error": "No articles fetched."}
+
+    combined_texts = [
+        f"Article {i+1}:\nTitle: {a['title']}\nSummary: {a['summary']}\nSource: {a['source']}\n"
+        for i, a in enumerate(articles)
+    ]
+
+    summary_text = summarize_all_articles(combined_texts)
+
+    clear_json_file()
+    with open(JSON_FILE, "w", encoding="utf-8") as f:
+        json.dump({"summary": summary_text}, f, ensure_ascii=False, indent=2)
+
+    return {"summary": summary_text}
+
+@app.tool
+def get_summary() -> dict:
     """
-    Aggregate and summarize global news articles.
-
-    Reads from summarized_news.json and returns the summary text.
-
-    Output Example:
-    {
-        "summary": "In recent news, significant developments across various global issues..."
-    }
+    Returns the latest summarized news from JSON_FILE.
     """
-    json_path = os.path.join(os.path.dirname(__file__), "mcp_news_aggr/summarized_news.json")
-
-    if not os.path.exists(json_path):
-        logger.error(f"File not found: {json_path}")
-        return {"error": "summarized_news.json not found"}
+    if not os.path.exists(JSON_FILE):
+        return {"summary": "No summarized news available."}
 
     try:
-        with open(json_path, "r", encoding="utf-8") as f:
+        with open(JSON_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
-        summary = data.get("summary", "").strip()
-        return {"summary": summary}
+        return {"summary": data.get("summary", "")}
     except Exception as e:
-        logger.exception("Failed to read summarized_news.json")
-        return {"error": str(e)}
+        logger.exception("Failed to read summarized news JSON")
+        return {"summary": f"Error reading news: {e}"}
 
-
-@app.tool()
+@app.tool
 def health() -> dict:
-    """
-    Simple health check tool to verify server connectivity.
-    """
-    return {
-        "name": "mcp-news-aggregator",
-        "status": "ok"
-    }
+    return {"name": "mcp-news-aggregator", "status": "ok"}
 
-
-def main() -> None:
-    # Runs an MCP server over HTTP
+def main():
     host = os.getenv("MCP_HOST", "0.0.0.0")
     port = int(os.getenv("MCP_PORT", 8000))
     logger.info(f"Starting MCP News Aggregator on {host}:{port}")
     app.settings.host = host
     app.settings.port = port
     app.run(transport="streamable-http")
-
 
 if __name__ == "__main__":
     main()

@@ -1,60 +1,74 @@
 from __future__ import annotations
+
+import os
 import sys
+import json
 import logging
 
 try:
-    from mcp.server.fastmcp import FastMCP
-except Exception as e:
-    print("ERROR: Missing or incompatible 'mcp' Python package. Install with:")
-    print("  pip install -r requirements.txt")
+    # FastMCP is the ergonomic Python helper for building MCP servers
+    from mcp.server.fastmcp import FastMCP  # type: ignore
+except Exception as e:  # pragma: no cover
+    print("ERROR: Missing or incompatible 'mcp' Python package. Please install with:")
+    print("  pip install mcp")
     print(f"Details: {e}")
     sys.exit(1)
-
-from mcp_news_aggr.fetch_news.fetch_all_news import fetch_all_news
-from mcp_news_aggr.summarize_news import summarize_all_articles
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
-app = FastMCP("mcp-news-aggr")
+# Initialize the MCP application
+app = FastMCP("mcp-news-aggregator")
+
 
 @app.tool()
-def aggregate_news(page_size: int = 20, lang: str = "en") -> dict:
+def aggregate_news() -> dict:
+    """
+    Aggregate and summarize global news articles.
+
+    Reads from summarized_news.json and returns the summary text.
+
+    Output Example:
+    {
+        "summary": "In recent news, significant developments across various global issues..."
+    }
+    """
+    json_path = os.path.join(os.path.dirname(__file__), "mcp_news_aggr/summarized_news.json")
+
+    if not os.path.exists(json_path):
+        logger.error(f"File not found: {json_path}")
+        return {"error": "summarized_news.json not found"}
+
     try:
-        articles = fetch_all_news(page_size=page_size, lang=lang)
-        if not articles:
-            return {"summary": "No articles found."}
-
-        combined_texts = []
-        for idx, article in enumerate(articles, start=1):
-            combined_texts.append(
-                f"Article {idx}:\nTitle: {article['title']}\n"
-                f"Summary: {article['summary']}\nSource: {article['source']}"
-            )
-
-        summary = summarize_all_articles(combined_texts)
-        return {
-            "summary": summary,
-            "articles": [{"title": a["title"], "source": a["source"], "url": a["url"]} for a in articles]
-        }
-
+        with open(json_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        summary = data.get("summary", "").strip()
+        return {"summary": summary}
     except Exception as e:
-        logger.exception("Error in aggregate_news tool")
-        return {"summary": f"Error fetching or summarizing news: {e}"}
+        logger.exception("Failed to read summarized_news.json")
+        return {"error": str(e)}
+
 
 @app.tool()
 def health() -> dict:
+    """
+    Simple health check tool to verify server connectivity.
+    """
     return {
-        "name": "mcp-news-aggr",
-        "status": "ok",
-        "articles_provider": ["Google News", "Yle News"],
+        "name": "mcp-news-aggregator",
+        "status": "ok"
     }
 
+
 def main() -> None:
-    app.run()
+    # Runs an MCP server over HTTP
+    host = os.getenv("MCP_HOST", "0.0.0.0")
+    port = int(os.getenv("MCP_PORT", 8000))
+    logger.info(f"Starting MCP News Aggregator on {host}:{port}")
+    app.settings.host = host
+    app.settings.port = port
+    app.run(transport="streamable-http")
+
 
 if __name__ == "__main__":
     main()
-
-# Run with:
-# python3 -m mcp_news_aggr.mcp_server

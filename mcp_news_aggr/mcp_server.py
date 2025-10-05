@@ -3,7 +3,7 @@
 import os
 import json
 import logging
-from fastmcp import FastMCP
+from mcp.server.fastmcp import FastMCP
 #from fastmcp.utilities.types import Text
 
 from .fetch_news.fetch_all_news import fetch_all_news
@@ -20,7 +20,7 @@ def clear_json_file():
     with open(JSON_FILE, "w", encoding="utf-8") as f:
         json.dump({}, f)
 
-@app.tool
+@app.tool()
 def aggregate_news() -> dict:
     """Fetch, summarize, and store news."""
     articles = fetch_all_news(page_size=10, lang="en")
@@ -40,7 +40,7 @@ def aggregate_news() -> dict:
 
     return {"summary": summary_text}
 
-@app.tool
+@app.tool()
 def get_summary() -> dict:
     """
     Returns the latest summarized news from JSON_FILE.
@@ -56,7 +56,7 @@ def get_summary() -> dict:
         logger.exception("Failed to read summarized news JSON")
         return {"summary": f"Error reading news: {e}"}
 
-@app.tool
+@app.tool()
 def health() -> dict:
     return {"name": "mcp-news-aggregator", "status": "ok"}
 

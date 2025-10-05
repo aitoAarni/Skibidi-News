@@ -3,11 +3,15 @@ from fastmcp import FastMCP
 from fastmcp.utilities.types import Audio
 from engines import polly
 from llm.openai import transcript
+import os
+import logging
 
-mcp = FastMCP("Text to Audio MCP Service")
+logger = logging.getLogger(__name__)
+
+app = FastMCP("Text to Audio MCP Service")
 
 
-@mcp.tool
+@app.tool
 def synthesize(text: str) -> Audio:
     """Synthesize text to speech as an MP3 audio file."""
     # Hard limit of 10k chars for Polly
@@ -24,11 +28,16 @@ def synthesize(text: str) -> Audio:
     return Audio(data=audio_bytes, media_type="audio/mpeg")
 
 
-@mcp.tool
+@app.tool
 def generate_transcript(summarized_news: str) -> str:
     """Generate a transcript from summarized news for better Audio synthesis."""
     return transcript(summarized_news)
 
 
 if __name__ == "__main__":
-    mcp.run()
+    host = os.getenv("MCP_HOST", "0.0.0.0")
+    port = int(os.getenv("MCP_PORT", 8000))
+    logger.info(f"Starting MCP Humorizer on {host}:{port}")
+    app.settings.host = host
+    app.settings.port = port
+    app.run(transport="streamable-http")

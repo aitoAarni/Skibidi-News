@@ -48,6 +48,8 @@ services:
             <<: *common_env
         networks:
             - appnet
+        ports:
+            - "8002:8000"
         restart: unless-stopped
 
     mcp_prompt_opt:

@@ -1,16 +1,42 @@
-# React + Vite
+# Skibidi News Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Polished control center for the MCP microservices: fetch news, make it funny, and synthesize audio. Built with React + Vite + Tailwind + Framer Motion.
 
-Currently, two official plugins are available:
+## Quick start
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Install dependencies and start the dev server:
 
-## React Compiler
+```bash
+npm install
+npm run dev
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+2. Configure API bases (optional; defaults assume services on localhost)
 
-## Expanding the ESLint configuration
+### Env variables
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Create `.env` in this folder (or export via shell) to override defaults:
+
+```
+VITE_NEWS_API_BASE=http://localhost:8000/mcp-news-aggr
+VITE_HUMOR_API_BASE=http://localhost:8001/mcp-humorizer
+VITE_AUDIO_API_BASE=http://localhost:8002/text-to-audio
+VITE_PROMPT_API_BASE=http://localhost:8003/mcp-prompt-opt
+VITE_ROUTER_API_BASE=http://localhost:8010
+```
+
+### Scripts
+
+- dev: start vite dev server
+- build: production build
+- preview: preview production build
+
+### Styling
+
+- Tailwind layers are imported in `src/index.css`; global tweaks can live below the imports.
+- Extend the design system via `tailwind.config.js` (`container` defaults are already centralized).
+
+### UX flow
+
+- Panels share state from the dashboard: News → Humor → Audio.
+- Prompt Lab lets you query the prompt optimizer’s best pack for a given (prompt, summary).

@@ -1,8 +1,9 @@
 import axios from "axios";
+import { endpoints } from "./config";
 
-export const synthesizeAudio = async (text) => {
+export const synthesizeAudio = async (text: string): Promise<string> => {
   const res = await axios.post(
-    "http://localhost:8002/text-to-audio/synthesize",
+    endpoints.synthesize,
     { text },
     {
       responseType: "arraybuffer",

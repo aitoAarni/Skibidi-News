@@ -1,8 +1,7 @@
 import axios from "axios";
+import { endpoints } from "./config";
 
-export const fetchNewsSummary = async () => {
-  const res = await axios.get(
-    "http://localhost:8000/mcp-news-aggr/aggregate_news"
-  );
+export const fetchNewsSummary = async (): Promise<string> => {
+  const res = await axios.get(endpoints.aggregateNews);
   return res.data.summary;
 };

@@ -2,6 +2,7 @@
 import asyncio
 from mcp import ClientSession
 from mcp.client.streamable_http import streamablehttp_client
+from router_agent.utils import mcp_http_session
 
 
 async def test_humorizer_http(text: str) -> str:
@@ -23,14 +24,21 @@ async def test_humorizer_http(text: str) -> str:
             return result.content[0].text if result.content else text
 
 
-async def main():
-    await asyncio.sleep(5)
+@mcp_http_session("http://0.0.0.0:8000/mcp")
+async def test_refactor(session):
+    session.initialize()
+    tools = await session.list_tools()
+    print(f"tools: {tools}")
 
-    text = "The economy shrank by 2% last quarter."
-    comedic_text = await test_humorizer_http(text)
-    print("works")
-    print(f"Original: {text}")
-    print(f"Comedic: {comedic_text}")
+
+async def main():
+    # await asyncio.sleep(5)
+    await test_refactor()
+    # text = "The economy shrank by 2% last quarter."
+    # comedic_text = await test_humorizer_http(text)
+    # print("works")
+    # print(f"Original: {text}")
+    # print(f"Comedic: {comedic_text}")
 
 
 if __name__ == "__main__":

@@ -26,7 +26,7 @@ async def test_humorizer_http(text: str) -> str:
 
 @mcp_http_session("http://0.0.0.0:8000/mcp")
 async def test_refactor(session):
-    session.initialize()
+    await session.initialize()
     tools = await session.list_tools()
     print(f"tools: {tools}")
 

@@ -65,9 +65,9 @@ services:
 
     mcp_text_to_audio:
         build:
-            context: ./text_to_audio
+            context: ./mcp_text_to_audio
             dockerfile: Dockerfile
-        env_file: ./text_to_audio/.env.example
+        env_file: ./mcp_text_to_audio/.env.example
         environment:
             <<: *common_env
         networks:

@@ -2,7 +2,7 @@
 from fastmcp import FastMCP
 from fastmcp.utilities.types import Audio
 from engines import polly
-from text_to_audio.llm.openai import transcript
+from llm.openai import transcript
 
 mcp = FastMCP("Text to Audio MCP Service")
 

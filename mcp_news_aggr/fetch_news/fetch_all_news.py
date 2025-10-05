@@ -9,10 +9,10 @@ def fetch_all_news(page_size=10, lang="en"):
     """
     Fetch news from both Google News and Yle, combine them into one list.
     """
-    google_articles = fetch_google_news(page_size=10)
+    google_articles = fetch_google_news(page_size=15)
     yle_articles = fetch_yle_news(page_size=5)
-    bbc_articles = fetch_bbc_news(page_size=10)
-    cnn_articles = fetch_cnn_news(page_size=10)
+    bbc_articles = fetch_bbc_news(page_size=15)
+    cnn_articles = fetch_cnn_news(page_size=15)
     bloomberg_articles = fetch_bloomberg_news(page_size=5)
     forbes_articles = fetch_forbes_news(page_size=5)
     

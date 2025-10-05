@@ -17,11 +17,12 @@ def summarize_all_articles(articles):
     prompt = (
         "Act as a professional journalist. Write a detailed news digest summary. "
         "The summary should:\n"
-        "- Cover all main events across the articles.\n"
+        "- Cover all main events across all the articles.\n"
         "- Highlight key players, locations, and timelines.\n"
         "- Explain the broader context and significance.\n"
         "- Do not skip any articles or information.\n"
         "- Be written in a clear, neutral, professional tone.\n\n"
+        "- Write an coherent text instead of bullet points.\n"
         f"Articles:\n{combined_text}\n\n"
         "Now write the full summary:"
     )

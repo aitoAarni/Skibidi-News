@@ -25,7 +25,7 @@ def fetch_google_news(page_size):
     #googlenews.search("world news")
     #googlenews.search("breaking")
 
-    for i in range(1,3):
+    for i in range(1,4):
         googlenews.get_page(i)
     
     #googlenews.get_page(1)

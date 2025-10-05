@@ -24,16 +24,33 @@ async def test_humorizer_http(text: str) -> str:
             return result.content[0].text if result.content else text
 
 
-@mcp_http_session("http://0.0.0.0:8000/mcp")
-async def test_refactor(session):
+@mcp_http_session("http://mcp_humorizer:8000/mcp")
+async def test_humorizer(session):
+    await session.initialize()
+    tools = await session.list_tools()
+    print(f"tools: {tools}")
+
+
+@mcp_http_session("http://mcp_news_aggr:8000/mcp")
+async def test_news_aggr(session):
+    await session.initialize()
+    tools = await session.list_tools()
+    print(f"tools: {tools}")
+
+
+@mcp_http_session("http://mcp_text_to_audio:8000/mcp")
+async def test_tts(session):
     await session.initialize()
     tools = await session.list_tools()
     print(f"tools: {tools}")
 
 
 async def main():
-    # await asyncio.sleep(5)
-    await test_refactor()
+    await asyncio.sleep(5)
+    
+    await test_humorizer()
+    await test_news_aggr()
+    # await test_tts()  #not working currently
     # text = "The economy shrank by 2% last quarter."
     # comedic_text = await test_humorizer_http(text)
     # print("works")

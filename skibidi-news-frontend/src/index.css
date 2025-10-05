@@ -1,0 +1,27 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+body {
+  background-color: #f8fafc; /* slate-50 */
+  color: #0f172a; /* slate-900 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.dark body {
+  background-color: #020617; /* slate-950 */
+  color: #f1f5f9; /* slate-100 */
+}
+
+::selection {
+  background-color: #c7d2fe; /* indigo-200 */
+  color: #0f172a; /* slate-900 */
+}
+
+/* smooth scroll for panels */
+html,
+body,
+#root {
+  height: 100%;
+}

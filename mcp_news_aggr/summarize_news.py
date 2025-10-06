@@ -1,9 +1,11 @@
-import openai
+#import openai
+from openai import OpenAI
 #from config import OPENAI_API_KEY
 from mcp_news_aggr.config import OPENAI_API_KEY
 
 # Set OpenAI key
-openai.api_key = OPENAI_API_KEY
+client = OpenAI(api_key=OPENAI_API_KEY)
+#openai.api_key = OPENAI_API_KEY
 
 def summarize_all_articles(articles):
     """
@@ -27,7 +29,18 @@ def summarize_all_articles(articles):
         "Now write the full summary:"
     )
 
-    try:
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.5,
+        max_completion_tokens=2000  # Updated parameter name in v2+
+    )
+
+    summary = response.choices[0].message.content.strip()
+    return summary
+
+
+    """ try:
         response = openai.ChatCompletion.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
@@ -42,4 +55,4 @@ def summarize_all_articles(articles):
 
     except Exception as e:
         print("Error summarizing articles:", e)
-        return "Error generating summary."
+        return "Error generating summary."""

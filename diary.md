@@ -1,3 +1,12 @@
+## 6.10
+Dependencies versions fixes for news_aggr, getting it working with router agent
+
+Create a codebase for frontend using React and TailwindCSS
+Update documents
+
+tts:
+fix up docker and mcp stuff
+add audio splicing and combining (because most tts models have a character limit)
 ## 29.9.
 
 Dear diary...

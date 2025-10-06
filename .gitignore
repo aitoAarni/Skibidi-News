@@ -8,5 +8,5 @@ logs/
 var/
 __pycache__
 .env
-*.env
 compose.local.yaml
+**/.env

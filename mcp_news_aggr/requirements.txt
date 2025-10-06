@@ -1,4 +1,4 @@
 mcp>=1.0.0
-openai
+openai>=2.1.0
 python-dotenv
 GoogleNews

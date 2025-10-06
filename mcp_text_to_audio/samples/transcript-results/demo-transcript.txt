@@ -1,0 +1,50 @@
+<speak>
+    <amazon:domain name="news">
+        <s>Sports fans are buzzing for the 2026 FIFA World Cup,</s>
+        <s>where organizing board member Andy Smith and freestyler Lee Benting are discussing the match ball.</s>
+        <s>Because nothing says &quot;high stakes&quot; like a ball that’s been kicked more than your average couch potato!</s>
+        <break time='0.2s'/>
+    </amazon:domain>
+</speak>
+
+<speak>
+    <amazon:domain name="news">
+        <s>Over in France, Prime Minister Sébastien Lecornu just resigned after 27 days—talk about a short-lived term!</s>
+        <s>Maybe he thought he was just auditioning for a reality show titled “Survivor: Political Edition.”</s>
+        <break time='0.2s'/>
+        <s>In Ukraine, missile attacks are making headlines while humanitarian crises are making their way to the top of everyone’s Netflix watchlist.</s>
+        <s>If only we could send the bad guys on an endless loop of cooking shows—nothing says “peace talks” like watching someone flop a soufflé!</s>
+    </amazon:domain>
+</speak>
+
+<speak>
+    <amazon:domain name="news">
+        <s>Meanwhile, tropical storm Halong is rolling toward Japan,</s>
+        <s>and the Japan Meteorological Agency is like, “It’s not us, it’s you!” as they brace for the chaos.</s>
+        <break time='0.2s'/>
+        <s>But on the bright side, Japan’s Nikkei index hit a record high!</s>
+        <s>Always nice to see the economy soar just as the weather takes a nosedive.</s>
+    </amazon:domain>
+</speak>
+
+<speak>
+    <amazon:domain name="news">
+        <s>In Indonesia, a building collapse at an Islamic boarding school claimed 49 lives,</s>
+        <s>which is a tragic reminder that infrastructure safety is like a bad haircut—it’s always better to get it right the first time!</s>
+        <break time='0.2s'/>
+        <s>And who needs a royal entourage of 15 wives and 100 aides?</s>
+        <s>An African king just set the bar for &quot;team-building activities&quot; to an all-new level.</s>
+        <s>Meanwhile, Prince Harry’s stalker made headlines,</s>
+        <s>proving that some people really take the phrase “loving from afar” way too literally!</s>
+    </amazon:domain>
+</speak>
+
+<speak>
+    <amazon:domain name="news">
+        <s>In the U.S., the Supreme Court is gearing up to decide on banning conversion therapy for LGBTQ youth.</s>
+        <s>Fingers crossed they find a way to turn all that negativity into a giant, glittery “Love Wins” parade instead.</s>
+        <break time='0.2s'/>
+        <s>Finally, with a blizzard trapping trekkers on Everest, rescue operations are in full swing.</s>
+        <s>I guess the mountain decided to get in on the drama!</s>
+    </amazon:domain>
+</speak>

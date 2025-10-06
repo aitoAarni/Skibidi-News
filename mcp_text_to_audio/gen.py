@@ -3,15 +3,15 @@ from engines import polly
 
 
 def main():
-    with open("samples/news-inputs/sample-news-short.txt", "r") as input_file:
-        text = input_file.read()
+    # with open("samples/news-inputs/demo-sample.txt", "r") as input_file:
+    #    text = input_file.read()
 
-    result = openai.transcript(text)
-    with open("gen-result-short.txt", "w") as output_file:
-        output_file.write(result)
+    # result = openai.transcript(text)
+    with open("demo-transcript.txt", "r") as input_file:
+        result = input_file.read()
 
     parts = result[:10000].split("\n\n")
-    polly.PollyClient().synthesize(text_bits=parts).save_as("gen-result-short.mp3")
+    polly.PollyClient().synthesize(text_bits=parts).save_as("demo.mp3")
     print("Done")
 
 

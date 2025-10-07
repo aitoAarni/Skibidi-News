@@ -25,7 +25,7 @@ def synthesize(text: str) -> Audio:
     parts = text[:10000].split("\n\n")
 
     audio_bytes = polly.PollyClient().synthesize(text_bits=parts).get_bytes()
-    return Audio(data=audio_bytes, media_type="audio/mpeg")
+    return Audio(data=audio_bytes)
 
 
 @app.tool

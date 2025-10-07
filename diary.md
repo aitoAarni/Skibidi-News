@@ -1,3 +1,27 @@
+## 6.10
+🎤 “So, this week in skibidi chaos…”
+
+We started fixing dependencies for news_aggr — because apparently, “latest version” means “hope you like debugging for sport.”
+Then we tried connecting it to the router agent, which went about as smoothly as teaching a cat to do calculus.
+
+Meanwhile, the text to speech was out here like, “Hey, remember Docker?” — yeah, we fixed that too. It only took seventeen rebuilds, one existential crisis, and a prayer to the DevOps gods.
+
+Then came audio splicing — because every text to speech model ever has the reading endurance of a toddler. “Oh, you want me to read more than 500 characters? That’s cute.”
+So now we’re basically audio surgeons — slicing and stitching words together like,
+🎧 “Next up — your daily dose of AI mumble rap!”
+
+After that, we built a frontend with React and Tailwind, which means we spent half the day arguing about spacing and pretending we know how Tailwind’s flex classes actually work.
+Centering a div? Still a mythical art form.
+
+And then we updated the docs, which is code for “future us will never understand this, but let’s pretend we’re being responsible.”
+
+Finally, the grand finale: “Integrate router agent with all servers.”
+Translation? “Let’s make every system talk to every other system until they all start asking, ‘Wait… who am I?’”
+
+So yeah — team productivity: chaotic good.
+System stability: hanging by a thread.
+
+ 
 ## 29.9.
 
 Dear diary...
@@ -40,7 +64,7 @@ ElevenLabs is best quality, but also expensive, not suitable for this Going with
 Polly, because of good quality, ok price, and a familiar sound heard in other AI
 contents
 
-Built a Humor Engine MCP server that transforms summarized news text into
+Built a Humor Engine MCP server that transforms summarized news text into
 comedic short-form content.
 
 Exposed two MCP tools:

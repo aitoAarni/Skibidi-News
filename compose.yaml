@@ -21,6 +21,8 @@ services:
             - mcp_text_to_audio
             - mcp_humorizer
             - mcp_news_aggr
+        volumes:
+            - ./synthesized_speech:/app/synthesized_speech
         ports:
             - "${ROUTER_PORT:-6969}:6969"
         networks:
@@ -67,7 +69,7 @@ services:
         build:
             context: ./mcp_text_to_audio
             dockerfile: Dockerfile
-        env_file: ./mcp_text_to_audio/.env.example
+        env_file: ./mcp_text_to_audio/.env
         environment:
             <<: *common_env
         networks:

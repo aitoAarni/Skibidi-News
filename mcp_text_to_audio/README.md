@@ -76,7 +76,7 @@ uv run --env-file .env main.py
 ### Running a test synthesis
 
 ```
-uv run --env-file .env synth.py
+uv run --env-file .env gen.py
 ```
 
 ## Docker

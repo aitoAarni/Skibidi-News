@@ -22,13 +22,11 @@ class PollyClient(main.Engine):
         self.polly_client = boto3.client("polly", **aws_config)
         super(PollyClient, self).__init__()
 
-    def synthesize(
-        self, text_bits, ssml=True, engine="neural", voice="Matthew", lang_code=None
-    ):
+    def synthesize(self, text_bits, engine="neural", voice="Matthew", lang_code=None):
         """
         Synthesizes speech or speech marks from text, using the specified voice.
 
-        :param text: The text to synthesize.
+        :param text_bits: The text to synthesize as an array of strings.
         :param engine: The kind of engine used: 'standard'|'neural'|'long-form'|'generative'.
         :param voice: The ID of the voice to use.
         :param audio_format: The audio format to return for synthesized speech: 'json'|'mp3'|'ogg_opus'|'ogg_vorbis'|'pcm'.
@@ -44,7 +42,7 @@ class PollyClient(main.Engine):
                     "Engine": engine,
                     "OutputFormat": "mp3",
                     "Text": text,
-                    "TextType": "ssml" if ssml else "text",
+                    "TextType": "text",
                     "VoiceId": voice,
                 }
                 if lang_code is not None:

@@ -41,3 +41,9 @@ All services speak MCP over stdio/HTTP and return typed JSON payloads.
 ## 4) Planning and notes
 
 [whiteboard](https://excalidraw.com/#room=d46c315fa785495794e0,P0k_98fYWU7qJUFfmorItA)
+
+## 5) Running the app
+
+* first add all the .env files based on the .env.example files to each mcp-server direcotry
+* from the root dir run docker compose up --build
+* wait for results to appear in the synthesized_speech directory

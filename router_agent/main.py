@@ -52,7 +52,7 @@ def save_audio(audio_data):
         with open(f"./synthesized_speech/audio_from_{date_and_time}.wav", "wb") as file:
             file.write(audio_bytes)
     except:
-        with open(f"./synthesized_speech/new_audio2.wav", "wb") as file:
+        with open(f"./synthesized_speech/new_audio3.wav", "wb") as file:
             file.write(audio_bytes)
 
 

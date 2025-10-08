@@ -17,11 +17,9 @@ def synthesize(text: str) -> Audio:
     # Hard limit of 10k chars for Polly
     # Make separate synthesis tasks for every 2 newlines in a row
     # e.g.
-    # <speak>
-    #   <s>What up?</s>
-    # </speak>
+    # bla bla bla bla
     #
-    # <speak> ...
+    # more bla bla bla
     parts = text[:10000].split("\n\n")
 
     audio_bytes = polly.PollyClient().synthesize(text_bits=parts).get_bytes()

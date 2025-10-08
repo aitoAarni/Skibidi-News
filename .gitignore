@@ -10,3 +10,4 @@ __pycache__
 .env
 compose.local.yaml
 **/.env
+synthesized_speech/*

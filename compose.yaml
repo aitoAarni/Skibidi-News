@@ -32,7 +32,7 @@ services:
         build:
             context: ./mcp_humorizer
             dockerfile: Dockerfile
-        env_file: ./mcp_humorizer/.env.example
+        env_file: ./mcp_humorizer/.env
         environment:
             <<: *common_env
         networks:
@@ -45,7 +45,7 @@ services:
         build:
             context: ./mcp_news_aggr
             dockerfile: Dockerfile
-        env_file: ./mcp_news_aggr/.env.example
+        env_file: ./mcp_news_aggr/.env
         environment:
             <<: *common_env
         networks:

@@ -9,6 +9,7 @@ from datetime import datetime
 
 @mcp_http_session("http://mcp_humorizer:8000/mcp")
 async def test_humorizer(session, text):
+    print("test humorizer")
 
     print("Starting summary")
     await session.initialize()
@@ -17,17 +18,20 @@ async def test_humorizer(session, text):
     )
 
     text_result = result.content[0].text
+    print(text_result)
     parsed = json.loads(text_result)
     return parsed["comedic_text"]
 
 
 @mcp_http_session("http://mcp_text_to_audio:8000/mcp")
 async def test_tts(session, text):
+    print("test tts")
     await session.initialize()
     transcript_response = await session.call_tool(
         "generate_transcript", {"summarized_news": text}
     )
     transcript_text = transcript_response.content[0].text
+    print(transcript_text)
     audio_response = await session.call_tool("synthesize", {"text": transcript_text})
 
     audio_data = audio_response.content[0].data
@@ -36,10 +40,11 @@ async def test_tts(session, text):
 
 @mcp_http_session("http://mcp_news_aggr:8000/mcp")
 async def test_news_aggr(session):
-
+    print("test test_news_aggr")
     await session.initialize()
     aggregated_news = await session.call_tool("aggregate_news")
     text_result = aggregated_news.content[0].text
+    print(text_result)
     parsed = json.loads(text_result)
     return parsed["summary"]
 
@@ -58,6 +63,7 @@ def save_audio(audio_data):
 
 async def main():
     await asyncio.sleep(10)
+
     summary = await test_news_aggr()
     humorized_text = await test_humorizer(summary)
     audio_data = await test_tts(humorized_text)

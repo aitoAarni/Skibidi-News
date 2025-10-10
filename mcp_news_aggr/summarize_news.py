@@ -1,11 +1,8 @@
-#import openai
 from openai import OpenAI
-#from config import OPENAI_API_KEY
 from mcp_news_aggr.config import OPENAI_API_KEY
 
 # Set OpenAI key
 client = OpenAI(api_key=OPENAI_API_KEY)
-#openai.api_key = OPENAI_API_KEY
 
 def summarize_all_articles(articles):
     """
@@ -33,26 +30,8 @@ def summarize_all_articles(articles):
         model="gpt-4o-mini",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.5,
-        max_completion_tokens=2000  # Updated parameter name in v2+
+        max_completion_tokens=2000
     )
 
     summary = response.choices[0].message.content.strip()
     return summary
-
-
-    """ try:
-        response = openai.ChatCompletion.create(
-            model="gpt-4o-mini",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.5,
-            max_tokens=2000
-        )
-        summary = response['choices'][0]['message']['content'].strip()
-        return summary
-
-    except openai.error.RateLimitError:
-        return "Rate limit reached. Please try again later."
-
-    except Exception as e:
-        print("Error summarizing articles:", e)
-        return "Error generating summary."""

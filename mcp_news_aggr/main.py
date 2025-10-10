@@ -1,4 +1,6 @@
-# mcp_news_aggr/main.py
+"""
+    run main to get news + summary without running the router
+"""
 
 import os
 import json

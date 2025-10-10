@@ -1,10 +1,7 @@
-# mcp_news_aggr/mcp_server.py
-
 import os
 import json
 import logging
 from mcp.server.fastmcp import FastMCP
-#from fastmcp.utilities.types import Text
 
 from .fetch_news.fetch_all_news import fetch_all_news
 from .summarize_news import summarize_all_articles

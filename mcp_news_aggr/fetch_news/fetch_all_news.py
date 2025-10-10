@@ -7,7 +7,7 @@ from mcp_news_aggr.fetch_news.fetch_forbes_news import fetch_forbes_news
 
 def fetch_all_news(page_size=10, lang="en"):
     """
-    Fetch news from both Google News and Yle, combine them into one list.
+    Fetch news articles from multiple sources and combine them into a single list.
     """
     google_articles = fetch_google_news(page_size=15)
     yle_articles = fetch_yle_news(page_size=5)
@@ -19,7 +19,7 @@ def fetch_all_news(page_size=10, lang="en"):
 
     all_articles = google_articles + yle_articles + bbc_articles + cnn_articles + bloomberg_articles + forbes_articles
 
-    # Sort by date (newest first if possible)
+    # Sort by date
     try:
         all_articles.sort(key=lambda x: x.get("date", ""), reverse=True)
     except Exception:

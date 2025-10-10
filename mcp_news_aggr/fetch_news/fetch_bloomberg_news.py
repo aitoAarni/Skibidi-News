@@ -20,13 +20,7 @@ def parse_date(date_str):
 
 def fetch_bloomberg_news(page_size):
     googlenews = GoogleNews(lang='en', period='1d')
-    #googlenews.set_topic("World News")
     googlenews.search("site:bloomberg.com")
-    #googlenews.search("world news")
-    #googlenews.search("breaking")
-
-    """for i in range(1,2):
-        googlenews.get_page(i)"""
     
     googlenews.get_page(1)
 

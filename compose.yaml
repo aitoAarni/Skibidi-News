@@ -10,8 +10,6 @@ services:
             dockerfile: Dockerfile
         environment:
             <<: *common_env
-            ROUTER_BIND_HOST: "0.0.0.0"
-            ROUTER_BIND_PORT: "${ROUTER_PORT:-6969}"
         depends_on:
             - mcp_prompt_opt
             - mcp_text_to_audio
@@ -19,8 +17,6 @@ services:
             - mcp_news_aggr
         volumes:
             - ./synthesized_speech:/app/synthesized_speech
-        ports:
-            - "${ROUTER_PORT:-6969}:6969"
         networks:
             - appnet
 
@@ -38,8 +34,6 @@ services:
 
         networks:
             - appnet
-        ports:
-            - "127.0.0.1:8000:8000"
         #restart: unless-stopped
 
     mcp_news_aggr:
@@ -50,8 +44,6 @@ services:
             <<: *common_env
         networks:
             - appnet
-        ports:
-            - "127.0.0.1:8002:8000"
         restart: unless-stopped
 
     mcp_prompt_opt:

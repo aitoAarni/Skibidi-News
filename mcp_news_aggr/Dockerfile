@@ -19,10 +19,6 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 # Copy the server package
 COPY . /app/mcp_news_aggr
 
-# Default environment (can be overridden at runtime)
-ENV MODEL_PROVIDER=none \
-    MAX_OUTPUT_TOKENS=400 \
-    TEMPERATURE=0.7
 
 # Run MCP server over stdio
 ENTRYPOINT ["python", "-m", "mcp_news_aggr.mcp_server"]

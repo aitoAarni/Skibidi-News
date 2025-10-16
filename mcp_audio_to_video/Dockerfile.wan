@@ -1,0 +1,38 @@
+# syntax=docker/dockerfile:1.6
+FROM nvidia/cuda:12.4.1-devel-ubuntu22.04
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    PYTHONUNBUFFERED=1 \
+    TORCH_CUDA_ARCH_LIST=90 \
+    MODEL_DIR=/models/Wan2.2-S2V-14B \
+    WAN_REPO=https://github.com/Wan-Video/Wan2.2.git \
+    PATH="/root/.local/bin:/workspace/.venv/bin:$PATH"
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git git-lfs curl ffmpeg python3 python3-venv python3-pip python3-dev\
+    build-essential ninja-build pkg-config libsndfile1 && \
+    rm -rf /var/lib/apt/lists/* && git lfs install
+
+WORKDIR /workspace
+RUN python3 -m venv .venv && . .venv/bin/activate && \
+    pip install -U pip setuptools wheel packaging
+
+RUN . .venv/bin/activate && \
+    pip install --index-url https://download.pytorch.org/whl/cu124 \
+        "torch==2.4.*" "torchvision==0.19.*" "torchaudio==2.4.*" && \
+    pip install --no-build-isolation flash-attn==2.6.3 xformers==0.0.27.post2
+
+RUN . .venv/bin/activate && \
+    pip install fastapi uvicorn "huggingface_hub[cli]" \
+        transformers accelerate diffusers einops \
+        opencv-python imageio[ffmpeg] soundfile librosa moviepy \
+        numpy scipy python-multipart hf_transfer && \
+    git clone --depth 1 ${WAN_REPO} Wan2.2 && \
+    pip install -e Wan2.2 && \
+    pip install -r Wan2.2/requirements_s2v.txt
+
+COPY wan_s2v_server.py entrypoint.sh ./
+RUN chmod +x entrypoint.sh
+
+EXPOSE 7861
+ENTRYPOINT ["./entrypoint.sh"]

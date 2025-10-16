@@ -1,5 +1,11 @@
 # Publishing
 
+TODO:
+
+- combine with tts and video gen
+- test if this works with API key instead of OAuth2 to avoid the browser window
+  pop-up
+
 This component will publish the given audio or video file to social media
 platforms.
 

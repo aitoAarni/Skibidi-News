@@ -35,7 +35,7 @@ def generate_transcript(summarized_news: str) -> str:
 if __name__ == "__main__":
     host = os.getenv("MCP_HOST", "0.0.0.0")
     port = int(os.getenv("MCP_PORT", 8000))
-    logger.info(f"Starting MCP Humorizer on {host}:{port}")
+    logger.info(f"Starting Text to Audio MCP Service on {host}:{port}")
     app.settings.host = host
     app.settings.port = port
     app.run(transport="streamable-http")

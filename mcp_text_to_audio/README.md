@@ -90,8 +90,5 @@ DOCKER_BUILDKIT=1 docker build . -t "text-to-audio"
 ### Running the app in Docker
 
 ```bash
-docker run -it --rm --env-file .env text-to-audio
+docker run --rm --env-file .env text-to-audio
 ```
-
-**Note:** The `-it` flag is required because stdio needs standard input session,
-otherwise the app will close immediately.

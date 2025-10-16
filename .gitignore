@@ -11,3 +11,5 @@ __pycache__
 compose.local.yaml
 **/.env
 synthesized_speech/*
+client_secrets.json
+*oauth2.json

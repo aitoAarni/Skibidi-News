@@ -1,0 +1,11 @@
+[project]
+name = "publishing"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "google-api-python-client>=2.184.0",
+    "httplib2>=0.31.0",
+    "oauth2client>=4.1.3",
+]

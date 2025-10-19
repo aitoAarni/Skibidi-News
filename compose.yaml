@@ -56,9 +56,9 @@ services:
             - appnet
         restart: unless-stopped
 
-    mcp_text_to_audio:
+    mcp_text_to_video:
         build:
-            context: ./mcp_text_to_audio
+            context: ./mcp_text_to_video
             dockerfile: Dockerfile
         environment:
             <<: *common_env

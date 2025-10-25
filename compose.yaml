@@ -12,7 +12,7 @@ services:
             <<: *common_env
         depends_on:
             - mcp_prompt_opt
-            - mcp_text_to_audio
+            - mcp_text_to_video
             - mcp_humorizer
             - mcp_news_aggr
         volumes:

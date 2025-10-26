@@ -17,6 +17,8 @@ services:
             - mcp_news_aggr
         volumes:
             - ./synthesized_speech:/app/synthesized_speech
+        ports:
+            - "127.0.0.1:8000:8000"
         networks:
             - appnet
 
@@ -50,8 +52,8 @@ services:
         build:
             context: ./mcp_prompt_opt
             dockerfile: Dockerfile
-        #environment:
-        #<<: *common_env
+        environment:
+            <<: *common_env
         networks:
             - appnet
         restart: unless-stopped

@@ -1,4 +1,3 @@
-import json
 import base64
 from router_agent.utils import mcp_http_session
 from datetime import datetime
@@ -58,5 +57,12 @@ def save_audio(audio_data):
             file.write(audio_bytes)
 
 
-
-
+def mock_news(fails: bool = False):
+    text = ""
+    with open("./synthesized_speech/news.txt") as file:
+        for line in file.readlines():
+            if line == "\n" or "":
+                print("skippedi line: ", line, ord(line), "\n")
+            else:
+                text += line
+    return line

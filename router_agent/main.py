@@ -20,6 +20,9 @@ async def test_humorizer(session, text):
     text_result = result.content[0].text
     print(text_result)
     parsed = json.loads(text_result)
+    print("parsed humorizer", parsed["comedic_text"], sep="\n")
+    with open("./synthesized_speech/comedic.txt", "w") as file:
+        file.write(parsed["comedic_text"])
     return parsed["comedic_text"]
 
 
@@ -46,6 +49,9 @@ async def test_news_aggr(session):
     text_result = aggregated_news.content[0].text
     print(text_result)
     parsed = json.loads(text_result)
+    print("news sumary", parsed["summary"], sep="\n")
+    with open("./synthesized_speech/news.txt", "w") as file:
+        file.write(parsed["summary"])
     return parsed["summary"]
 
 
@@ -62,12 +68,13 @@ def save_audio(audio_data):
 
 
 async def main():
-    await asyncio.sleep(10)
-
+    print("processs started")
+    await asyncio.sleep(5)
+    print("5 seconds passed")
     summary = await test_news_aggr()
     humorized_text = await test_humorizer(summary)
-    audio_data = await test_tts(humorized_text)
-    save_audio(audio_data)
+    # audio_data = await test_tts(humorized_text)
+    # save_audio(audio_data)
 
 
 if __name__ == "__main__":

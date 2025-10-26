@@ -10,8 +10,8 @@ RUN apt-get update && \
 COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
-COPY . /app/router_agent
+COPY . /app
 
 
 
-ENTRYPOINT ["python", "-m", "router_agent.main"]
+ENTRYPOINT ["fastapi", "run", "src/main.py"]

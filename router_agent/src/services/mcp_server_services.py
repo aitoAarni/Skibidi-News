@@ -1,5 +1,5 @@
 from src.data_classes import News
-from src.core.utils import mcp_http_session
+from src.services.utils import mcp_http_session
 import json
 
 @mcp_http_session("http://mcp_humorizer:8000/mcp")

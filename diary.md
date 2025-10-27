@@ -1,3 +1,9 @@
+## 27.10
+
+Tried making unfunny AI funny, to no avail.  
+Tried using shady GPUs for video gen, to no avail.  
+Frontend and backend progressing though. :>
+
 ## 20.10
 
 Experimented with video stuff.

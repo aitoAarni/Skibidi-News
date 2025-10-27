@@ -31,7 +31,7 @@ def combine_audio_and_video(audio_client: Engine) -> str:
             TextClip(
                 font="Arial.ttf",
                 text=all_text,
-                font_size=55,
+                font_size=35,
                 color="orange",
                 size=(550, None),  # Width constraint for text wrapping
                 margin=(10, 10),

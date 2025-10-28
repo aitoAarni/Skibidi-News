@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import random
 from typing import Literal, Optional
 
 from dotenv import load_dotenv
@@ -108,79 +109,114 @@ class Settings(BaseModel):
         )
 
 
-def _build_comedy_card_prompt(style: HumorStyle) -> str:
-    """Generate a system prompt that instructs the model to generate a comedic card based of the 
-    context
+def _build_comedy_card_prompt(style: HumorStyle = None) -> str:
+    """Generate a high-impact comedic card prompt.
+    Randomly selects both a humor style and a comedian tone to emulate.
     """
+
+    edgy_styles = ["sarcastic", "absurd", "deadpan", "roast", "random", "nihilistic_fury"]
+    if not style:
+        style = random.choice(edgy_styles)
+
+    all_comics = [
+        "George Carlin", "Bill Hicks", "Doug Stanhope", "Anthony Jeselnik", "Frankie Boyle",
+        "Jimmy Carr", "Ricky Gervais", "Louis C.K.", "Jim Jefferies", "Sam Kinison",
+        "Norm Macdonald", "Chris Morris", "Eric André", "Bo Burnham", "Maria Bamford",
+        "Andy Kaufman", "Eddie Pepitone", "Stewart Lee", "Dave Attell", "Chris Farley",
+        "Mitch Hedberg", "Rick Mayall", "Eddie Izzard", "Tim Dillon",
+        "Donald Trump (as absurd performer)"
+    ]
+
+    chosen_tones = ", ".join(random.sample(all_comics, k=random.randint(1, 1)))
+
     style_desc = {
-        "sarcastic": "with witty sarcasm, playful jabs, and ironic contrast",
-        "light": "with gentle, family-friendly humor and relatable quips",
-        "absurd": "with surreal, absurdist twists and unexpected juxtapositions",
-        "deadpan": "with a dry, deadpan delivery and understatements",
-        "wholesome": "with uplifting, wholesome humor and kind-spirited jokes",
-        "satirical": "with sharp satire poking at institutions and narratives",
-        "roast": "with humorous roasts (keep it light; avoid cruelty)",
-        "random": "with varied comedic styles (light sarcasm, puns, and callbacks)",
+        "sarcastic": (
+            f"as 'Precision Sarcasm' — channel {chosen_tones}. "
+            "Tone: sharp, jaded, cutting. Start with smug certainty and exaggerate until collapse. "
+            "Maintain composure while implying chaos underneath. 4-5 sentences; every line stings."
+        ),
+        "absurd": (
+            f"as 'Controlled Absurdism' — channel {chosen_tones}. "
+            "Start from reality, derail into dream logic or broken causality. "
+            "Nonsense must sound deliberate and confident. 4-5 sentences total."
+        ),
+        "deadpan": (
+            f"as 'Deadpan Nihilism' — channel {chosen_tones}. "
+            "Emotionless tone describing catastrophe; calm voice, horrific content. "
+            "4-5 sentences of unflinching understatement."
+        ),
+        "roast": (
+            f"as 'Surgical Roast' — channel {chosen_tones}. "
+            "Ruthless precision and confident cruelty. Begin with false praise, pivot to dissection, "
+            "finish with finality. 4-5 sentences; rhythm tight as a blade."
+        ),
+        "random": (
+            f"as 'Chaotic Spontaneity' — channel {chosen_tones}. "
+            "Begin mid-thought, collide ideas, pivot constantly. "
+            "Chaos must feel intentional. 4-5 sentences; never slow down."
+        ),
+        "nihilistic_fury": (
+            f"as 'Apex of Nihilistic Fury' — channel {chosen_tones}. "
+            "Begin with impossible physical violence or body horror, clearly state the news, "
+            "swear naturally, describe the event as physically attacking you, "
+            "and end in surreal collapse. 4-5 sentences of escalating apocalypse."
+        ),
     }[style]
 
-    return (f"""
-        You are a Comedy Card Planner.  
-        You do not write jokes.  
-        Your sole reason to exist is to interpret what humor the user enjoys, and 
-        what is the most humorous card for the context that user wants to hear about based on 
-        style: {style_desc}.
-        Your role is to create a text-only Comedy Card that another agent will later use to generate the actual comedy.
+    return f"""
+        You are a Comedy Card Planner.
+        You don’t write jokes; you design the structure another agent will use,
+        based on this style: {style_desc}
 
-        INPUT: Caller provides:
-        - style (required, e.g. sarcastic, deadpan, roast, satirical, absurd, wholesome, light, edgy, political_satire)
+        INPUT:
+        - style (sarcastic, absurd, deadpan, roast, random, nihilistic_fury)
         - prompt (required)
-        - optional context/summary
+        - optional context or summary
 
         RULES:
-        - Enforce safety: no slurs, hate, cruelty, doxxing, plagiarism, unverified crimes, or mocking harm victims. Always punch up.
-        - Use only facts in context/summary. If facts conflict or are thin → Parody: yes.
-        - Political satire only if style allows or politics detected.
-        - Target TikTok length: ≤60 words. Card must guide the other agent to produce 1–4 punchy sentences.
+        - Must entertain, shock, or destabilize.
+        - ≤80 words; defines a 4-5 sentence output.
+        - Match pacing and tone to the style and comedian seed.
 
-        WHAT TO OUTPUT:
-        Always output exactly this block (plain text, no JSON, no prose):
-
-        [Title]: <short hook, 3–7 words>
-        Style: <given style>
+        OUTPUT (plain text):
+        [Title]: <hook 3–7 words>
+        Style: {style}
+        ComedianSeed: {chosen_tones}
         Angle: <chosen angle>
         Structure: <chosen structure>
         Devices: <1–3 devices>
-        Receipts: <1–2 terse specifics or “none”>
-        Safety: <brand_safe|clean|standard|edgy|political_satire>
+        Receipts: <1–2 factual anchors or 'none'>
+        Safety: <standard|edgy|fury>
         Parody: <yes|no>
-        WordCap: 60
-        ToneNotes: <brief tonal guidance>
+        WordCap: 80
+        ToneNotes: <how it should sound>
         Beats:
-        1) Setup: <what to establish>
-        2) Turn: <where/when to pivot>
-        3) Tag: <optional extra beat>
-        DoNotDo: <taboos or off-limits angles>
+        1) Setup: <premise or fact>
+        2) Turn: <tone shift or escalation>
+        3) Tag: <sting, collapse, or absurd exit>
+        DoNotDo: <breaks in logic or tone>
 
         CATALOGS:
-        - Angles: Hypocrisy, Analogy, Timeline Crunch, Compare/Contrast, Jargon Parody, Process Farce, Math Gag, Euphemism Translation
-        - Structures: Setup→Turn→Tag, Rule of Three, Angle–Example–Zinger, Analogy Ladder, Timeline Crunch, Press-Release Parody, List Roll
-        - Devices: Irony, Frame Shift, Over-Precision, Under/Over-Reaction, Confident Wrongness, Parody, Analogy, Euphemism Translation, Register Clash, Paraprosdokian, Callback, Smash-Cut, Numbers as Characters
-        """)
-
+        Angles: Hypocrisy, Analogy, Contrast, Process Farce, Jargon Parody, Timeline Crunch
+        Structures: Setup→Turn→Tag, Rule of Three, Analogy Ladder, List Roll, Press-Release Parody
+        Devices: Irony, Over/Under-Reaction, Frame Shift, Confident Wrongness,
+                Paraprosdokian, Callback, Smash-Cut, Register Clash
+        """
 
 def build_system_prompt(card: HumorCard) -> str:
-    """
-    Compose a system prompt that instructs the model to inject humor
-    while preserving factual alignment with the summarized text.
+    """Compose the Humor Engine system prompt for Skibidi News.
+    Each run uses one random style and one to three random comedian tones.
     """
     return f"""You are the Humor Engine for Skibidi News.
-            Your job is to transform summarized news text into short-form comedic script lines {card}.
-            Constraints and objectives:
-            - Preserve the core meaning and facts; do not fabricate events or statistics.
-            - Be concise, punchy, and optimized for short-form video (1-4 sentences).
-            - Add setups, punchlines, puns, or witty contrasts that are accessible and platform-friendly.
-            - Avoid harassment, slurs, hateful content, or sensitive personal attacks.
-            - If the summary is dry or technical, add relatable analogies or everyday metaphors.
-            - Prefer current pop-culture references sparingly; timeless humor is prioritized.
-            - Keep the tone consistent and coherent; do not meander.
-            Return only the comedic rewrite text."""
+        Chosen style: {card.Style}
+        Comedian seed(s): {card.ComedianSeed}
+        Transform summarized news text into 4-5 sentences of high-impact comedy using {card}.
+
+        Constraints:
+        - Keep the factual core of the news intact.
+        - Mirror the tonal energy of the chosen comedian(s).
+        - Follow rhythm: Setup → Turn → Tag → (optional collapse).
+        - Profanity allowed where natural; required for 'nihilistic_fury'.
+        - End abruptly on punch, breakdown, or surreal image.
+
+        Return only the rewritten comedic text."""

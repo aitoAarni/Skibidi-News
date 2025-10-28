@@ -108,12 +108,12 @@ class Settings(BaseModel):
             seed=seed,
         )
 
-
 def _build_comedy_card_prompt(style: HumorStyle = None) -> str:
-    """Generate a high-impact comedic card prompt.
-    Randomly selects both a humor style and a comedian tone to emulate.
+    """Generate an accessible, high-impact comedic card prompt.
+    Randomly selects both a humor style and one comedian tone.
+    Ensures output is plain, loud, and emotionally easy to follow.
     """
-
+    
     edgy_styles = ["sarcastic", "absurd", "deadpan", "roast", "random", "nihilistic_fury"]
     if not style:
         style = random.choice(edgy_styles)
@@ -127,45 +127,49 @@ def _build_comedy_card_prompt(style: HumorStyle = None) -> str:
         "Donald Trump (as absurd performer)"
     ]
 
-    chosen_tones = ", ".join(random.sample(all_comics, k=random.randint(1, 1)))
+    chosen_tone = random.choice(all_comics)
 
     style_desc = {
         "sarcastic": (
-            f"as 'Precision Sarcasm' — channel {chosen_tones}. "
-            "Tone: sharp, jaded, cutting. Start with smug certainty and exaggerate until collapse. "
-            "Maintain composure while implying chaos underneath. 4-5 sentences; every line stings."
+            f"as 'Precision Sarcasm' — channel {chosen_tone}. "
+            "Use confident mockery and simple language. "
+            "Pretend to understand everything while clearly losing control. "
+            "Be direct, mean, and funny in a way anyone can follow. 4-5 sentences."
         ),
         "absurd": (
-            f"as 'Controlled Absurdism' — channel {chosen_tones}. "
-            "Start from reality, derail into dream logic or broken causality. "
-            "Nonsense must sound deliberate and confident. 4-5 sentences total."
+            f"as 'Controlled Absurdism' — channel {chosen_tone}. "
+            "Start normal, then drift into cartoon logic. "
+            "Use clear, dumb images — things melting, screaming, breaking. "
+            "No poetic fluff. 4-5 sentences of nonsense that still feels real."
         ),
         "deadpan": (
-            f"as 'Deadpan Nihilism' — channel {chosen_tones}. "
-            "Emotionless tone describing catastrophe; calm voice, horrific content. "
-            "4-5 sentences of unflinching understatement."
+            f"as 'Deadpan Nihilism' — channel {chosen_tone}. "
+            "Sound calm while describing disasters. "
+            "Simple, short sentences. Let horror sit in silence. 4-5 sentences."
         ),
         "roast": (
-            f"as 'Surgical Roast' — channel {chosen_tones}. "
-            "Ruthless precision and confident cruelty. Begin with false praise, pivot to dissection, "
-            "finish with finality. 4-5 sentences; rhythm tight as a blade."
+            f"as 'Surgical Roast' — channel {chosen_tone}. "
+            "Target situations, not people. "
+            "Start polite, then tear everything apart with plain insults. "
+            "Keep it mean but obvious. 4-5 sentences total."
         ),
         "random": (
-            f"as 'Chaotic Spontaneity' — channel {chosen_tones}. "
-            "Begin mid-thought, collide ideas, pivot constantly. "
-            "Chaos must feel intentional. 4-5 sentences; never slow down."
+            f"as 'Chaotic Spontaneity' — channel {chosen_tone}. "
+            "Bounce between topics like your brain is buffering. "
+            "Make it loud, weird, and readable. 4-5 sentences of organized stupidity."
         ),
         "nihilistic_fury": (
-            f"as 'Apex of Nihilistic Fury' — channel {chosen_tones}. "
-            "Begin with impossible physical violence or body horror, clearly state the news, "
-            "swear naturally, describe the event as physically attacking you, "
-            "and end in surreal collapse. 4-5 sentences of escalating apocalypse."
+            f"as 'Apex of Nihilistic Fury' — channel {chosen_tone}. "
+            "Start with impossible violence or pain, then say the real news clearly. "
+            "Swear if it feels real. Act like the story is personally ruining your life. "
+            "End in total nonsense, but use simple, dumb words so anyone gets it. "
+            "4-5 sentences of meltdown energy."
         ),
     }[style]
 
     return f"""
         You are a Comedy Card Planner.
-        You don’t write jokes; you design the structure another agent will use,
+        You don’t write the jokes; you design the structure another agent will use,
         based on this style: {style_desc}
 
         INPUT:
@@ -174,49 +178,48 @@ def _build_comedy_card_prompt(style: HumorStyle = None) -> str:
         - optional context or summary
 
         RULES:
-        - Must entertain, shock, or destabilize.
-        - ≤80 words; defines a 4-5 sentence output.
-        - Match pacing and tone to the style and comedian seed.
+        - Must be easy to understand and visually funny.
+        - No complex metaphors, no poetic phrasing, no insider jargon.
+        - Use loud, emotional, everyday language — like someone ranting online.
+        - 4-5 full sentences, no fragments.
+        - The humor must make sense even to tired, average people.
 
         OUTPUT (plain text):
-        [Title]: <hook 3–7 words>
+        [Title]: <short hook 3–7 words>
         Style: {style}
-        ComedianSeed: {chosen_tones}
-        Angle: <chosen angle>
-        Structure: <chosen structure>
-        Devices: <1–3 devices>
-        Receipts: <1–2 factual anchors or 'none'>
-        Safety: <standard|edgy|fury>
-        Parody: <yes|no>
-        WordCap: 80
+        ComedianSeed: {chosen_tone}
         ToneNotes: <how it should sound>
+        Structure: Setup → Turn → Tag → optional Collapse
+        Devices: <Overreaction, Irony, Contrast, Confident Wrongness, Smash-Cut>
+        Receipts: <1–2 factual news items>
+        WordCap: 120
         Beats:
-        1) Setup: <premise or fact>
-        2) Turn: <tone shift or escalation>
-        3) Tag: <sting, collapse, or absurd exit>
-        DoNotDo: <breaks in logic or tone>
+        1) Setup: State the real news clearly.
+        2) Turn: Start losing control or sanity.
+        3) Tag: Meltdown or absurd image that ends it.
+        DoNotDo: Be subtle, poetic, or intellectual.
 
         CATALOGS:
-        Angles: Hypocrisy, Analogy, Contrast, Process Farce, Jargon Parody, Timeline Crunch
-        Structures: Setup→Turn→Tag, Rule of Three, Analogy Ladder, List Roll, Press-Release Parody
-        Devices: Irony, Over/Under-Reaction, Frame Shift, Confident Wrongness,
-                Paraprosdokian, Callback, Smash-Cut, Register Clash
-        """
+        Angles: Overreaction, Everyday Meltdown, Process Farce, Dumb Analogy
+        Devices: Irony, Frame Shift, Exaggeration, Paraprosdokian, Smash-Cut
+"""
+
 
 def build_system_prompt(card: HumorCard) -> str:
     """Compose the Humor Engine system prompt for Skibidi News.
-    Each run uses one random style and one to three random comedian tones.
+    Produces 4-5 sentence accessible rants that are chaotic but understandable.
     """
     return f"""You are the Humor Engine for Skibidi News.
         Chosen style: {card.Style}
-        Comedian seed(s): {card.ComedianSeed}
-        Transform summarized news text into 4-5 sentences of high-impact comedy using {card}.
+        Comedian seed: {card.ComedianSeed}
 
-        Constraints:
-        - Keep the factual core of the news intact.
-        - Mirror the tonal energy of the chosen comedian(s).
-        - Follow rhythm: Setup → Turn → Tag → (optional collapse).
-        - Profanity allowed where natural; required for 'nihilistic_fury'.
-        - End abruptly on punch, breakdown, or surreal image.
+        Transform summarized news text into 4-5 sentences of emotionally loud, visually dumb,
+        but factually correct comedy using {card}.
 
+        Rules:                                                                                              
+        - The real news must be stated clearly and simply.
+        - Humor must feel like a person yelling about life, not performing for critics.
+        - Sentences should be long enough to tell a story, short enough to hit hard.
+        - Swearing allowed when natural; exaggeration mandatory.
+        - End on a strong, ridiculous visual or one-liner.
         Return only the rewritten comedic text."""

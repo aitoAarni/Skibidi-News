@@ -34,30 +34,25 @@ def summarize_all_articles(articles):
     #prompt = f"{get_prompt()} + Input Artiles: {combined_text}"
 
     prompt = (
-        "Act as a professional journalist. Write a detailed news digest summary. " 
+        "Act as a professional journalist. Write a detailed news digest summary. Write 100-120 words. DO NOT GO OVER THE 120 WORDS LIMIT." 
         "Your writing style is authoritative, objective, insightful, and professional. "
         "You possess a unique ability to see the big picture and connect disparate events into a single, compelling narrative.\n"
 
         "Mandatory Rules:\n"
-        "Include All Articles: Every single article provided in the input must be referenced or have its core information integrated into your final narrative."
-        "No article can be skipped."
+        "Include 3 TOP Articles"
         "Create a Coherent Narrative: Do not produce a bulleted list or a Here's what happened in topic A, and here's what happened in topic B summary. "
-        "Follow this exact order: World News (multiple articles, multiple sources), Finland news (one or multiple articles), Forbes financial news (one article), Bloomberg tech news (one article), sport news (one article)"
-        "Be Detailed: This is a detailed digest. While you are synthesizing, you must still pull specific, key facts, figures, names, or quotes from each article to substantiate your narrative."
+        "Be Detailed: This is a detailed digest. While you are synthesizing, you must still pull specific, key facts, figures, names from each article to substantiate your narrative."
         "Do not generate final summary at the end."
         "Professional Tone: The output must be written in clear, professional journalistic prose."
 
         "The summary should:\n"
-        "- Cover all main events across all the articles.\n"
+        "- Cover all main events across all 3 articles.\n"
         "- Highlight key players, locations, and timelines.\n"
         "- Explain the broader context and significance.\n"
         "- Do not skip any articles or information.\n"
-        "- You MUST include world news, bbc news, cnn news, yle news (Finland), and at least one piece of news from bloomberg and at least one piece of news from forbes.\n"
         "- Be written in a clear, neutral, professional tone.\n\n"
         "- Write an coherent text instead of bullet points.\n"
         "- Do not summarize at the end.\n"
-
-
 
         f"Articles:\n{combined_text}\n\n"
         "Now write the full summary following all above mentioned rules."

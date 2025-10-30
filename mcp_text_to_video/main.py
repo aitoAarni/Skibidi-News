@@ -54,7 +54,7 @@ def publish(
         video_title,
         video_description,
         keywords,
-        "unlisted",
+        privacy_status="unlisted",
     )
 
 

@@ -19,7 +19,10 @@ def clear_json_file():
         json.dump({}, f)
 
 def main():
-    articles = fetch_all_news(page_size=10, lang="en")
+
+    #'world', 'europe','US', 'finland','financial','tech','sport', 'asia'
+
+    articles = fetch_all_news('finland')
     if not articles:
         logger.error("No articles fetched.")
         return

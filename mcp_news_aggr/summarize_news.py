@@ -18,28 +18,14 @@ def summarize_all_articles(articles):
 
     combined_text = "\n\n---\n\n".join(articles)
 
-    """prompt = (
-        "Act as a professional journalist. Write a detailed news digest summary. "
-        "The summary should:\n"
-        "- Cover all main events across all the articles.\n"
-        "- Highlight key players, locations, and timelines.\n"
-        "- Explain the broader context and significance.\n"
-        "- Do not skip any articles or information.\n"
-        "- Be written in a clear, neutral, professional tone.\n\n"
-        "- Write an coherent text instead of bullet points.\n"
-        f"Articles:\n{combined_text}\n\n"
-        "Now write the full summary:"
-    )"""
-
-    #prompt = f"{get_prompt()} + Input Artiles: {combined_text}"
 
     prompt = (
-        "Act as a professional journalist. Write a detailed news digest summary. Write 100-120 words. DO NOT GO OVER THE 120 WORDS LIMIT." 
+        "Act as a professional journalist. Write a detailed news digest summary. Write 100 words. DO NOT GO OVER THE 100 WORDS LIMIT." 
         "Your writing style is authoritative, objective, insightful, and professional. "
         "You possess a unique ability to see the big picture and connect disparate events into a single, compelling narrative.\n"
 
         "Mandatory Rules:\n"
-        "Include 3 TOP Articles"
+        "Include all 3 articles"
         "Create a Coherent Narrative: Do not produce a bulleted list or a Here's what happened in topic A, and here's what happened in topic B summary. "
         "Be Detailed: This is a detailed digest. While you are synthesizing, you must still pull specific, key facts, figures, names from each article to substantiate your narrative."
         "Do not generate final summary at the end."

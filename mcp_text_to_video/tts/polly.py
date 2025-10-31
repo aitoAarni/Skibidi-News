@@ -22,14 +22,16 @@ class PollyClient(Engine):
         self.polly_client = boto3.client("polly", **aws_config)
         super(PollyClient, self).__init__()
 
-    def synthesize(self, text, engine="neural", voice="Matthew", lang_code=None):
+    def synthesize(
+        self, text, engine="neural", voice="Matthew", lang_code=None, speech_rate="125%"
+    ):
         """
         Synthesizes speech or speech marks from text, using the specified voice.
 
         :param text: The text to synthesize.
         :param engine: The kind of engine used: 'standard'|'neural'|'long-form'|'generative'.
         :param voice: The ID of the voice to use.
-        :param audio_format: The audio format to return for synthesized speech: 'json'|'mp3'|'ogg_opus'|'ogg_vorbis'|'pcm'.
+        :param speech_rate: The speed of speech (e.g., "150%" for 1.5x speed, "200%" for 2x speed).
         :param lang_code: The language code of the voice to use. This has an effect
                           only when a bilingual voice is selected.
         :return: The audio stream that contains the synthesized speech and a list
@@ -38,15 +40,18 @@ class PollyClient(Engine):
 
         parts = text[:5000].split("\n")
 
-        for text in parts:
-            if len(text) == 0:
+        for text_part in parts:
+            if len(text_part) == 0:
                 continue
             try:
+                # Wrap text in SSML to control speech rate
+                ssml_text = f'<speak><prosody rate="{speech_rate}">{text_part}</prosody></speak>'
+
                 kwargs = {
                     "Engine": engine,
                     "OutputFormat": "mp3",
-                    "Text": text,
-                    "TextType": "text",
+                    "Text": ssml_text,
+                    "TextType": "ssml",  # Changed to SSML
                     "VoiceId": voice,
                 }
                 if lang_code is not None:
@@ -54,7 +59,7 @@ class PollyClient(Engine):
                 response = self.polly_client.synthesize_speech(**kwargs)
                 audio_stream = response["AudioStream"]
 
-                self.insert(text, audio_stream.read())
+                self.insert(text_part, audio_stream.read())
             except Exception:
                 raise
         return self

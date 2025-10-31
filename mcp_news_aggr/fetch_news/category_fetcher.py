@@ -33,7 +33,8 @@ def fetch_category_news(category, lang="en"):
         googlenews.search("US news")
 
     if category == 'finland':
-        googlenews.search("site:yle.fi/news")
+        #googlenews.search("site:yle.fi/news")
+        googlenews.search("Finland news")
 
     if category == 'financial':
         googlenews.set_topic("BUSINESS")

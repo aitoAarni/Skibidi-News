@@ -2,72 +2,80 @@ import json
 import os
 from datetime import datetime
 
-# This JSON file will store the URLs of fetched articles by date
+# JSON file that stores fetched articles by date
 DB_FILE = "mcp_news_aggr/fetch_news/fetched_articles_history.json"
+
 
 def _get_today_str():
     """Returns today's date as 'YYYY-MM-DD'."""
     return datetime.today().strftime("%Y-%m-%d")
 
+
 def _read_db():
-    """Reads the JSON database file."""
+    """Reads the JSON database file, or returns an empty dict if it doesn't exist."""
     if not os.path.exists(DB_FILE):
         return {}
     try:
-        with open(DB_FILE, 'r') as f:
+        with open(DB_FILE, "r", encoding="utf-8") as f:
             return json.load(f)
-    except json.JSONDecodeError:
-        # Handle case where file is empty or corrupt
+    except (json.JSONDecodeError, FileNotFoundError):
         return {}
 
+
 def _write_db(data):
-    """Writes data to the JSON database file."""
-    with open(DB_FILE, 'w') as f:
-        json.dump(data, f, indent=2)
+    """Writes data safely to the JSON database file."""
+    os.makedirs(os.path.dirname(DB_FILE), exist_ok=True)
+    with open(DB_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+
 
 def get_fetched_today():
     """
-    Gets a set of (title, source) tuples for all articles fetched today.
+    Returns a set of (title, summary, source) tuples for all articles fetched today.
     """
     db = _read_db()
     today = _get_today_str()
-    # Data is stored as a list of dicts: [{"title": "t1", "source": "s1"}, ...]
     articles_list = db.get(today, [])
-    
-    # Return a set of tuples for efficient lookup
-    return set((article.get('title'), article.get('summary'), article.get('source')) for article in articles_list)
+    return set(
+        (a.get("title", ""), a.get("summary", ""), a.get("source", ""))
+        for a in articles_list
+    )
+
 
 def log_fetched_articles(articles):
     """
-    Logs a list of new articles (title and source) to the database for today.
+    Logs new articles (title, summary, source) to the database for today.
+    Avoids logging duplicates.
     """
     if not articles:
         return
 
     db = _read_db()
     today = _get_today_str()
-    
-    # Get existing articles for today
-    today_articles_list = db.get(today, [])
-    # Convert to set of tuples for efficient checking
-    today_articles_set = set((a.get('title'), a.get('summary'), a.get('source')) for a in today_articles_list)
-    
+
+    # Ensure today's entry exists
+    if today not in db:
+        db[today] = []
+
+    # Create a set for fast lookup
+    existing = set(
+        (a.get("title", ""), a.get("summary", ""), a.get("source", ""))
+        for a in db[today]
+    )
+
     new_articles_logged = False
     for article in articles:
-        article_tuple = (article['title'], article['summary'], article['source'])
-        
-        # Only add if this (title, source) combo hasn't been logged today
-        if article_tuple not in today_articles_set:
-            today_articles_list.append({
-                "title": article['title'],
-                "summary": article['summary'],
-                "source": article['source']
+        key = (article.get("title", ""), article.get("summary", ""), article.get("source", ""))
+        if key not in existing:
+            db[today].append({
+                "title": article.get("title", ""),
+                "summary": article.get("summary", ""),
+                "source": article.get("source", ""),
+                "url": article.get("url", ""),
+                "date": article.get("date", today)
             })
-            today_articles_set.add(article_tuple) # Keep set in sync
+            existing.add(key)
             new_articles_logged = True
 
-    # Write back to the DB only if we added something new
     if new_articles_logged:
-        db[today] = today_articles_list
         _write_db(db)
-

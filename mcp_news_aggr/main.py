@@ -22,7 +22,7 @@ def main():
 
     #'world', 'europe','US', 'finland','financial','tech','sport', 'asia'
 
-    articles = fetch_all_news('asia')
+    articles = fetch_all_news('world')
     if not articles:
         logger.error("No articles fetched.")
         return

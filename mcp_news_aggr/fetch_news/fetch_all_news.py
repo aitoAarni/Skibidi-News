@@ -1,6 +1,7 @@
 import random
 from mcp_news_aggr.fetch_news.category_fetcher import fetch_category_news
 from mcp_news_aggr.fetch_news.history_manager import get_fetched_today, log_fetched_articles
+#from mcp_news_aggr.fetch_news.history_manager import _hash_url
 
 # Define the categories and their corresponding Google News search parameters
 CATEGORIES = ['world', 'europe', 'US', 'finland', 'financial', 'tech', 'sport']
@@ -41,8 +42,11 @@ def fetch_all_news(category):
     # 4. Filter out any articles we've already fetched today
     new_articles = []
     for article in all_possible_articles:
-        if article['title'] not in fetched_urls_today or article['summary'] not in fetched_urls_today or article['source'] not in fetched_urls_today:
+        key = (article.get("title", ""), article.get("summary", ""), article.get("source", ""))
+        if key not in fetched_urls_today:
             new_articles.append(article)
+            if len(new_articles) >= 3:
+                break
         
         # 5. Stop once we have 3 new articles
         if len(new_articles) >= 3:

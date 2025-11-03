@@ -1,0 +1,19 @@
+[project]
+name = "text-to-audio"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "audioop-lts>=0.2.2",
+    "boto3>=1.40.40",
+    "fastmcp>=2.12.4",
+    "ffmpeg>=1.4",
+    "google-api-python-client>=2.185.0",
+    "google-cloud-texttospeech>=2.31.0",
+    "httplib2>=0.31.0",
+    "moviepy>=2.2.1",
+    "oauth2client>=4.1.3",
+    "openai>=2.0.1",
+    "pydub>=0.25.1",
+]

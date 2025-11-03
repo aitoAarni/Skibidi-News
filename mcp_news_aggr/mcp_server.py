@@ -20,7 +20,8 @@ def clear_json_file():
 @app.tool()
 def aggregate_news() -> dict:
     """Fetch, summarize, and store news."""
-    articles = fetch_all_news(page_size=10, lang="en")
+    #'world', 'europe','US', 'finland','financial','tech','sport', 'asia'
+    articles = fetch_all_news(category='world')
     if not articles:
         return {"error": "No articles fetched."}
 

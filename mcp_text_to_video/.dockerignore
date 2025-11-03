@@ -1,0 +1,6 @@
+.venv
+samples
+.env
+.env.example
+README.md
+__pycache__

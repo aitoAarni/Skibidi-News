@@ -1,32 +1,66 @@
+## 27.10
+
+Tried making unfunny AI funny, to no avail.  
+Tried using shady GPUs for video gen, to no avail.  
+Frontend and backend progressing though. :>
+
+## 20.10
+
+Experimented with video stuff.
+
+My journey through the Realm of Image Generation has ended in ruin. The treasury
+of credits—gone. The gods—silent. The errors—multiplying.
+
+wan2.2’s documentation reads like an ancient spellbook missing half its pages.
+I’ve already cast ten dollars into the void, and still the daemon of “dependency
+conflict” laughs in my terminal.
+
+Until the School bestows divine funding upon us, I shall sheathe my keyboard and
+await the next prophecy of pip install.
+
+Refactored deployment setup.
+
+## 13.10
+
+Integration: everything up and running.
+
 ## 6.10
+
 🎤 “So, this week in skibidi chaos…”
 
-We started fixing dependencies for news_aggr — because apparently, “latest version” means “hope you like debugging for sport.”
-Then we tried connecting it to the router agent, which went about as smoothly as teaching a cat to do calculus.
+We started fixing dependencies for news_aggr — because apparently, “latest
+version” means “hope you like debugging for sport.” Then we tried connecting it
+to the router agent, which went about as smoothly as teaching a cat to do
+calculus.
 
-Meanwhile, the text to speech was out here like, “Hey, remember Docker?” — yeah, we fixed that too. It only took seventeen rebuilds, one existential crisis, and a prayer to the DevOps gods.
+Meanwhile, the text to speech was out here like, “Hey, remember Docker?” — yeah,
+we fixed that too. It only took seventeen rebuilds, one existential crisis, and
+a prayer to the DevOps gods.
 
-Then came audio splicing — because every text to speech model ever has the reading endurance of a toddler. “Oh, you want me to read more than 500 characters? That’s cute.”
-So now we’re basically audio surgeons — slicing and stitching words together like,
-🎧 “Next up — your daily dose of AI mumble rap!”
+Then came audio splicing — because every text to speech model ever has the
+reading endurance of a toddler. “Oh, you want me to read more than 500
+characters? That’s cute.” So now we’re basically audio surgeons — slicing and
+stitching words together like, 🎧 “Next up — your daily dose of AI mumble rap!”
 
-After that, we built a frontend with React and Tailwind, which means we spent half the day arguing about spacing and pretending we know how Tailwind’s flex classes actually work.
-Centering a div? Still a mythical art form.
+After that, we built a frontend with React and Tailwind, which means we spent
+half the day arguing about spacing and pretending we know how Tailwind’s flex
+classes actually work. Centering a div? Still a mythical art form.
 
-And then we updated the docs, which is code for “future us will never understand this, but let’s pretend we’re being responsible.”
+And then we updated the docs, which is code for “future us will never understand
+this, but let’s pretend we’re being responsible.”
 
 Finally, the grand finale: “Integrate router agent with all servers.”
-Translation? “Let’s make every system talk to every other system until they all start asking, ‘Wait… who am I?’”
+Translation? “Let’s make every system talk to every other system until they all
+start asking, ‘Wait… who am I?’”
 
-So yeah — team productivity: chaotic good.
-System stability: hanging by a thread.
+So yeah — team productivity: chaotic good. System stability: hanging by a
+thread.
 
- 
 ## 29.9.
 
 Dear diary...
 
-- Exploration and initial implementation of MCP Inspector, a visual testing
+- Exploration and initial implementation of MCP Inspector, a visual testing  
   utility for MCP servers.
 - Started doing mcp server coordination
 - Text to Audio mcp server and dockerization

@@ -210,9 +210,6 @@ def build_system_prompt(card: HumorCard) -> str:
     Produces 4-5 sentence accessible rants that are chaotic but understandable.
     """
     return f"""You are the Humor Engine for Skibidi News.
-        Chosen style: {card.Style}
-        Comedian seed: {card.ComedianSeed}
-
         Transform summarized news text into 4-5 sentences of emotionally loud, visually dumb,
         but factually correct comedy using {card}.
 

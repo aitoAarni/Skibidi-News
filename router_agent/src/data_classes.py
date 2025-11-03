@@ -9,3 +9,6 @@ class HumorText(BaseModel):
 
 class Transcript(BaseModel):
     transcript: str
+
+class VideoId(BaseModel):
+    video_id: str

@@ -3,10 +3,10 @@ from src.services.mcp_server_services import (
     call_humorizer,
     call_news_aggr,
     generate_trancript,
-    generate_video
+    generate_video,
 )
 
-from src.data_classes import News, HumorText, Transcript
+from src.data_classes import News, HumorText, Transcript, VideoId
 
 app = FastAPI()
 
@@ -39,7 +39,13 @@ async def transcript_route(huomr_text: HumorText):
 
     return {"transcript": transcript}
 
+
 @app.post("/synthesize")
 async def synthesize_route(transcript: Transcript):
     video_id = await generate_video(transcript.transcript)
     return {"video_id": video_id}
+
+
+@app.post("/upload-video")
+async def upload_video_route(video_id: VideoId):
+    pass

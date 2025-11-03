@@ -31,14 +31,31 @@ async def call_news_aggr(session):
 
 @mcp_http_session("http://mcp_text_to_video:8000/mcp")
 async def generate_trancript(session, humorized_text):
-    await session.intialize()
-    response = await session.call_tool("generate_transcript")
+    print(f"humor_text in generate_transcript func {humorized_text}")
+    await session.initialize()
+    response = await session.call_tool(
+        "generate_transcript", {"summarized_news": humorized_text}
+    )
+    print("\n"*4)
     print(f"response: {response}")
     transcript = response.content[0].text
+    print("\n"*4)
     print(f"transcript: {transcript}")
+
     print(f"type(transcript): {type(transcript)}")
     return transcript
 
+@mcp_http_session("http://mcp_text_to_video:8000/mcp")
+async def generate_video(session, transcript: str):
+    print(f"transcript: {transcript}")
+    await session.initialize()
+    response = await session.call_tool(
+        "synthesize", {"text": transcript}
+    )
+    print(f"response: {response}")
+    video_id = response.content[0].data
+    print(f"video_id: {video_id}")
+    return video_id
 
 def mock_news(fails: bool = False):
     text = ""

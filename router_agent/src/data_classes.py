@@ -6,3 +6,6 @@ class News(BaseModel):
 
 class HumorText(BaseModel):
     humor_text: str
+
+class Transcript(BaseModel):
+    transcript: str

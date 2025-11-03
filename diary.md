@@ -1,3 +1,10 @@
+## 3.10
+
+Humorizer broken.  
+YouTube auth figured out.  
+News fetching by category.  
+More backend and frontend stuff.
+
 ## 27.10
 
 Tried making unfunny AI funny, to no avail.  

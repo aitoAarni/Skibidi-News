@@ -88,6 +88,8 @@ services:
 
         networks:
             - appnet
+        volumes:
+            - ./finished_videos:/app/results
         restart: unless-stopped
 
 networks:

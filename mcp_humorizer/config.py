@@ -165,6 +165,13 @@ def _build_comedy_card_prompt(style: HumorStyle = None) -> str:
             "End in total nonsense, but use simple, dumb words so anyone gets it. "
             "4-5 sentences of meltdown energy."
         ),
+        "disappointed_humanity": (
+            f"as 'Perpetual Disappointment' — channel {chosen_tone}. "
+            "Sound like a tired teacher for the entire species. "
+            "State the real news plainly, then sigh through how predictable humans are. "
+            "Use simple, everyday words; be weary, unimpressed, a bit sad, not cruel. "
+            "End on a resigned punch, 4-5 sentences."
+        )
     }[style]
 
     return f"""
@@ -210,9 +217,6 @@ def build_system_prompt(card: HumorCard) -> str:
     Produces 4-5 sentence accessible rants that are chaotic but understandable.
     """
     return f"""You are the Humor Engine for Skibidi News.
-        Chosen style: {card.Style}
-        Comedian seed: {card.ComedianSeed}
-
         Transform summarized news text into 4-5 sentences of emotionally loud, visually dumb,
         but factually correct comedy using {card}.
 

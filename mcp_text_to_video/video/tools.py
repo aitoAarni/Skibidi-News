@@ -29,7 +29,7 @@ def combine_audio_and_video(audio_client: Engine) -> str:
 
         clip = (
             TextClip(
-                font="Arial.ttf",
+                font="./fonts/Super_Joyful.ttf",
                 text=all_text,
                 font_size=35,
                 color="orange",

@@ -1,4 +1,7 @@
 from fastapi import FastAPI
+# Import the CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware
+
 from src.services.mcp_server_services import (
     call_humorizer,
     call_news_aggr,
@@ -9,6 +12,26 @@ from src.services.mcp_server_services import (
 from src.data_classes import News, HumorText, Transcript, VideoId
 
 app = FastAPI()
+
+# --- CORS CONFIGURATION START ---
+
+# Define the list of origins that are allowed to make requests.
+# Your frontend is running on http://localhost:5173
+origins = [
+    "http://localhost:5173",
+    "http://localhost:5173/", # Also good to include the trailing slash
+]
+
+# Add the CORSMiddleware to your application
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Allows specific origins
+    allow_credentials=True, # Allows cookies (if you use them)
+    allow_methods=["*"],    # Allows all methods (GET, POST, etc.)
+    allow_headers=["*"],    # Allows all headers
+)
+
+# --- CORS CONFIGURATION END ---
 
 
 @app.get("/ping")

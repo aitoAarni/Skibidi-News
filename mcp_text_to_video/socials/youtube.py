@@ -114,6 +114,7 @@ def resumable_upload(insert_request):
 
 
 def upload(
+    oauth_token,
     file_path,
     video_title,
     video_description,
@@ -162,7 +163,7 @@ def upload(
         "loggingLevel": "ERROR",
     }
 
-    youtube = get_authenticated_service()
+    youtube = get_authenticated_service(oauth_token)
     try:
         initialize_upload(youtube, args)
     except HttpError as e:

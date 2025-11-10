@@ -28,7 +28,10 @@ export default function PromptLab({ summary, humor }: PromptLabProps) {
       const r = await fetchBestPrompt(prompt, summaryDraft, true);
       setResp(r);
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Failed to contact prompt optimizer";
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Failed to contact prompt optimizer";
       setResp({ error: message });
     } finally {
       setLoading(false);

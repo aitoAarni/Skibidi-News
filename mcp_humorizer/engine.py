@@ -133,23 +133,7 @@ def comedicize_text(summarized_text: str, settings: Settings) -> str:
         return "No input provided. Punchline withheld until further notice."
 
     provider = settings.model_provider
-    comedy_card = ""
-    if provider == "openai":
-        try:
-            comedy_card = _generate_with_openai(summarized_text="", settings=settings, system_prompt=build_system_prompt(settings.humor_style))
-        except GenerationError as e:
-            logger.warning("OpenAI failed, using humor fallback: %s", e)
-            comedy_card = _card_fallback(style=settings.humor_style)
-    elif provider == "anthropic":
-        try:
-            comedy_card = _generate_with_anthropic(summarized_text="", settings=settings, system_prompt=build_system_prompt(settings.humor_style))
-        except GenerationError as e:
-            logger.warning("OpenAI failed, using humor fallback: %s", e)
-            comedy_card = _card_fallback(style=settings.humor_style)
-    else:
-        comedy_card = _card_fallback(style=settings.humor_style)
-
-    system_prompt = build_system_prompt(comedy_card)
+    system_prompt = build_system_prompt(settings.humor_style)
     if provider == "openai":
         try:
             return _generate_with_openai(summarized_text, settings, system_prompt)

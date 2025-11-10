@@ -108,14 +108,15 @@ class Settings(BaseModel):
             seed=seed,
         )
 
+
 def _build_comedy_card_prompt(style: HumorStyle = None) -> str:
     """Generate an accessible, high-impact comedic card prompt.
     Randomly selects both a humor style and one comedian tone.
     Ensures output is plain, loud, and emotionally easy to follow.
     """
     
-    edgy_styles = ["sarcastic", "absurd", "deadpan", "roast", "random", "nihilistic_fury"]
-    if not style:
+    edgy_styles = ["sarcastic", "absurd", "deadpan", "roast", "random", "nihilistic_fury", "disappointed_humanity"]
+    if not style or style not in edgy_styles:
         style = random.choice(edgy_styles)
 
     all_comics = [
@@ -191,7 +192,7 @@ def _build_comedy_card_prompt(style: HumorStyle = None) -> str:
         - 4-5 full sentences, no fragments.
         - The humor must make sense even to tired, average people.
 
-        OUTPUT (plain text):
+        INTERNAL PLAN (do not print this; use it only to plan):
         [Title]: <short hook 3–7 words>
         Style: {style}
         ComedianSeed: {chosen_tone}
@@ -209,16 +210,30 @@ def _build_comedy_card_prompt(style: HumorStyle = None) -> str:
         CATALOGS:
         Angles: Overreaction, Everyday Meltdown, Process Farce, Dumb Analogy
         Devices: Irony, Frame Shift, Exaggeration, Paraprosdokian, Smash-Cut
-"""
+    """
 
 
-def build_system_prompt(card: HumorCard) -> str:
+def build_system_prompt(style: HumorStyle) -> str:
     """Compose the Humor Engine system prompt for Skibidi News.
     Produces 4-5 sentence accessible rants that are chaotic but understandable.
     """
+    
+    card = _build_comedy_card_prompt(style)
+
     return f"""You are the Humor Engine for Skibidi News.
-        Transform summarized news text into 4-5 sentences of emotionally loud, visually dumb,
-        but factually correct comedy using {card}.
+
+        Use the following as an INTERNAL PLAN ONLY. Never reveal or copy any part of it:
+        <PLAN>
+        {card}
+        </PLAN>
+
+        Now write the final output:
+        - Exactly one paragraph of 4–5 sentences.
+        - Emotionally loud, visually dumb, but factually correct.
+        - State the real news clearly; end on a strong ridiculous visual/one-liner.
+        - DO NOT output titles, labels, bullets, JSON, or any metadata.
+        - If you start printing anything that looks like a plan (e.g., "[Title]:", "Style:", "Beats:"), discard it and rewrite as a single paragraph.
+
 
         Rules:                                                                                              
         - The real news must be stated clearly and simply.

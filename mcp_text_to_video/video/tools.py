@@ -11,7 +11,13 @@ import os
 import re
 
 
-def combine_audio_and_video(audio_client: Engine) -> str:
+videos = {
+    "subway-surfers": "video/ss.mp4",
+    "big-buck-bunny": "video/bbb.mp4",
+}
+
+
+def combine_audio_and_video(audio_client: Engine, background_video: str) -> str:
     audio_text_clips = []
     total_duration = 0
     for audio_synthesis in audio_client.syntheses:
@@ -59,7 +65,8 @@ def combine_audio_and_video(audio_client: Engine) -> str:
 
     print(f"The duration of the output is {audio_text.duration}s")
 
-    video_clip = VideoFileClip("video/bbb.mp4").with_audio(None)
+    background_video_path = videos.get(background_video, videos["subway-surfers"])
+    video_clip = VideoFileClip(background_video_path).with_audio(None)
 
     final_video = CompositeVideoClip([video_clip[0 : audio_text.duration], audio_text])
     final_id = uuid4()

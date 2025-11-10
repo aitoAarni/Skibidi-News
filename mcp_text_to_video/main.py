@@ -19,7 +19,13 @@ def generate_transcript(summarized_news: str) -> str:
 
 
 @app.tool
-def synthesize(text: str) -> str:
+def get_background_videos() -> list[str]:
+    """Get list of available background videos."""
+    return list(tools.videos.keys())
+
+
+@app.tool
+def synthesize(text: str, background_video: str) -> str:
     """Synthesize text to video and save it on the MCP server.
     Return an ID which can be used to publish that video later."""
     # Hard limit of 10k chars for Polly
@@ -30,7 +36,7 @@ def synthesize(text: str) -> str:
     # more bla bla bla
 
     client = polly.PollyClient().synthesize(text=text)
-    return tools.combine_audio_and_video(client)
+    return tools.combine_audio_and_video(client, background_video)
 
 
 @app.tool

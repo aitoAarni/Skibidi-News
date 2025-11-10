@@ -10,13 +10,11 @@ from starlette.routing import Mount
 
 from mcp.server.fastmcp import FastMCP
 
-from .fetch_news.fetch_all_news import fetch_all_news
-from .summarize_news import summarize_all_articles
+from .engine import comedicize_text
+from .config import Settings
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
-
-JSON_FILE = os.path.join(os.path.dirname(__file__), "summarized_news.json")
 
 # Create an API server and a Chat server
 api_mcp = FastMCP("API Server", stateless_http=True)  # stateless is fine for demo
@@ -26,34 +24,28 @@ chat_mcp = FastMCP("Chat Server", stateless_http=True)
 api_mcp.settings.streamable_http_path = "/"
 chat_mcp.settings.streamable_http_path = "/"
 
-
-@api_mcp.tool()
-def api_status() -> str:
-    """Get API status."""
-    return "API is running"
-
-def clear_json_file():
-    with open(JSON_FILE, "w", encoding="utf-8") as f:
-        json.dump({}, f)
-
 @chat_mcp.tool()
-def aggregate_news() -> dict:
-    """Fetch, summarize, and store news."""
-    articles = fetch_all_news("world")
-    if not articles:
-        return {"error": "No articles fetched."}
+def comedicize(id: str, summarized_text: str) -> dict:
+    """
+    Transform summarized news text into comedic text.
 
-    combined_texts = [
-        f"Article {i+1}:\nTitle: {a['title']}\nSummary: {a['summary']}\nSource: {a['source']}\n"
-        for i, a in enumerate(articles)
-    ]
+    API Contract:
+    Input:
+    {
+      "id": "uuid",
+      "summarized_text": "The economy shrank by 2% last quarter."
+    }
 
-    summary_text = summarize_all_articles(combined_texts)
+    Output:
+    {
+      "id": "uuid",
+      "comedic_text": "The economy shrank by 2%. Don’t worry, my diet is shrinking faster!"
+    }
+    """
+    settings = Settings.from_env()
+    result = comedicize_text(summarized_text, settings)
+    return {"id": id, "comedic_text": result}
 
-    clear_json_file()
-    with open(JSON_FILE, "w", encoding="utf-8") as f:
-        json.dump({"summary": summary_text}, f, ensure_ascii=False, indent=2)
-    return {"summary": summary_text}
 
 
 # Optional: manage both session managers if running stateful servers

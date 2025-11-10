@@ -1,0 +1,9 @@
+[project]
+name = "mcp_news_aggr"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+dependencies = [
+    "starlette>=0.48.0",
+    "uvicorn>=0.38.0",
+]

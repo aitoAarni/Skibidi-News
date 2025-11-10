@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Radio, Server, Sparkles } from "lucide-react";
+import { Clapperboard, Server, Sparkles } from "lucide-react";
 import Sidebar from "../components/layout/Sidebar";
 import Header from "../components/layout/Header";
 import NewsPanel from "../components/NewsPanel";
@@ -34,21 +34,31 @@ export default function Dashboard() {
       },
       {
         id: "audio",
-        label: "Audio studio",
-        value: humor ? "Script in queue" : "Needs comedic script",
-        detail: humor
-          ? "Fire up text-to-speech for a fresh read"
-          : "Create a comedic remix to synthesize audio",
-        icon: Radio,
+        label: "Studio pipeline",
+        value: audioUrl
+          ? "Video ready"
+          : humor
+          ? "Narration in queue"
+          : "Needs comedic script",
+        detail: audioUrl
+          ? "Preview the generated clip below"
+          : humor
+          ? "Generate transcript & video from the joke"
+          : "Create a comedic remix to synthesize media",
+        icon: Clapperboard,
         accent: "from-emerald-500/80 via-teal-500/70 to-emerald-400/60",
       },
     ],
-    [summary, humor]
+    [summary, humor, audioUrl]
   );
 
   return (
     <div className="flex min-h-screen bg-slate-100/60 dark:bg-slate-950">
-      <Sidebar />
+      <Sidebar
+        summaryReady={Boolean(summary)}
+        humorReady={Boolean(humor)}
+        mediaReady={Boolean(audioUrl)}
+      />
       <main className="relative flex min-h-screen flex-1 flex-col overflow-hidden">
         <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(129,140,248,0.18),transparent_55%)] dark:bg-[radial-gradient(circle_at_top,rgba(14,116,144,0.35),transparent_60%)]" />
         <Header />
@@ -90,7 +100,7 @@ export default function Dashboard() {
                 })}
               </section>
 
-              <section className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+              <section className="grid grid-cols-1 gap-6 xl:grid-cols-[1.1fr_0.9fr]">
                 <div id="news" className="h-full">
                   <NewsPanel
                     summary={summary}
@@ -111,16 +121,16 @@ export default function Dashboard() {
                 </div>
               </section>
 
-              <section className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-                <div id="audio" className="h-full">
+              <section className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+                <div id="audio" className="h-full xl:order-1">
                   <AudioPanel
                     text={humor}
                     audioUrl={audioUrl}
                     setAudioUrl={setAudioUrl}
                   />
                 </div>
-                <div id="prompt" className="h-full">
-                  <PromptLab />
+                <div id="prompt" className="h-full xl:order-2">
+                  <PromptLab summary={summary} humor={humor} />
                 </div>
               </section>
             </div>

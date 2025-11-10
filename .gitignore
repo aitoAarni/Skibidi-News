@@ -13,3 +13,5 @@ compose.local.yaml
 synthesized_speech/*
 client_secrets.json
 *oauth2.json
+
+finished_videos

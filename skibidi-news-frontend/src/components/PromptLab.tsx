@@ -1,23 +1,50 @@
-import { useState } from "react";
-import { BrainCircuit, SquarePen } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { BrainCircuit, PenLine, Sparkles, SquarePen, Zap } from "lucide-react";
 import { fetchBestPrompt, type BestPromptResponse } from "../api/prompt";
 import PanelShell from "./ui/PanelShell";
 
-export default function PromptLab() {
+type PromptLabProps = {
+  summary: string;
+  humor: string;
+};
+
+export default function PromptLab({ summary, humor }: PromptLabProps) {
   const [prompt, setPrompt] = useState("Caption about today's top headline");
-  const [summary, setSummary] = useState("");
+  const [summaryDraft, setSummaryDraft] = useState(summary);
+  const [summaryDirty, setSummaryDirty] = useState(false);
   const [resp, setResp] = useState<BestPromptResponse | null>(null);
   const [loading, setLoading] = useState(false);
+  const [autoOptimize, setAutoOptimize] = useState(false);
 
-  const onRun = async () => {
+  useEffect(() => {
+    if (!summaryDirty) {
+      setSummaryDraft(summary);
+    }
+  }, [summary, summaryDirty]);
+
+  const runOptimization = useCallback(async () => {
     setLoading(true);
     try {
-      const r = await fetchBestPrompt(prompt, summary, true);
+      const r = await fetchBestPrompt(prompt, summaryDraft, true);
       setResp(r);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to contact prompt optimizer";
+      setResp({ error: message });
     } finally {
       setLoading(false);
     }
-  };
+  }, [prompt, summaryDraft]);
+
+  useEffect(() => {
+    if (autoOptimize && summaryDraft.trim().length > 0) {
+      void runOptimization();
+    }
+  }, [summaryDraft, autoOptimize, runOptimization]);
+
+  const canOptimize = useMemo(
+    () => summaryDraft.trim().length > 0 && !loading,
+    [summaryDraft, loading]
+  );
 
   return (
     <PanelShell accent="violet">
@@ -67,8 +94,11 @@ export default function PromptLab() {
               Summary context
             </span>
             <textarea
-              value={summary}
-              onChange={(e) => setSummary(e.target.value)}
+              value={summaryDraft}
+              onChange={(e) => {
+                setSummaryDirty(true);
+                setSummaryDraft(e.target.value);
+              }}
               className="h-28 w-full rounded-xl border border-slate-200/70 bg-white/70 px-3 py-3 text-sm text-slate-900 shadow-sm transition focus:border-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-200 dark:border-slate-700/70 dark:bg-slate-900/60 dark:text-slate-100"
               placeholder="Paste or craft the news summary you want optimized"
             />
@@ -78,8 +108,8 @@ export default function PromptLab() {
         <div className="flex flex-wrap items-center gap-3">
           <button
             type="button"
-            onClick={onRun}
-            disabled={loading || !summary}
+            onClick={runOptimization}
+            disabled={!canOptimize}
             className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-violet-500 via-indigo-500 to-violet-500 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_14px_34px_-20px_rgba(139,92,246,0.9)] transition hover:shadow-[0_22px_42px_-18px_rgba(139,92,246,0.85)] disabled:cursor-not-allowed disabled:opacity-55"
           >
             {loading ? "Optimizing…" : "Get best prompt"}
@@ -91,9 +121,53 @@ export default function PromptLab() {
           >
             Clear
           </button>
+          <button
+            type="button"
+            onClick={() => {
+              setSummaryDirty(false);
+              setSummaryDraft(summary);
+            }}
+            disabled={!summary.length}
+            className="inline-flex items-center gap-2 rounded-xl border border-violet-300/60 bg-white/60 px-4 py-2.5 text-sm font-semibold text-violet-600 shadow-sm transition hover:border-violet-400 hover:bg-violet-50/80 dark:border-violet-500/40 dark:bg-violet-500/15 dark:text-violet-200 disabled:cursor-not-allowed disabled:opacity-55"
+          >
+            <PenLine className="size-4" />
+            Use summary
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setSummaryDirty(true);
+              setSummaryDraft(humor);
+            }}
+            disabled={!humor.length}
+            className="inline-flex items-center gap-2 rounded-xl border border-violet-300/60 bg-white/60 px-4 py-2.5 text-sm font-semibold text-violet-600 shadow-sm transition hover:border-violet-400 hover:bg-violet-50/80 dark:border-violet-500/40 dark:bg-violet-500/15 dark:text-violet-200 disabled:cursor-not-allowed disabled:opacity-55"
+          >
+            <Sparkles className="size-4" />
+            Use comedic script
+          </button>
           <span className="inline-flex items-center gap-2 rounded-xl border border-slate-200/70 bg-white/70 px-4 py-2 text-xs font-medium text-slate-500 dark:border-slate-800/60 dark:bg-slate-950/40 dark:text-slate-300">
             MCP Prompt Optimizer v2
           </span>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setAutoOptimize((prev) => !prev)}
+            className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-xs font-semibold transition ${
+              autoOptimize
+                ? "border-emerald-400/70 bg-emerald-500/15 text-emerald-600 dark:border-emerald-500/50 dark:bg-emerald-500/20 dark:text-emerald-200"
+                : "border-slate-200/70 bg-white/70 text-slate-500 hover:border-emerald-200/60 hover:bg-emerald-50/80 dark:border-slate-700/60 dark:bg-slate-900/40 dark:text-slate-300 dark:hover:border-emerald-400/40 dark:hover:bg-emerald-500/10"
+            }`}
+          >
+            <Zap className="size-3.5" />
+            Auto-optimize on summary updates
+          </button>
+          {autoOptimize && (
+            <span className="text-xs text-emerald-600 dark:text-emerald-300">
+              Runs whenever the pipeline produces a new summary.
+            </span>
+          )}
         </div>
 
         {resp?.error && (

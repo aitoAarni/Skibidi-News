@@ -35,6 +35,7 @@ def synthesize(text: str) -> str:
 
 @app.tool
 def publish(
+    oauth_token: str,
     video_id: str,
     video_title: str,
     video_description: str,
@@ -50,10 +51,11 @@ def publish(
         keywords: comma-separated string of keywords, e.g. "keyword1,keyword2,keyword3"
     """
     upload(
-        f"results/{video_id}.mp4",  # Make sure this is ≤60s and vertical/square format
-        video_title,
-        video_description,
-        keywords,
+        oauth_token=oauth_token,
+        file_path=f"results/{video_id}.mp4",  # Make sure this is ≤60s and vertical/square format
+        video_title=video_title,
+        video_description=video_description,
+        keywords=keywords,
         privacy_status="unlisted",
     )
 

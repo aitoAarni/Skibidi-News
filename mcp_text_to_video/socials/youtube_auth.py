@@ -14,9 +14,9 @@ YOUTUBE_API_VERSION = "v3"
 OAUTH2_FILE = "oauth2.json"
 
 
-def get_authenticated_service():
+def get_authenticated_service(oauth_token):
     with open(OAUTH2_FILE, "w") as f:
-        f.write(base64.b64decode(os.getenv("OAUTH2_BASE64")).decode("utf-8"))
+        f.write(base64.b64decode(oauth_token).decode("utf-8"))
 
     try:
         storage = Storage(OAUTH2_FILE)

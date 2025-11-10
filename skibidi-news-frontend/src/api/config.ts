@@ -1,21 +1,12 @@
 export const API_BASES = {
-  news:
-    import.meta.env.VITE_NEWS_API_BASE || "http://localhost:8000/mcp-news-aggr",
-  humor:
-    import.meta.env.VITE_HUMOR_API_BASE ||
-    "http://localhost:8001/mcp-humorizer",
-  audio:
-    import.meta.env.VITE_AUDIO_API_BASE ||
-    "http://localhost:8002/text-to-audio",
-  prompt:
-    import.meta.env.VITE_PROMPT_API_BASE ||
-    "http://localhost:8003/mcp-prompt-opt",
-  router: import.meta.env.VITE_ROUTER_API_BASE || "http://localhost:8010",
+  router: import.meta.env.VITE_ROUTER_API_BASE || "http://127.0.0.1:8000",
 };
 
 export const endpoints = {
-  aggregateNews: `${API_BASES.news}/aggregate_news`,
-  comedicize: `${API_BASES.humor}/comedicize`,
-  synthesize: `${API_BASES.audio}/synthesize`,
-  bestPrompt: `${API_BASES.prompt}/best_prompt`,
+  aggregateNews: `${API_BASES.router}/news`,
+  comedicize: `${API_BASES.router}/humorize_news`,
+  transcript: `${API_BASES.router}/transcript`,
+  studioGenerate: `${API_BASES.router}/studio/generate`,
+  studioVideo: (videoId: string) => `${API_BASES.router}/videos/${videoId}`,
+  bestPrompt: `${API_BASES.router}/prompt/best`,
 };

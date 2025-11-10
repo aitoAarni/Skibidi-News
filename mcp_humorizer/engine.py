@@ -133,6 +133,7 @@ def comedicize_text(summarized_text: str, settings: Settings) -> str:
         return "No input provided. Punchline withheld until further notice."
 
     provider = settings.model_provider
+    comedy_card = ""
     if provider == "openai":
         try:
             comedy_card = _generate_with_openai(summarized_text="", settings=settings, system_prompt=build_system_prompt(settings.humor_style))

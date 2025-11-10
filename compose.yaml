@@ -17,6 +17,7 @@ services:
             - mcp_news_aggr
         volumes:
             - ./synthesized_speech:/app/synthesized_speech
+            - ./finished_videos:/app/finished_videos
         ports:
             - "127.0.0.1:8000:8000"
         networks:
@@ -27,8 +28,9 @@ services:
             context: ./skibidi-news-frontend
             dockerfile: Dockerfile
         environment:
-            VITE_NEWS_API_BASE: http://mcp_router_agent:8000/news
-            VITE_HUMOR_API_BASE: http://mcp_router_agent:8000/humorize_news
+            VITE_NEWS_API_BASE: http://127.0.0.1:8000/news
+            VITE_HUMOR_API_BASE: http://127.0.0.1:8000/humorize_news
+            VITE_ROUTER_API_BASE: http://127.0.0.1:8000
         ports:
             - "127.0.0.1:5173:5173"
         volumes:

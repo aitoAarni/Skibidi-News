@@ -3,7 +3,9 @@ import json
 import logging
 from mcp.server.fastmcp import FastMCP
 
-from .fetch_news.fetch_all_news import fetch_all_news
+from .fetch_news.fetch_all_news import AVAILABLE_CATEGORIES, fetch_all_news
+
+VALID_CATEGORY_KEYS = {c.lower(): c for c in AVAILABLE_CATEGORIES}
 from .summarize_news import summarize_all_articles
 
 logger = logging.getLogger(__name__)
@@ -18,10 +20,12 @@ def clear_json_file():
         json.dump({}, f)
 
 @app.tool()
-def aggregate_news() -> dict:
+def aggregate_news(category: str = "world") -> dict:
     """Fetch, summarize, and store news."""
-    #'world', 'europe','US', 'finland','financial','tech','sport', 'asia'
-    articles = fetch_all_news(category='world')
+    requested = category or "world"
+    canonical = VALID_CATEGORY_KEYS.get(requested.lower(), "world")
+
+    articles = fetch_all_news(category=canonical)
     if not articles:
         return {"error": "No articles fetched."}
 
@@ -36,7 +40,7 @@ def aggregate_news() -> dict:
     with open(JSON_FILE, "w", encoding="utf-8") as f:
         json.dump({"summary": summary_text}, f, ensure_ascii=False, indent=2)
 
-    return {"summary": summary_text}
+    return {"category": canonical, "summary": summary_text}
 
 @app.tool()
 def get_summary() -> dict:

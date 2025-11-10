@@ -12,3 +12,9 @@ class Transcript(BaseModel):
 
 class VideoId(BaseModel):
     video_id: str
+
+
+class PromptOptimizeRequest(BaseModel):
+    prompt: str
+    summary: str
+    allow_quick_opt: bool | None = True

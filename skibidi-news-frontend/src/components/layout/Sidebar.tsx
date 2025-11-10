@@ -1,33 +1,55 @@
-import { Brain, Laugh, Newspaper, Volume2 } from "lucide-react";
+import { Brain, Clapperboard, Laugh, Newspaper } from "lucide-react";
 
-const routes = [
-  {
-    href: "#news",
-    label: "News Feed",
-    icon: Newspaper,
-    description: "Curated daily pulse",
-  },
-  {
-    href: "#humor",
-    label: "Comedic View",
-    icon: Laugh,
-    description: "Punch up summaries",
-  },
-  {
-    href: "#prompt",
-    label: "Prompt Lab",
-    icon: Brain,
-    description: "Optimize prompts",
-  },
-  {
-    href: "#audio",
-    label: "Audio Studio",
-    icon: Volume2,
-    description: "Voice your script",
-  },
-];
+type SidebarProps = {
+  summaryReady: boolean;
+  humorReady: boolean;
+  mediaReady: boolean;
+};
 
-export default function Sidebar() {
+export default function Sidebar({
+  summaryReady,
+  humorReady,
+  mediaReady,
+}: SidebarProps) {
+  const routes = [
+    {
+      href: "#news",
+      label: "News Feed",
+      icon: Newspaper,
+      description: summaryReady ? "Summary captured" : "Curated daily pulse",
+      status: summaryReady ? "ready" : "idle",
+    },
+    {
+      href: "#humor",
+      label: "Comedic View",
+      icon: Laugh,
+      description: humorReady
+        ? "Punchline locked"
+        : summaryReady
+        ? "Punch up summaries"
+        : "Awaiting summary",
+      status: humorReady ? "ready" : summaryReady ? "pending" : "idle",
+    },
+    {
+      href: "#prompt",
+      label: "Prompt Lab",
+      icon: Brain,
+      description: "Optimize prompts",
+      status: summaryReady ? "ready" : "idle",
+    },
+    {
+      href: "#audio",
+      label: "Studio Pipeline",
+      icon: Clapperboard,
+      description: mediaReady
+        ? "Clip ready"
+        : humorReady
+        ? "Generate clips"
+        : "Needs comedic script",
+      status: mediaReady ? "ready" : humorReady ? "pending" : "idle",
+    },
+  ];
+
   return (
     <aside className="sticky top-0 hidden h-screen w-72 flex-col border-r border-slate-200/70 bg-white/85 backdrop-blur-xl dark:border-slate-800/70 dark:bg-slate-950/70 md:flex">
       <div className="relative flex flex-col gap-3 px-6 py-6">
@@ -48,6 +70,12 @@ export default function Sidebar() {
         {routes.map((route) => {
           const Icon = route.icon;
           const isPrimary = route.href === "#news";
+          const statusTone =
+            route.status === "ready"
+              ? "bg-emerald-500"
+              : route.status === "pending"
+              ? "bg-amber-500"
+              : "bg-slate-300 dark:bg-slate-600";
           return (
             <a
               key={route.href}
@@ -67,6 +95,16 @@ export default function Sidebar() {
               <p className="pl-12 text-xs text-slate-500 transition group-hover:text-indigo-500 dark:text-slate-400 dark:group-hover:text-indigo-200">
                 {route.description}
               </p>
+              <span className="ml-12 inline-flex items-center gap-2 text-[11px] font-medium text-slate-400 dark:text-slate-500">
+                <span
+                  className={`inline-flex h-1.5 w-1.5 rounded-full ${statusTone}`}
+                />
+                {route.status === "ready"
+                  ? "Ready"
+                  : route.status === "pending"
+                  ? "In queue"
+                  : "Idle"}
+              </span>
             </a>
           );
         })}

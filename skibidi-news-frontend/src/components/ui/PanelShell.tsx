@@ -2,7 +2,7 @@ import { motion, type MotionProps } from "framer-motion";
 import clsx from "clsx";
 import type { PropsWithChildren } from "react";
 
-type Accent = "indigo" | "pink" | "emerald" | "violet" | "sky";
+type Accent = "indigo" | "pink" | "emerald" | "violet" | "sky" | "red";
 
 type PanelShellProps = PropsWithChildren<{
   accent?: Accent;
@@ -19,6 +19,7 @@ const accentStyles: Record<Accent, string> = {
   violet:
     "before:from-violet-400/70 before:via-violet-400/20 before:to-transparent after:bg-violet-500/15",
   sky: "before:from-sky-400/70 before:via-sky-400/20 before:to-transparent after:bg-sky-500/15",
+  red: "before:from-red-400/70 before:via-red-400/20 before:to-transparent after:bg-red-500/15",
 };
 
 export default function PanelShell({

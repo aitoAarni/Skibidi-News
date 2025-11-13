@@ -6,11 +6,13 @@ import NewsPanel from "../components/NewsPanel";
 import HumorPanel from "../components/HumorPanel";
 import AudioPanel from "../components/AudioPanel";
 import PromptLab from "../components/PromptLab";
+import YoutubePanel from "../components/YoutubePanel";
 
 export default function Dashboard() {
   const [summary, setSummary] = useState("");
   const [humor, setHumor] = useState("");
   const [audioUrl, setAudioUrl] = useState("");
+  const [youtubeAuthToken, setYoutubeAuthToken] = useState("");
 
   const overviewCards = useMemo(
     () => [
@@ -131,6 +133,12 @@ export default function Dashboard() {
                 </div>
                 <div id="prompt" className="h-full xl:order-2">
                   <PromptLab summary={summary} humor={humor} />
+                </div>
+                <div id="youtube" className="h-full">
+                  <YoutubePanel
+                    token={youtubeAuthToken}
+                    setToken={setYoutubeAuthToken}
+                  />
                 </div>
               </section>
             </div>

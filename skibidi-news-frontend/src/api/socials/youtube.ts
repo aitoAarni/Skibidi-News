@@ -44,6 +44,7 @@ function loadTokenClient(clientId: string, scope: string) {
 }
 
 const YOUTUBE_UPLOAD_SCOPE = "https://www.googleapis.com/auth/youtube.upload";
+
 export async function authenticateYouTube() {
   const clientId = import.meta.env.VITE_YOUTUBE_CLIENT_ID;
   if (!clientId) {
@@ -56,3 +57,21 @@ export async function authenticateYouTube() {
   const encoded = btoa(accessToken as string);
   return encoded;
 }
+
+import axios from "axios";
+import { endpoints } from "../config";
+
+export type YouTubeUploadParams = {
+  oauth_token: string;
+  video_id: string;
+  video_title: string;
+  video_description: string;
+  keywords: string;
+  privacy_status: string;
+};
+
+export const uploadToYouTube = async (
+  params: YouTubeUploadParams
+): Promise<void> => {
+  await axios.post(endpoints.youtubePublish, params);
+};

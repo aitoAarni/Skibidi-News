@@ -2,6 +2,7 @@ import asyncio
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Query, Request
+
 # Import the CORSMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
@@ -12,14 +13,17 @@ from src.services.mcp_server_services import (
     generate_trancript,
     generate_video,
     get_best_prompt,
+    publish_to_youtube,
 )
 
 from src.data_classes import (
     News,
     HumorText,
+    StudioGenerateRequest,
     Transcript,
     VideoId,
     PromptOptimizeRequest,
+    YouTubeUploadRequest,
 )
 
 FINISHED_VIDEOS_DIR = Path("/app/finished_videos")
@@ -56,7 +60,7 @@ app = FastAPI()
 # Your frontend is running on http://localhost:5173
 origins = [
     "http://localhost:5173",
-    "http://localhost:5173/", # Also good to include the trailing slash
+    "http://localhost:5173/",  # Also good to include the trailing slash
     "http://127.0.0.1:5173",
     "http://127.0.0.1:5173/",
 ]
@@ -65,9 +69,9 @@ origins = [
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,  # Allows specific origins
-    allow_credentials=True, # Allows cookies (if you use them)
-    allow_methods=["*"],    # Allows all methods (GET, POST, etc.)
-    allow_headers=["*"],    # Allows all headers
+    allow_credentials=True,  # Allows cookies (if you use them)
+    allow_methods=["*"],  # Allows all methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allows all headers
 )
 
 # --- CORS CONFIGURATION END ---
@@ -85,7 +89,9 @@ async def news_route(category: str = Query("world")):
     try:
         news_payload = await call_news_aggr(canonical_category)
     except Exception as exc:  # pragma: no cover - surfaced to client
-        raise HTTPException(status_code=502, detail=f"Failed to fetch news: {exc}") from exc
+        raise HTTPException(
+            status_code=502, detail=f"Failed to fetch news: {exc}"
+        ) from exc
 
     summary = news_payload.get("summary", "")
     resolved_category = news_payload.get("category", canonical_category)
@@ -121,21 +127,27 @@ async def synthesize_route(transcript: Transcript):
 
 @app.post("/prompt/best")
 async def best_prompt_route(request: PromptOptimizeRequest):
-    allow_quick_opt = True if request.allow_quick_opt is None else request.allow_quick_opt
+    allow_quick_opt = (
+        True if request.allow_quick_opt is None else request.allow_quick_opt
+    )
 
     try:
         result = await get_best_prompt(request.prompt, request.summary, allow_quick_opt)
     except Exception as exc:  # pragma: no cover - surfaced to client
-        raise HTTPException(status_code=502, detail=f"Failed to optimize prompt: {exc}") from exc
+        raise HTTPException(
+            status_code=502, detail=f"Failed to optimize prompt: {exc}"
+        ) from exc
 
     return result
 
 
 @app.post("/studio/generate")
-async def studio_generate_route(huomr_text: HumorText, request: Request):
+async def studio_generate_route(
+    studio_request: StudioGenerateRequest, request: Request
+):
     """Generate both transcript and synthesized video for the provided humor text."""
-    transcript = await generate_trancript(huomr_text.humor_text)
-    video_id = await generate_video(transcript)
+    transcript = await generate_trancript(studio_request.humor_text)
+    video_id = await generate_video(transcript, studio_request.background_video)
 
     video_id_str = str(video_id)
     video_path = FINISHED_VIDEOS_DIR / f"{video_id_str}.mp4"
@@ -169,6 +181,25 @@ async def serve_video(video_id: str):
         media_type="video/mp4",
         filename=f"{video_id}.mp4",
     )
+
+
+@app.post("/youtube/publish")
+async def youtube_publish_route(upload_request: YouTubeUploadRequest):
+    """Publish a video to YouTube using the provided OAuth token and video details."""
+    try:
+        await publish_to_youtube(
+            oauth_token=upload_request.oauth_token,
+            video_id=upload_request.video_id,
+            video_title=upload_request.video_title,
+            video_description=upload_request.video_description,
+            keywords=upload_request.keywords,
+            privacy_status=upload_request.privacy_status,
+        )
+        return {"success": True, "message": "Video published successfully to YouTube"}
+    except Exception as exc:
+        raise HTTPException(
+            status_code=502, detail=f"Failed to publish video: {exc}"
+        ) from exc
 
 
 @app.post("/upload-video")

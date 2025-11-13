@@ -10,8 +10,8 @@ def _normalize_text_payload(raw: str) -> str:
     if not normalized:
         return normalized
 
-    if (normalized.startswith("\"") and normalized.endswith("\"")) or (
-        normalized.startswith("\'") and normalized.endswith("\'")
+    if (normalized.startswith('"') and normalized.endswith('"')) or (
+        normalized.startswith("'") and normalized.endswith("'")
     ):
         try:
             return json.loads(normalized)
@@ -19,6 +19,7 @@ def _normalize_text_payload(raw: str) -> str:
             return normalized[1:-1]
 
     return normalized
+
 
 @mcp_http_session("http://mcp_humorizer:8000/mcp")
 async def call_humorizer(session, text):
@@ -29,14 +30,16 @@ async def call_humorizer(session, text):
     )
     print(f"result: {result}")
     text_result = result.content[0].text
-    print(f"text_result: { text_result }")
+    print(f"text_result: {text_result}")
     parsed = json.loads(text_result)
 
     return parsed["comedic_text"]
 
 
 @mcp_http_session("http://mcp_prompt_opt:8000/mcp")
-async def get_best_prompt(session, prompt: str, summary: str, allow_quick_opt: bool = True):
+async def get_best_prompt(
+    session, prompt: str, summary: str, allow_quick_opt: bool = True
+):
     """Fetch the highest scoring prompt pack from the prompt optimizer MCP."""
     await session.initialize()
     response = await session.call_tool(
@@ -65,7 +68,9 @@ async def get_best_prompt(session, prompt: str, summary: str, allow_quick_opt: b
         try:
             return json.loads(payload)
         except json.JSONDecodeError as exc:  # pragma: no cover - surfaced to client
-            raise ValueError(f"Failed to parse prompt optimizer response: {payload}") from exc
+            raise ValueError(
+                f"Failed to parse prompt optimizer response: {payload}"
+            ) from exc
 
     return payload
 
@@ -113,12 +118,18 @@ async def generate_trancript(session, humorized_text):
     print(f"type(transcript): {type(transcript)}")
     return transcript
 
+
 @mcp_http_session("http://mcp_text_to_video:8000/mcp")
-async def generate_video(session, transcript: str):
+async def generate_video(
+    session, transcript: str, background_video: str = "subway-surfers"
+):
     """Trigger synthesis in Text-to-Video MCP service and return the asset id."""
     print(f"transcript: {transcript}")
+    print(f"background_video: {background_video}")
     await session.initialize()
-    response = await session.call_tool("synthesize", {"text": transcript})
+    response = await session.call_tool(
+        "synthesize", {"text": transcript, "background_video": background_video}
+    )
     print(f"response: {response}")
 
     content = response.content[0]
@@ -135,6 +146,35 @@ async def generate_video(session, transcript: str):
     video_id = _normalize_text_payload(str(raw_video_id))
     print(f"video_id: {video_id}")
     return video_id
+
+
+@mcp_http_session("http://mcp_text_to_video:8000/mcp")
+async def publish_to_youtube(
+    session,
+    oauth_token: str,
+    video_id: str,
+    video_title: str,
+    video_description: str,
+    keywords: str,
+    privacy_status: str,
+) -> bool:
+    """Publish a video to YouTube using the MCP text-to-video service."""
+    print(f"Publishing video {video_id} to YouTube")
+    await session.initialize()
+    response = await session.call_tool(
+        "publish",
+        {
+            "oauth_token": oauth_token,
+            "video_id": video_id,
+            "video_title": video_title,
+            "video_description": video_description,
+            "keywords": keywords,
+            "privacy_status": privacy_status,
+        },
+    )
+    print(f"Publish response: {response}")
+    return True
+
 
 def mock_news(fails: bool = False):
     text = ""

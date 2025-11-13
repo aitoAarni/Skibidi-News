@@ -12,6 +12,7 @@ export default function Dashboard() {
   const [summary, setSummary] = useState("");
   const [humor, setHumor] = useState("");
   const [audioUrl, setAudioUrl] = useState("");
+  const [videoId, setVideoId] = useState("");
   const [youtubeAuthToken, setYoutubeAuthToken] = useState("");
 
   const overviewCards = useMemo(
@@ -111,6 +112,7 @@ export default function Dashboard() {
                       setSummary("");
                       setHumor("");
                       setAudioUrl("");
+                      setVideoId("");
                     }}
                   />
                 </div>
@@ -129,6 +131,8 @@ export default function Dashboard() {
                     text={humor}
                     audioUrl={audioUrl}
                     setAudioUrl={setAudioUrl}
+                    videoId={videoId}
+                    setVideoId={setVideoId}
                   />
                 </div>
                 <div id="prompt" className="h-full xl:order-2">
@@ -138,6 +142,7 @@ export default function Dashboard() {
                   <YoutubePanel
                     token={youtubeAuthToken}
                     setToken={setYoutubeAuthToken}
+                    videoId={videoId}
                   />
                 </div>
               </section>

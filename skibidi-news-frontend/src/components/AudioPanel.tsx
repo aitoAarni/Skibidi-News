@@ -7,27 +7,32 @@ export default function AudioPanel({
   text,
   audioUrl,
   setAudioUrl,
+  videoId,
+  setVideoId,
 }: {
   text: string;
   audioUrl: string;
   setAudioUrl: (u: string) => void;
+  videoId: string;
+  setVideoId: (id: string) => void;
 }) {
   const [loading, setLoading] = useState(false);
   const [transcript, setTranscript] = useState("");
-  const [videoId, setVideoId] = useState("");
+  const [backgroundVideo, setBackgroundVideo] = useState("subway-surfers");
 
   useEffect(() => {
     // reset audio when text changes
     setAudioUrl("");
     setTranscript("");
     setVideoId("");
-  }, [text, setAudioUrl]);
+    setBackgroundVideo("subway-surfers");
+  }, [text, setAudioUrl, setVideoId]);
 
   const handleGenerate = async () => {
     if (!text) return;
     setLoading(true);
     try {
-      const result = await generateStudioAsset(text);
+      const result = await generateStudioAsset(text, backgroundVideo);
       setTranscript(result.transcript);
       setAudioUrl(result.video_url);
       setVideoId(result.video_id);
@@ -62,6 +67,25 @@ export default function AudioPanel({
             Polly narration + MCP video
           </span>
         </header>
+
+        <div className="space-y-3">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Background Video
+            </label>
+            <select
+              value={backgroundVideo}
+              onChange={(e) => setBackgroundVideo(e.target.value)}
+              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+            >
+              <option value="subway-surfers">Subway Surfers</option>
+              <option value="big-buck-bunny">Big Buck Bunny</option>
+            </select>
+            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+              Choose a background video for your content
+            </p>
+          </div>
+        </div>
 
         <button
           type="button"

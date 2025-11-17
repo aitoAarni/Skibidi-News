@@ -1,15 +1,59 @@
+## 17.10
+
+- Update frontend
+- Work on YouTube and TikTok integration to frontend
+
+## 10.10
+
+Studio Pipeline
+
+- Added full /studio/generate workflow and /videos/{video_id} streamer in
+  main.py.
+- Hardened MCP helpers to handle both text and binary responses, returning clean
+  IDs.
+- Mounted finished_videos into the router and injected VITE_ROUTER_API_BASE so
+  frontend can access generated media.
+
+Frontend Integration
+
+- Updated API helpers to use the router and exposed the new studio endpoint.
+- AudioPanel.tsx now triggers generation, shows transcript, and previews
+  synthesized clips.
+- Expanded CORS to localhost and 127.0.0.1.
+
+Prompt Optimizer & Prompt Lab
+
+- Integrated Prompt Lab with the prompt-optimizer MCP to fix 404s and enable
+  prompt pack retrieval.
+- Added /prompt/best endpoint and updated frontend routing via config.ts.
+- Improved error handling to show friendly messages instead of crashes.
+- Prompt Lab now auto-fills from dashboard data, supports quick actions, and can
+  fetch or optimize prompts dynamically.
+
+Dashboard & Layout
+
+- Reworked dashboard grid so the studio panel spans a wider column beside Prompt
+  Lab.
+- Updated video player with 9:16 viewport, ambient border, and “Open in new tab”
+  link.
+- Sidebar now shows live progress badges (idle/pending/ready) for each pipeline
+  stage.
+
+Category-Aware Aggregation
+
+- Added canonical category handling in backend and exposed it via the router.
+- Frontend now includes a pill selector for instant category switching with
+  active badge.
+
 ## 3.10
 
-Humorizer broken.  
-YouTube auth figured out.  
-News fetching by category.  
+Humorizer broken.   YouTube auth figured out.   News fetching by category.  
 More backend and frontend stuff.
 
 ## 27.10
 
-Tried making unfunny AI funny, to no avail.  
-Tried using shady GPUs for video gen, to no avail.  
-Frontend and backend progressing though. :>
+Tried making unfunny AI funny, to no avail.   Tried using shady GPUs for video
+gen, to no avail.   Frontend and backend progressing though. :>
 
 ## 20.10
 
@@ -67,7 +111,7 @@ thread.
 
 Dear diary...
 
-- Exploration and initial implementation of MCP Inspector, a visual testing  
+- Exploration and initial implementation of MCP Inspector, a visual testing    
   utility for MCP servers.
 - Started doing mcp server coordination
 - Text to Audio mcp server and dockerization

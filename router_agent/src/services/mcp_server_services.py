@@ -172,6 +172,8 @@ async def publish_to_youtube(
             "privacy_status": privacy_status,
         },
     )
+    if response.isError is True:
+        raise Exception(f"Failed to publish video: {response.content.text}")
     print(f"Publish response: {response}")
     return True
 

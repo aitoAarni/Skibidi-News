@@ -188,12 +188,12 @@ async def youtube_publish_route(upload_request: YouTubeUploadRequest):
     """Publish a video to YouTube using the provided OAuth token and video details."""
     try:
         await publish_to_youtube(
-            oauth_token=upload_request.oauth_token,
-            video_id=upload_request.video_id,
-            video_title=upload_request.video_title,
-            video_description=upload_request.video_description,
-            keywords=upload_request.keywords,
-            privacy_status=upload_request.privacy_status,
+            upload_request.oauth_token,
+            upload_request.video_id,
+            upload_request.video_title,
+            upload_request.video_description,
+            upload_request.keywords,
+            upload_request.privacy_status,
         )
         return {"success": True, "message": "Video published successfully to YouTube"}
     except Exception as exc:

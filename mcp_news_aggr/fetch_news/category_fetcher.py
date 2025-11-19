@@ -1,7 +1,46 @@
 from GoogleNews import GoogleNews
 from mcp_news_aggr.fetch_news.fetch_utilities import parse_date
+import feedparser
 
-def fetch_category_news(category, lang="en"):
+
+RSS_MAP = {
+    "world": [
+        "http://feeds.bbci.co.uk/news/world/rss.xml",
+        "https://feeds.reuters.com/reuters/worldNews",
+        "https://news.google.com/rss/search?q=world&hl=en&gl=US&ceid=US:en",
+    ],
+    "europe": [
+        "http://feeds.bbci.co.uk/news/world/europe/rss.xml",
+        "https://news.google.com/rss/search?q=europe&hl=en&gl=US&ceid=US:en",
+    ],
+    "us": [
+        "https://feeds.reuters.com/Reuters/domesticNews",
+        "https://news.google.com/rss/search?q=US+news&hl=en&gl=US&ceid=US:en",
+    ],
+    "finland": [
+        "https://news.google.com/rss/search?q=Finland&hl=en&gl=FI&ceid=FI:fi",
+    ],
+    "financial": [
+        "https://feeds.reuters.com/reuters/businessNews",
+        "https://news.google.com/rss/search?q=financial&hl=en&gl=US&ceid=US:en",
+    ],
+    "tech": [
+        "https://feeds.reuters.com/reuters/technologyNews",
+        "https://news.google.com/rss/search?q=technology&hl=en&gl=US&ceid=US:en",
+    ],
+    "sport": [
+        "http://feeds.bbci.co.uk/sport/rss.xml",
+        "https://news.google.com/rss/search?q=sports&hl=en&gl=US&ceid=US:en",
+    ],
+    "asia": [
+        "https://news.google.com/rss/search?q=Asia+news&hl=en&gl=US&ceid=US:en",
+        "https://feeds.reuters.com/reuters/worldNews",
+    ],
+}
+
+
+
+def google_fetch_category_news(category, lang="en"):
     """
     Fetches news from Google News based on a topic or a search query.
     
@@ -83,5 +122,31 @@ def fetch_category_news(category, lang="en"):
                 "url": url_link,
                 "source": source
             })
+
+    return articles
+
+
+def feedparser_fetch_category_news(category: str, lang="en"):
+    category = category.lower()
+
+    feeds = RSS_MAP.get(category, RSS_MAP["world"])
+
+    articles = []
+
+    for url in feeds:
+        try:
+            feed = feedparser.parse(url)
+
+            for entry in feed.entries:
+                articles.append({
+                    "title": entry.get("title", ""),
+                    "summary": entry.get("summary", entry.get("description", "")),
+                    "date": entry.get("published", ""),
+                    "url": entry.get("link", ""),
+                    "source": entry.get("source", {}).get("title", "") if entry.get("source") else url
+                })
+
+        except Exception as e:
+            print(f"Failed to parse RSS feed {url}: {e}")
 
     return articles

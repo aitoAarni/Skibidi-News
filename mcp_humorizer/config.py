@@ -39,6 +39,7 @@ class Settings(BaseModel):
 
     model_provider: Provider = Field(default="none")
     api_key: Optional[str] = Field(default=None)
+    api_url: Optional[str] = Field(default=None)
     humor_style: HumorStyle = Field(default="light")
     model_name: Optional[str] = Field(default=None)
 
@@ -62,6 +63,8 @@ class Settings(BaseModel):
             or os.getenv("OPENAI_API_KEY")
             or os.getenv("ANTHROPIC_API_KEY")
         )
+
+        api_url = os.getenv("API_URL")
 
         humor_style = os.getenv("HUMOR_STYLE", "light").strip().lower()
         allowed_styles = {
@@ -100,6 +103,7 @@ class Settings(BaseModel):
         return cls(
             model_provider=provider,  # type: ignore[arg-type]
             api_key=api_key,
+            api_url=api_url,
             humor_style=humor_style,  # type: ignore[arg-type]
             model_name=model_name,
             timeout=timeout,

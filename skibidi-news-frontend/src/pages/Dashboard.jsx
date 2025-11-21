@@ -135,9 +135,9 @@ export default function Dashboard() {
                     setVideoId={setVideoId}
                   />
                 </div>
-                <div id="prompt" className="h-full xl:order-2">
+                {/* <div id="prompt" className="h-full xl:order-2">
                   <PromptLab summary={summary} humor={humor} />
-                </div>
+                </div> */}
                 <div id="youtube" className="h-full">
                   <YoutubePanel
                     token={youtubeAuthToken}

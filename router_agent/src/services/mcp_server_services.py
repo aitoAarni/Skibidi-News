@@ -172,10 +172,35 @@ async def publish_to_youtube(
             "privacy_status": privacy_status,
         },
     )
-    if response.isError is True:
-        raise Exception(f"Failed to publish video: {response.content.text}")
-    print(f"Publish response: {response}")
-    return True
+
+    # Check if the response indicates an error
+    if response.isError:
+        error_msg = response.content[0].text if response.content else "Unknown error"
+        print(f"MCP publish tool error: {error_msg}")
+        return False
+
+    # Extract the boolean result from the response
+    content = response.content[0]
+    result = getattr(content, "text", None)
+    if result is None:
+        result = getattr(content, "data", None)
+
+    if result is None:
+        print("Warning: No result returned from publish tool")
+        return False
+
+    # Convert string 'True'/'False' to boolean if needed
+    if isinstance(result, str):
+        result = result.strip().lower()
+        if result == "true":
+            return True
+        elif result == "false":
+            return False
+        else:
+            print(f"Warning: Unexpected result format: {result}")
+            return False
+
+    return bool(result)
 
 
 def mock_news(fails: bool = False):

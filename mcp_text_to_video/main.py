@@ -56,14 +56,15 @@ def publish(
         video_description: Description of the video.
         keywords: comma-separated string of keywords, e.g. "keyword1,keyword2,keyword3"
     """
-    upload(
+    result = upload(
         oauth_token=oauth_token,
         file_path=f"results/{video_id}.mp4",  # Make sure this is ≤60s and vertical/square format
         video_title=video_title,
         video_description=video_description,
         keywords=keywords,
-        privacy_status="unlisted",
+        privacy_status=privacy_status,  # Use the provided privacy_status instead of hardcoded "unlisted"
     )
+    return result
 
 
 if __name__ == "__main__":

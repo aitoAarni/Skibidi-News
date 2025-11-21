@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { Loader, User2Icon, Video, Upload, CheckCircle } from "lucide-react";
 import PanelShell from "./ui/PanelShell";
-import { authenticateYouTube, uploadToYouTube } from "../api/socials/youtube";
+import {
+  authenticateYouTube,
+  uploadToYouTube,
+  getValidCredentials,
+  toOAuth2JsonFormat,
+  OAuth2Credentials,
+} from "../api/socials/youtube";
 
 type YoutubePanelProps = {
   token: string;
@@ -16,6 +22,9 @@ export default function YoutubePanel({
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploaded, setUploaded] = useState(false);
+  const [credentials, setCredentials] = useState<OAuth2Credentials | null>(
+    null
+  );
   const [uploadForm, setUploadForm] = useState({
     title: "Skibidi News Daily",
     description: "Today's news in a fun and engaging format! #Shorts #News",
@@ -27,19 +36,23 @@ export default function YoutubePanel({
     setLoading(true);
     try {
       const result = await authenticateYouTube();
-      setToken(result);
+      setCredentials(result);
+      setToken(btoa(result.access_token)); // For backward compatibility
     } finally {
       setLoading(false);
     }
   };
 
   const handleUpload = async () => {
-    if (!token || !videoId) return;
+    if (!videoId) return;
 
     setUploading(true);
     try {
+      // Use the smart credential manager that auto-refreshes expired tokens
+      const validCredentials = await getValidCredentials();
+
       await uploadToYouTube({
-        oauth_token: token,
+        oauth_token: btoa(JSON.stringify(toOAuth2JsonFormat(validCredentials))),
         video_id: videoId,
         video_title: uploadForm.title,
         video_description: uploadForm.description,

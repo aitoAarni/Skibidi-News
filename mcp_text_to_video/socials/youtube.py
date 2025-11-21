@@ -166,5 +166,10 @@ def upload(
     youtube = get_authenticated_service(oauth_token)
     try:
         initialize_upload(youtube, args)
+        return True  # Upload successful
     except HttpError as e:
         print(f"An HTTP error {e.resp.status} occurred:\n{e.content}")
+        return False  # Upload failed
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        return False  # Upload failed

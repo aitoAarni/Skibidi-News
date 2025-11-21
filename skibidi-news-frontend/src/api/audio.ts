@@ -8,10 +8,12 @@ export type StudioResult = {
 };
 
 export const generateStudioAsset = async (
-  humorText: string
+  humorText: string,
+  backgroundVideo: string = "subway-surfers"
 ): Promise<StudioResult> => {
   const { data } = await axios.post(endpoints.studioGenerate, {
     humor_text: humorText,
+    background_video: backgroundVideo,
   });
 
   const rawUrl = data.video_url;

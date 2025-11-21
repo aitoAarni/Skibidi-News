@@ -9,4 +9,5 @@ export const endpoints = {
   studioGenerate: `${API_BASES.router}/studio/generate`,
   studioVideo: (videoId: string) => `${API_BASES.router}/videos/${videoId}`,
   bestPrompt: `${API_BASES.router}/prompt/best`,
+  youtubePublish: `${API_BASES.router}/youtube/publish`,
 };

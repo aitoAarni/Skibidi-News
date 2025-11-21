@@ -61,7 +61,7 @@ export default function NewsPanel({
     return (active?.label || category).toUpperCase();
   }, [normalizedCategories, category]);
 
-  console.log(summary);
+  // console.log(summary);
 
   return (
     <PanelShell accent="indigo">

@@ -13,7 +13,7 @@ export default function HumorPanel({
   setHumor: (h: string) => void;
 }) {
   const [loading, setLoading] = useState(false);
-  console.log(summary);
+  // console.log(summary);
   const handleHumorize = async () => {
     if (!summary) return;
     setLoading(true);

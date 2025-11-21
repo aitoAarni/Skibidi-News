@@ -20,7 +20,7 @@ export const fetchNewsSummary = async (
     url.searchParams.set("category", category);
   }
 
-  console.log(url.toString());
+  // console.log(url.toString());
   try {
     const response = await fetch(url);
 
@@ -29,7 +29,7 @@ export const fetchNewsSummary = async (
     }
 
     const data = await response.json();
-    console.log("Successfully fetched news:", data);
+    // console.log("Successfully fetched news:", data);
     return {
       summary: data.summary ?? "",
       category: data.category ?? category ?? "world",

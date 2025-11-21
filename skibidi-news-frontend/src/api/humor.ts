@@ -43,7 +43,7 @@ export const humorizeText = async (newsText: string) => {
     const data = await response.json();
 
     // Your server returns: {"huomrized_news": huomrized_text}
-    console.log("Successfully humorized text:", data.huomrized_news);
+    // console.log("Successfully humorized text:", data.huomrized_news);
     return data.huomrized_news;
   } catch (error) {
     console.error("Error calling /humorize_news endpoint:", error);

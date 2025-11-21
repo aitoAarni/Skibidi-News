@@ -26,7 +26,8 @@ def _generate_with_openai(
     if not settings.api_key:
         raise GenerationError("OpenAI requires an API key (API_KEY or OPENAI_API_KEY).")
 
-    client = OpenAI(api_key=settings.api_key)
+    client = OpenAI(api_key=settings.api_key,
+                    base_url=settings.api_url or "https://api.openai.com/v1")
 
     model = settings.model_name or "gpt-4o-mini"
     try:

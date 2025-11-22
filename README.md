@@ -6,7 +6,23 @@ Turning daily news into short, funny, watchable bites powered by a fleet of MCP 
 
 ![frontend](sample/frontend-1.png)
 
-## Highlights
+## Table of Contents
+
+- ⚡ [Highlights](#highlights)
+- 🏛️ [Architecture at a Glance](#architecture-at-a-glance)
+- 🗺️ [Repository Map](#repository-map)
+- 🔌 [Router API Surface](#router-api-surface)
+- 🧰 [MCP Tooling](#mcp-tooling)
+- 🚀 [Getting Started](#getting-started)
+- 🧪 [Development & Testing](#development--testing)
+- 📦 [Data & Artifacts](#data--artifacts)
+- 📝 [Release Notes](#release-notes)
+- 🛠️ [Operations & Runbook](#operations--runbook)
+- 👥 [Team & Ownership](#team--ownership)
+- 📚 [Reference Docs & Planning](#reference-docs--planning)
+
+<a id="highlights"></a>
+## ⚡ Highlights
 
 - Fully modular MCP pipeline: news aggregation, humorization, prompt optimization, and text-to-video.
 - Router Agent (FastAPI) exposes a single HTTP API for the frontend and proxies every MCP call.
@@ -27,7 +43,8 @@ flowchart LR
 	Router -- HTTP API --> Frontend
 ```
 
-## Architecture at a Glance
+<a id="architecture-at-a-glance"></a>
+## 🏛️ Architecture at a Glance
 
 | Component        | Responsibility                                                                                     | Key Path                 |
 | ---------------- | -------------------------------------------------------------------------------------------------- | ------------------------ |
@@ -40,7 +57,8 @@ flowchart LR
 
 More implementation context lives in `docs/COMPONENT_GUIDE.md`.
 
-## Repository Map
+<a id="repository-map"></a>
+## 🗺️ Repository Map
 
 | Path                     | Description                                                                                          |
 | ------------------------ | ---------------------------------------------------------------------------------------------------- |
@@ -53,7 +71,8 @@ More implementation context lives in `docs/COMPONENT_GUIDE.md`.
 | `skibidi-news-frontend/` | Web client.                                                                                          |
 | `docs/`                  | Architecture, component guide, frontend guide, deployment guide, runbook, testing, and repomix dump. |
 
-## Router API Surface
+<a id="router-api-surface"></a>
+## 🔌 Router API Surface
 
 | Method | Path                 | Purpose                                                         | Downstream tool                         |
 | ------ | -------------------- | --------------------------------------------------------------- | --------------------------------------- |
@@ -67,7 +86,8 @@ More implementation context lives in `docs/COMPONENT_GUIDE.md`.
 | GET    | `/videos/{video_id}` | Streams finished MP4s from `finished_videos/`.                  | —                                       |
 | POST   | `/youtube/publish`   | Sends OAuth token and metadata to upload Shorts.                | `mcp_text_to_video.publish`             |
 
-## MCP Tooling
+<a id="mcp-tooling"></a>
+## 🧰 MCP Tooling
 
 | Service          | Tool(s)                                                                 | File                           |
 | ---------------- | ----------------------------------------------------------------------- | ------------------------------ |
@@ -76,7 +96,8 @@ More implementation context lives in `docs/COMPONENT_GUIDE.md`.
 | Prompt Optimizer | `best_prompt`, `optimize`, `health`                                     | `mcp_prompt_opt/mcp_server.py` |
 | Text-to-Video    | `generate_transcript`, `get_background_videos`, `synthesize`, `publish` | `mcp_text_to_video/main.py`    |
 
-## Getting Started
+<a id="getting-started"></a>
+## 🚀 Getting Started
 
 ### Requirements
 
@@ -115,31 +136,36 @@ docker compose up --build
 
 Refer to `docs/DEPLOYMENT.md` for more Docker tricks and hybrid workflows, plus `docs/FRONTEND.md` if you plan to run the UI outside of Compose.
 
-## Development & Testing
+<a id="development--testing"></a>
+## 🧪 Development & Testing
 
 - **Python services**: activate a virtual env inside each MCP folder (`python -m venv .venv && source .venv/bin/activate`), install requirements, then run `python -m <module>.mcp_server` for local iteration.
 - **Router**: `uvicorn src.main:app --reload` inside `router_agent/` for hot reloads.
 - **Frontend**: `npm install && npm run dev` inside `skibidi-news-frontend/` when not using Docker (see `docs/FRONTEND.md`).
 - **Tests**: run targeted suites such as `pytest mcp_humorizer/tests`. See `docs/TESTING.md` for the current coverage matrix and smoke tests.
 
-## Data & Artifacts
+<a id="data--artifacts"></a>
+## 📦 Data & Artifacts
 
 - `mcp_news_aggr/summarized_news.json` — latest summary blob consumed by downstream steps.
 - `mcp_prompt_opt/opt_logs/*.json` — Elo tournament history and leaderboards.
 - `finished_videos/` — MP4 outputs copied from the text-to-video container; served via `/videos/{id}`.
 - `synthesized_speech/` — convenience folder for local speech assets and mock data.
 
-## Release Notes
+<a id="release-notes"></a>
+## 📝 Release Notes
 
 - Latest milestone write-up lives in `RELEASE_NOTE.md` (current tag: **2025.11**) covering router/API unification, Docker stack updates, service highlights, testing, and deployment tips.
   - Use it when you need a quick changelog for GitHub Releases, stakeholder emails, or internal status updates.
 
-## Operations & Runbook
+<a id="operations--runbook"></a>
+## 🛠️ Operations & Runbook
 
 - Manual API flow, smoke tests, troubleshooting cheatsheet, and incident response live in `docs/RUNBOOK.md`.
 - For day-to-day diary entries or experiments, use `diary.md`.
 
-## Team & Ownership
+<a id="team--ownership"></a>
+## 👥 Team & Ownership
 
 - **Gabi** — News Aggregation → Summarized text.
 - **Vien** — Summarized text → Comedic text.
@@ -149,7 +175,8 @@ Refer to `docs/DEPLOYMENT.md` for more Docker tricks and hybrid workflows, plus 
 
 Responsibilities line up with MCP services so releases can stay independent.
 
-## Reference Docs & Planning
+<a id="reference-docs--planning"></a>
+## 📚 Reference Docs & Planning
 
 - `docs/ARCHITECTURE.md` — system overview and diagrams.
 - `docs/COMPONENT_GUIDE.md` — code-focused component map and data contracts.

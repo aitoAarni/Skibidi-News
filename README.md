@@ -2,9 +2,9 @@
 
 Turning daily news into short, funny, watchable bites powered by a fleet of MCP services.
 
-![router](image-2.png)
+![router](sample/frontend-2.png)
 
-![frontend](image-1.png)
+![frontend](sample/frontend-1.png)
 
 ## Highlights
 

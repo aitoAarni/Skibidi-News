@@ -3,12 +3,6 @@ FROM python:3.11-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
-ENV HTTP_PROXY=http://fihel1d-proxy.emea.nsn-net.net:8080
-ENV HTTPS_PROXY=http://fihel1d-proxy.emea.nsn-net.net:8080
-ENV NO_PROXY=localhost,127.0.0.1
-ENV http_proxy=http://fihel1d-proxy.emea.nsn-net.net:8080
-ENV https_proxy=http://fihel1d-proxy.emea.nsn-net.net:8080
-ENV no_proxy=localhost,127.0.0.1
 
 RUN apt-get update && \
     apt-get install -y curl

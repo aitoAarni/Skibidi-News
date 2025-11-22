@@ -132,7 +132,7 @@ Refer to `docs/DEPLOYMENT.md` for more Docker tricks and hybrid workflows, plus 
 ## Release Notes
 
 - Latest milestone write-up lives in `RELEASE_NOTE.md` (current tag: **2025.11**) covering router/API unification, Docker stack updates, service highlights, testing, and deployment tips.
-	- Use it when you need a quick changelog for GitHub Releases, stakeholder emails, or internal status updates.
+  - Use it when you need a quick changelog for GitHub Releases, stakeholder emails, or internal status updates.
 
 ## Operations & Runbook
 

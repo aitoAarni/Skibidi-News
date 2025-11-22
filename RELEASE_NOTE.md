@@ -12,13 +12,13 @@ AI-powered satirical newsroom-in-a-box: fetch headlines, comedicize them, optimi
 
 ## 🧩 Service Notes
 
-| Service / Path             | Key Capabilities |
-| -------------------------- | ---------------- |
-| `mcp_news_aggr/`           | GoogleNews+RSS fetch, 120 s cache, OpenAI 100-word digest persisted to `summarized_news.json`. |
-| `mcp_humorizer/`           | Pluggable LLM providers, deterministic fallback (`humor.py`), env-driven humor styles, pytest coverage in `tests/`. |
-| `mcp_prompt_opt/`          | Prompt pack factory, Elo tournaments (`_optimizer.py`), quick-opt responses, experiment logs in `opt_logs/`. |
-| `mcp_text_to_video/`       | Transcript LLM, AWS Polly synthesis, captioned clip composer, Shorts uploader (`socials/youtube/upload.py`). |
-| `skibidi-news-frontend/`   | Vite UI wired to router for News → Humor → Studio flow with MP4 previews. |
+| Service / Path           | Key Capabilities                                                                                                    |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| `mcp_news_aggr/`         | GoogleNews+RSS fetch, 120 s cache, OpenAI 100-word digest persisted to `summarized_news.json`.                      |
+| `mcp_humorizer/`         | Pluggable LLM providers, deterministic fallback (`humor.py`), env-driven humor styles, pytest coverage in `tests/`. |
+| `mcp_prompt_opt/`        | Prompt pack factory, Elo tournaments (`_optimizer.py`), quick-opt responses, experiment logs in `opt_logs/`.        |
+| `mcp_text_to_video/`     | Transcript LLM, AWS Polly synthesis, captioned clip composer, Shorts uploader (`socials/youtube/upload.py`).        |
+| `skibidi-news-frontend/` | Vite UI wired to router for News → Humor → Studio flow with MP4 previews.                                           |
 
 ## 🧪 Testing & Verification
 

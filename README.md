@@ -42,15 +42,15 @@ More implementation context lives in `docs/COMPONENT_GUIDE.md`.
 
 ## Repository Map
 
-| Path                     | Description                                                                        |
-| ------------------------ | ---------------------------------------------------------------------------------- |
-| `compose.yaml`           | Docker Compose definition for the router, frontend, and every MCP service.         |
-| `router_agent/`          | FastAPI router + MCP client helpers.                                               |
-| `mcp_news_aggr/`         | News fetching, summarization logic, and MCP server entrypoint.                     |
-| `mcp_humorizer/`         | Humor engine, deterministic fallback, and MCP tooling.                             |
-| `mcp_prompt_opt/`        | Prompt library, optimizer, and FastMCP server.                                     |
-| `mcp_text_to_video/`     | Transcript LLM calls, AWS Polly synthesis, video compositor, and YouTube uploader. |
-| `skibidi-news-frontend/` | Web client.                                                                        |
+| Path                     | Description                                                                                          |
+| ------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `compose.yaml`           | Docker Compose definition for the router, frontend, and every MCP service.                           |
+| `router_agent/`          | FastAPI router + MCP client helpers.                                                                 |
+| `mcp_news_aggr/`         | News fetching, summarization logic, and MCP server entrypoint.                                       |
+| `mcp_humorizer/`         | Humor engine, deterministic fallback, and MCP tooling.                                               |
+| `mcp_prompt_opt/`        | Prompt library, optimizer, and FastMCP server.                                                       |
+| `mcp_text_to_video/`     | Transcript LLM calls, AWS Polly synthesis, video compositor, and YouTube uploader.                   |
+| `skibidi-news-frontend/` | Web client.                                                                                          |
 | `docs/`                  | Architecture, component guide, frontend guide, deployment guide, runbook, testing, and repomix dump. |
 
 ## Router API Surface

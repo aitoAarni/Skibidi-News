@@ -41,6 +41,29 @@ More implementation context lives in `docs/COMPONENT_GUIDE.md`.
 | `skibidi-news-frontend/` | Web client.                                                                        |
 | `docs/`                  | Architecture, component guide, deployment guide, runbook, and repomix dump.        |
 
+## Router API Surface
+
+| Method | Path | Purpose | Downstream tool |
+| --- | --- | --- | --- |
+| GET | `/ping` | Health probe for the router container. | — |
+| GET | `/news?category=` | Normalizes category and calls `mcp_news_aggr.aggregate_news`. | `aggregate_news` |
+| POST | `/humorize_news` | Accepts `{ "news": str }` and returns comedic rewrite. | `mcp_humorizer.comedicize` |
+| POST | `/transcript` | Turns humor text into a narrated transcript. | `mcp_text_to_video.generate_transcript` |
+| POST | `/synthesize` | Requests a background video + captions, returns `video_id`. | `mcp_text_to_video.synthesize` |
+| POST | `/prompt/best` | Fetches the highest-scoring prompt pack for a prompt+summary. | `mcp_prompt_opt.best_prompt` |
+| POST | `/studio/generate` | One-shot transcript + video pipeline, returns signed video URL. | combo of tools above |
+| GET | `/videos/{video_id}` | Streams finished MP4s from `finished_videos/`. | — |
+| POST | `/youtube/publish` | Sends OAuth token and metadata to upload Shorts. | `mcp_text_to_video.publish` |
+
+## MCP Tooling
+
+| Service | Tool(s) | File |
+| --- | --- | --- |
+| News Aggregator | `aggregate_news`, `get_summary`, `health` | `mcp_news_aggr/mcp_server.py` |
+| Humorizer | `comedicize`, `health` | `mcp_humorizer/mcp_server.py` |
+| Prompt Optimizer | `best_prompt`, `optimize`, `health` | `mcp_prompt_opt/mcp_server.py` |
+| Text-to-Video | `generate_transcript`, `get_background_videos`, `synthesize`, `publish` | `mcp_text_to_video/main.py` |
+
 ## Getting Started
 
 ### Requirements
@@ -79,6 +102,20 @@ docker compose up --build
 3. Point the router to the local MCP endpoint (see service README for exact command).
 
 Refer to `docs/DEPLOYMENT.md` for more Docker tricks and hybrid workflows.
+
+## Development & Testing
+
+- **Python services**: activate a virtual env inside each MCP folder (`python -m venv .venv && source .venv/bin/activate`), install requirements, then run `python -m <module>.mcp_server` for local iteration.
+- **Router**: `uvicorn src.main:app --reload` inside `router_agent/` for hot reloads.
+- **Frontend**: `npm install && npm run dev` inside `skibidi-news-frontend/` when not using Docker.
+- **Tests**: run targeted suites such as `pytest mcp_humorizer/tests` or `pytest mcp_prompt_opt/tests`. Add new tests alongside the service being modified.
+
+## Data & Artifacts
+
+- `mcp_news_aggr/summarized_news.json` — latest summary blob consumed by downstream steps.
+- `mcp_prompt_opt/opt_logs/*.json` — Elo tournament history and leaderboards.
+- `finished_videos/` — MP4 outputs copied from the text-to-video container; served via `/videos/{id}`.
+- `synthesized_speech/` — convenience folder for local speech assets and mock data.
 
 ## Operations & Runbook
 

@@ -15,6 +15,18 @@ Turning daily news into short, funny, watchable bites powered by a fleet of MCP 
 
 For the deep dive, see `docs/ARCHITECTURE.md` (big picture) and `docs/COMPONENT_GUIDE.md` (code map).
 
+```mermaid
+flowchart LR
+	Frontend((Vite UI)) -- REST --> Router[Router Agent \n FastAPI]
+	Router -- aggregate_news --> NewsAggr[mcp_news_aggr]
+	Router -- comedicize --> Humorizer[mcp_humorizer]
+	Router -- best_prompt --> PromptOpt[mcp_prompt_opt]
+	Router -- transcript/synthesize/publish --> TTV[mcp_text_to_video]
+	TTV -- results bind mount --> Videos[(finished_videos/)]
+	Router -- MP4 stream --> Videos
+	Router -- HTTP API --> Frontend
+```
+
 ## Architecture at a Glance
 
 | Component        | Responsibility                                                                                     | Key Path                 |
@@ -39,7 +51,7 @@ More implementation context lives in `docs/COMPONENT_GUIDE.md`.
 | `mcp_prompt_opt/`        | Prompt library, optimizer, and FastMCP server.                                     |
 | `mcp_text_to_video/`     | Transcript LLM calls, AWS Polly synthesis, video compositor, and YouTube uploader. |
 | `skibidi-news-frontend/` | Web client.                                                                        |
-| `docs/`                  | Architecture, component guide, deployment guide, runbook, and repomix dump.        |
+| `docs/`                  | Architecture, component guide, frontend guide, deployment guide, runbook, testing, and repomix dump. |
 
 ## Router API Surface
 
@@ -101,14 +113,14 @@ docker compose up --build
 2. Run the module locally (e.g., `python -m mcp_humorizer.mcp_server`).
 3. Point the router to the local MCP endpoint (see service README for exact command).
 
-Refer to `docs/DEPLOYMENT.md` for more Docker tricks and hybrid workflows.
+Refer to `docs/DEPLOYMENT.md` for more Docker tricks and hybrid workflows, plus `docs/FRONTEND.md` if you plan to run the UI outside of Compose.
 
 ## Development & Testing
 
 - **Python services**: activate a virtual env inside each MCP folder (`python -m venv .venv && source .venv/bin/activate`), install requirements, then run `python -m <module>.mcp_server` for local iteration.
 - **Router**: `uvicorn src.main:app --reload` inside `router_agent/` for hot reloads.
-- **Frontend**: `npm install && npm run dev` inside `skibidi-news-frontend/` when not using Docker.
-- **Tests**: run targeted suites such as `pytest mcp_humorizer/tests` or `pytest mcp_prompt_opt/tests`. Add new tests alongside the service being modified.
+- **Frontend**: `npm install && npm run dev` inside `skibidi-news-frontend/` when not using Docker (see `docs/FRONTEND.md`).
+- **Tests**: run targeted suites such as `pytest mcp_humorizer/tests`. See `docs/TESTING.md` for the current coverage matrix and smoke tests.
 
 ## Data & Artifacts
 
@@ -138,6 +150,8 @@ Responsibilities line up with MCP services so releases can stay independent.
 - `docs/COMPONENT_GUIDE.md` — code-focused component map and data contracts.
 - `docs/DEPLOYMENT.md` — docker-compose bringup and environment matrix.
 - `docs/RUNBOOK.md` — operational procedures and troubleshooting.
+- `docs/FRONTEND.md` — UI architecture, API usage, and dev workflow.
+- `docs/TESTING.md` — automated coverage and recommended smoke tests.
 - [Planning Whiteboard](https://excalidraw.com/#room=d46c315fa785495794e0,P0k_98fYWU7qJUFfmorItA)
 
 Happy Skibidi-ing!

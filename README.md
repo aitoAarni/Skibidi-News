@@ -129,6 +129,11 @@ Refer to `docs/DEPLOYMENT.md` for more Docker tricks and hybrid workflows, plus 
 - `finished_videos/` — MP4 outputs copied from the text-to-video container; served via `/videos/{id}`.
 - `synthesized_speech/` — convenience folder for local speech assets and mock data.
 
+## Release Notes
+
+- Latest milestone write-up lives in `RELEASE_NOTE.md` (current tag: **2025.11**) covering router/API unification, Docker stack updates, service highlights, testing, and deployment tips.
+	- Use it when you need a quick changelog for GitHub Releases, stakeholder emails, or internal status updates.
+
 ## Operations & Runbook
 
 - Manual API flow, smoke tests, troubleshooting cheatsheet, and incident response live in `docs/RUNBOOK.md`.

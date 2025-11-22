@@ -1,52 +1,106 @@
 # Skibidi News
 
-Turning daily news into short, funny, and watchable bites.
+Turning daily news into short, funny, watchable bites powered by a fleet of MCP services.
 
-![alt text](image-2.png)
+![router](image-2.png)
 
-![alt text](image-1.png)
+![frontend](image-1.png)
 
-## 1) What is this?
+## Highlights
 
-Skibidi News is a modular, agentic pipeline that:
+- Fully modular MCP pipeline: news aggregation, humorization, prompt optimization, and text-to-video.
+- Router Agent (FastAPI) exposes a single HTTP API for the frontend and proxies every MCP call.
+- Docker Compose stack for one-command bringup plus standalone module workflows for rapid iteration.
+- Prompt optimizer keeps humor quality consistent via Elo tournaments and reusable prompt packs.
 
-1. Aggregates real news.
-2. Summarizes it.
-3. Punches it up with humor.
-4. Converts it to speech.
-5. (Optionally) turns speech + captions into short video.
+For the deep dive, see `docs/ARCHITECTURE.md` (big picture) and `docs/COMPONENT_GUIDE.md` (code map).
 
-Each step is an **MCP (Model Context Protocol) server** that can be swapped or scaled independently. A central **Router Agent** orchestrates the flow based on a user/system prompt.
+## Architecture at a Glance
 
-## 2) Team & Responsibilities
+| Component        | Responsibility                                                                                     | Key Path                 |
+| ---------------- | -------------------------------------------------------------------------------------------------- | ------------------------ |
+| Router Agent     | FastAPI server that orchestrates MCP calls and serves assets to the frontend.                      | `router_agent/src`       |
+| News Aggregator  | Fetches fresh headlines per category and builds a 100-word professional digest.                    | `mcp_news_aggr/`         |
+| Humorizer        | Rewrites summaries into comedic scripts using OpenAI/Anthropic or deterministic fallback.          | `mcp_humorizer/`         |
+| Prompt Optimizer | Stores prompt packs, runs quick Elo tournaments, and surfaces the best prompt to the router.       | `mcp_prompt_opt/`        |
+| Text-to-Video    | Generates transcripts, calls AWS Polly, overlays captions on background clips, and uploads Shorts. | `mcp_text_to_video/`     |
+| Frontend         | Vite + React UI for selecting categories, generating stories, and previewing clips.                | `skibidi-news-frontend/` |
 
-1. **Gabi** — _News Aggregation → Summarized Text_
-2. **Vien** — _Summarized Text → Comedic Text_
-3. **Roni** — _Comedic Text → Transcript → Audio_
-4. **Aarni** — _Router Agent (MCP client), orchestration & policies_
-5. **Esa** — _Prompt Optimization_ and _Comedic Text + Audio → Transcript → Video_
+More implementation context lives in `docs/COMPONENT_GUIDE.md`.
 
-> These map 1:1 to MCP services/components so ownership is clear and deploys can be independent.
+## Repository Map
 
-## 3) High-level Architecture
+| Path                     | Description                                                                        |
+| ------------------------ | ---------------------------------------------------------------------------------- |
+| `compose.yaml`           | Docker Compose definition for the router, frontend, and every MCP service.         |
+| `router_agent/`          | FastAPI router + MCP client helpers.                                               |
+| `mcp_news_aggr/`         | News fetching, summarization logic, and MCP server entrypoint.                     |
+| `mcp_humorizer/`         | Humor engine, deterministic fallback, and MCP tooling.                             |
+| `mcp_prompt_opt/`        | Prompt library, optimizer, and FastMCP server.                                     |
+| `mcp_text_to_video/`     | Transcript LLM calls, AWS Polly synthesis, video compositor, and YouTube uploader. |
+| `skibidi-news-frontend/` | Web client.                                                                        |
+| `docs/`                  | Architecture, component guide, deployment guide, runbook, and repomix dump.        |
 
-- **Router Agent (MCP client)**: Receives the user prompt + systemt (tone/constraints). Chooses which MCP service(s) to call, merges results, and pushes outputs downstream.
-- **MCP Servers** (swappable micro-services):
+## Getting Started
 
-  - `mcp-news-aggr` (Owner: **Gabi**): crawl/ingest → clustered topics → summarized text.
-  - `mcp-humorizer` (Owner: **Vien**): summary → comedic rewrite (safe-mode, persona knobs).
-  - `mcp-tts` (Owner: **Roni**): comedic text → transcript (final) → audio (TTS) with SSML.
-  - `mcp-video` (Owner: **Esa**): comedic text + audio → transcript alignment → short video (subtitles, b‑roll, memes).
-  - `mcp-prompt-opt` (Owner: **Esa**): prompt library + A/B testing + tracing feedback.
+### Requirements
 
-All services speak MCP over stdio/HTTP and return typed JSON payloads.
+- Docker 24+ with Compose plugin (preferred path) or Python 3.10+ / Node 20+ for manual runs.
+- OpenAI API key plus AWS Polly credentials (see `docs/DEPLOYMENT.md`).
 
-## 4) Planning and notes
+### Environment Setup
 
-[whiteboard](https://excalidraw.com/#room=d46c315fa785495794e0,P0k_98fYWU7qJUFfmorItA)
+1. Copy `.env.example` files in each MCP folder to `.env` and fill in required keys.
+2. Export shared variables (OpenAI, AWS) in a repo-root `.env` so Compose can read them.
 
-## 5) Running the app
+```
+OPENAI_API_KEY=sk-...
+MODEL_PROVIDER=openai
+HUMOR_STYLE=light
+AWS_ACCESS_KEY_ID=...
+AWS_SECRET_ACCESS_KEY=...
+AWS_REGION=eu-west-1
+```
 
-- first add all the .env files based on the .env.example files to each mcp-server direcotry
-- from the root dir run docker compose up --build
-- wait for results to appear in the synthesized_speech directory
+### One-Command Stack
+
+```bash
+docker compose up --build
+```
+
+- Router API: `http://127.0.0.1:8000`
+- Frontend: `http://127.0.0.1:5173`
+- Generated videos land in `finished_videos/`; the router serves them via `GET /videos/{id}`.
+
+### Iterating on a Single Service
+
+1. Stop the corresponding container.
+2. Run the module locally (e.g., `python -m mcp_humorizer.mcp_server`).
+3. Point the router to the local MCP endpoint (see service README for exact command).
+
+Refer to `docs/DEPLOYMENT.md` for more Docker tricks and hybrid workflows.
+
+## Operations & Runbook
+
+- Manual API flow, smoke tests, troubleshooting cheatsheet, and incident response live in `docs/RUNBOOK.md`.
+- For day-to-day diary entries or experiments, use `diary.md`.
+
+## Team & Ownership
+
+- **Gabi** — News Aggregation → Summarized text.
+- **Vien** — Summarized text → Comedic text.
+- **Roni** — Comedic text → Transcript → Audio.
+- **Aarni** — Router agent, orchestration, and policies.
+- **Esa** — Prompt optimization and video pipeline.
+
+Responsibilities line up with MCP services so releases can stay independent.
+
+## Reference Docs & Planning
+
+- `docs/ARCHITECTURE.md` — system overview and diagrams.
+- `docs/COMPONENT_GUIDE.md` — code-focused component map and data contracts.
+- `docs/DEPLOYMENT.md` — docker-compose bringup and environment matrix.
+- `docs/RUNBOOK.md` — operational procedures and troubleshooting.
+- [Planning Whiteboard](https://excalidraw.com/#room=d46c315fa785495794e0,P0k_98fYWU7qJUFfmorItA)
+
+Happy Skibidi-ing!

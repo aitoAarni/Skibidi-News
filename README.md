@@ -43,26 +43,26 @@ More implementation context lives in `docs/COMPONENT_GUIDE.md`.
 
 ## Router API Surface
 
-| Method | Path | Purpose | Downstream tool |
-| --- | --- | --- | --- |
-| GET | `/ping` | Health probe for the router container. | — |
-| GET | `/news?category=` | Normalizes category and calls `mcp_news_aggr.aggregate_news`. | `aggregate_news` |
-| POST | `/humorize_news` | Accepts `{ "news": str }` and returns comedic rewrite. | `mcp_humorizer.comedicize` |
-| POST | `/transcript` | Turns humor text into a narrated transcript. | `mcp_text_to_video.generate_transcript` |
-| POST | `/synthesize` | Requests a background video + captions, returns `video_id`. | `mcp_text_to_video.synthesize` |
-| POST | `/prompt/best` | Fetches the highest-scoring prompt pack for a prompt+summary. | `mcp_prompt_opt.best_prompt` |
-| POST | `/studio/generate` | One-shot transcript + video pipeline, returns signed video URL. | combo of tools above |
-| GET | `/videos/{video_id}` | Streams finished MP4s from `finished_videos/`. | — |
-| POST | `/youtube/publish` | Sends OAuth token and metadata to upload Shorts. | `mcp_text_to_video.publish` |
+| Method | Path                 | Purpose                                                         | Downstream tool                         |
+| ------ | -------------------- | --------------------------------------------------------------- | --------------------------------------- |
+| GET    | `/ping`              | Health probe for the router container.                          | —                                       |
+| GET    | `/news?category=`    | Normalizes category and calls `mcp_news_aggr.aggregate_news`.   | `aggregate_news`                        |
+| POST   | `/humorize_news`     | Accepts `{ "news": str }` and returns comedic rewrite.          | `mcp_humorizer.comedicize`              |
+| POST   | `/transcript`        | Turns humor text into a narrated transcript.                    | `mcp_text_to_video.generate_transcript` |
+| POST   | `/synthesize`        | Requests a background video + captions, returns `video_id`.     | `mcp_text_to_video.synthesize`          |
+| POST   | `/prompt/best`       | Fetches the highest-scoring prompt pack for a prompt+summary.   | `mcp_prompt_opt.best_prompt`            |
+| POST   | `/studio/generate`   | One-shot transcript + video pipeline, returns signed video URL. | combo of tools above                    |
+| GET    | `/videos/{video_id}` | Streams finished MP4s from `finished_videos/`.                  | —                                       |
+| POST   | `/youtube/publish`   | Sends OAuth token and metadata to upload Shorts.                | `mcp_text_to_video.publish`             |
 
 ## MCP Tooling
 
-| Service | Tool(s) | File |
-| --- | --- | --- |
-| News Aggregator | `aggregate_news`, `get_summary`, `health` | `mcp_news_aggr/mcp_server.py` |
-| Humorizer | `comedicize`, `health` | `mcp_humorizer/mcp_server.py` |
-| Prompt Optimizer | `best_prompt`, `optimize`, `health` | `mcp_prompt_opt/mcp_server.py` |
-| Text-to-Video | `generate_transcript`, `get_background_videos`, `synthesize`, `publish` | `mcp_text_to_video/main.py` |
+| Service          | Tool(s)                                                                 | File                           |
+| ---------------- | ----------------------------------------------------------------------- | ------------------------------ |
+| News Aggregator  | `aggregate_news`, `get_summary`, `health`                               | `mcp_news_aggr/mcp_server.py`  |
+| Humorizer        | `comedicize`, `health`                                                  | `mcp_humorizer/mcp_server.py`  |
+| Prompt Optimizer | `best_prompt`, `optimize`, `health`                                     | `mcp_prompt_opt/mcp_server.py` |
+| Text-to-Video    | `generate_transcript`, `get_background_videos`, `synthesize`, `publish` | `mcp_text_to_video/main.py`    |
 
 ## Getting Started
 

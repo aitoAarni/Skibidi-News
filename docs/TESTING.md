@@ -6,12 +6,12 @@ This document lists the automated tests that exist today, plus the recommended s
 
 ## Overview
 
-| Area | Automated coverage | Location |
-| --- | --- | --- |
-| Humorizer MCP | ✅ Deterministic unit tests for fallback engine + humor templates. | `mcp_humorizer/tests/` |
-| Other MCP servers (news, prompt, text-to-video) | ⚠️ Manual smoke tests only today. | See below for curl recipes. |
-| Router Agent | ⚠️ Manual smoke tests (`GET /ping`, etc.). | `docs/RUNBOOK.md` |
-| Frontend | ⚠️ Manual testing via Vite dev server; no Jest/Vitest yet. | `skibidi-news-frontend/` |
+| Area                                            | Automated coverage                                                 | Location                    |
+| ----------------------------------------------- | ------------------------------------------------------------------ | --------------------------- |
+| Humorizer MCP                                   | ✅ Deterministic unit tests for fallback engine + humor templates. | `mcp_humorizer/tests/`      |
+| Other MCP servers (news, prompt, text-to-video) | ⚠️ Manual smoke tests only today.                                  | See below for curl recipes. |
+| Router Agent                                    | ⚠️ Manual smoke tests (`GET /ping`, etc.).                         | `docs/RUNBOOK.md`           |
+| Frontend                                        | ⚠️ Manual testing via Vite dev server; no Jest/Vitest yet.         | `skibidi-news-frontend/`    |
 
 ---
 
@@ -38,13 +38,13 @@ Add new humorizer tests in the same folder—Pytest auto-discovers files named `
 
 ## Manual Smoke Tests (Recommended Until Automated)
 
-| Service | Command | Expected result |
-| --- | --- | --- |
-| News Aggregator | `curl 'http://127.0.0.1:8000/news?category=world'` | JSON with `summary`, `category`, `available_categories`. |
-| Humorizer | `curl -X POST http://127.0.0.1:8000/humorize_news -H 'Content-Type: application/json' -d '{"news":"..."}'` | `{ "huomrized_news": "..." }`. |
-| Prompt Optimizer | `curl -X POST http://127.0.0.1:8000/prompt/best -H 'Content-Type: application/json' -d '{"prompt":"...","summary":"..."}'` | JSON prompt pack with `note`. |
-| Text-to-Video | `curl -X POST http://127.0.0.1:8000/studio/generate -H 'Content-Type: application/json' -d '{"humor_text": "..."}'` | `{ transcript, video_id, video_url }`. |
-| Router health | `curl http://127.0.0.1:8000/ping` | `"pong"`. |
+| Service          | Command                                                                                                                    | Expected result                                          |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| News Aggregator  | `curl 'http://127.0.0.1:8000/news?category=world'`                                                                         | JSON with `summary`, `category`, `available_categories`. |
+| Humorizer        | `curl -X POST http://127.0.0.1:8000/humorize_news -H 'Content-Type: application/json' -d '{"news":"..."}'`                 | `{ "huomrized_news": "..." }`.                           |
+| Prompt Optimizer | `curl -X POST http://127.0.0.1:8000/prompt/best -H 'Content-Type: application/json' -d '{"prompt":"...","summary":"..."}'` | JSON prompt pack with `note`.                            |
+| Text-to-Video    | `curl -X POST http://127.0.0.1:8000/studio/generate -H 'Content-Type: application/json' -d '{"humor_text": "..."}'`        | `{ transcript, video_id, video_url }`.                   |
+| Router health    | `curl http://127.0.0.1:8000/ping`                                                                                          | `"pong"`.                                                |
 
 More detailed sequences (including `/transcript`, `/synthesize`, `/videos/{id}`) live in `docs/RUNBOOK.md`.
 

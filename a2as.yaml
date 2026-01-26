@@ -1,0 +1,279 @@
+manifest:
+  version: "0.1.2"
+  schema: https://a2as.org/cert/schema
+  subject:
+    name: aitoaarni/skibidi-news
+    source: https://github.com/aitoaarni/skibidi-news
+    branch: main
+    commit: "a936574a"
+    scope: [mcp_prompt_opt/_client.py, mcp_prompt_opt/_prompt_factory.py]
+  issued:
+    by: A2AS.org
+    at: '2026-01-26T16:11:12Z'
+  signatures:
+    digest: sha256:A2Kf3UAjo93hpVnANtfWzQZgvcxFF5OtKSagnJDTheM
+    key: ed25519:4sTrXLX7deT0vlv97OyDekN-H9-PN1qOcIFOQ7-ZZQs
+    sig: ed25519:2ORSzs-SkLLGNBZX72GEqBnFPNhIwCJ4NPflLgcR-CKPfU7-xc7KQ0zcWRKRD4XNth5_4eLeHHPzupfttyQKDA
+
+agents:
+  agent:
+    type: instance
+    models: [OpenAIChatCompletionsModel]
+    params:
+      function: ask_prompt_generator
+      name: prompt_generator
+      instructions: [PROMPT_GENERATOR_SYSTEM_PROMPT]
+
+models:
+  OpenAIChatCompletionsModel:
+    type: function
+    agents: [agent]
+
+imports:
+  Agent: agents.Agent
+  annotations: __future__.annotations
+  Any: typing.Any
+  asdict: dataclasses.asdict
+  ask_prompt_generator: mcp_prompt_opt._prompt_factory.ask_prompt_generator
+  asyncio: asyncio
+  AsyncOpenAI: openai.AsyncOpenAI
+  client: mcp_prompt_opt._client.client
+  dataclass: dataclasses.dataclass
+  Dict: typing.Dict
+  FastMCP: mcp.server.fastmcp.FastMCP
+  InputItem: mcp_prompt_opt._optimizer.InputItem
+  json: json
+  List: typing.List
+  load_dotenv: dotenv.load_dotenv
+  logging: logging
+  OpenAIChatCompletionsModel: agents.OpenAIChatCompletionsModel
+  Optional: typing.Optional
+  os: os
+  PromptPack: mcp_prompt_opt._optimizer.PromptPack
+  Request: mcp_prompt_opt._prompt_factory.Request
+  Runner: agents.Runner
+  set_tracing_disabled: agents.set_tracing_disabled
+  tournament: mcp_prompt_opt._optimizer.tournament
+  Tuple: typing.Tuple
+  uuid: uuid
+
+functions:
+  _best_ready:
+    type: sync
+    module: mcp_prompt_opt.mcp_server
+    args: [packs]
+    params:
+      returns: Optional[PromptPack]
+  _coerce_num:
+    type: sync
+    module: mcp_prompt_opt.mcp_server
+    args: [x, default]
+  _default_inputs:
+    type: sync
+    module: mcp_prompt_opt.mcp_server
+    params:
+      returns: List[InputItem]
+  _ensure_id:
+    type: sync
+    module: mcp_prompt_opt._prompt_factory
+    args: [obj]
+    params:
+      returns: Dict
+  _fallback_pack:
+    type: sync
+    module: mcp_prompt_opt._prompt_factory
+    params:
+      returns: Dict
+  _inputs:
+    type: sync
+    module: mcp_prompt_opt.overnight_opt
+    params:
+      returns: List[InputItem]
+  _load_leaderboard:
+    type: sync
+    module: mcp_prompt_opt.mcp_server
+    args: [path]
+    params:
+      returns: List[Dict]
+  _load_variants:
+    type: sync
+    module: mcp_prompt_opt.mcp_server
+    args: [path]
+    params:
+      returns: List[Dict]
+  _packs_from_dicts:
+    type: sync
+    module: mcp_prompt_opt.overnight_opt
+    args: [items]
+    params:
+      returns: List[PromptPack]
+  _packs_from_json:
+    type: sync
+    module: mcp_prompt_opt.mcp_server
+    args: [arr]
+    params:
+      returns: List[PromptPack]
+  _quick_opt:
+    type: async
+    module: mcp_prompt_opt.mcp_server
+    args: [packs, inputs, gen_more, seed_prompt, seed_summary, n_new]
+    params:
+      returns: List[PromptPack]
+  _request_one_variant:
+    type: async
+    module: mcp_prompt_opt._prompt_factory
+    args: [agent, req, max_tokens, temperature, retries, idx]
+    params:
+      returns: Dict
+  _valid_pack:
+    type: sync
+    module: mcp_prompt_opt._prompt_factory
+    args: [obj]
+    params:
+      returns: bool
+  ask_prompt_generator:
+    type: async
+    module: mcp_prompt_opt._prompt_factory
+    args: [req, n, max_tokens, temperature, retries]
+    params:
+      returns: List[dict]
+  best_prompt:
+    type: sync
+    module: mcp_prompt_opt.mcp_server
+    args: [prompt, summary, allow_quick_opt]
+    params:
+      returns: Dict
+  bootstrap_if_needed:
+    type: async
+    module: mcp_prompt_opt.overnight_opt
+    params:
+      returns: List[PromptPack]
+  ensure_prompt_pack_defaults:
+    type: sync
+    module: mcp_prompt_opt.overnight_opt
+    args: [p]
+    params:
+      returns: Dict
+  health:
+    type: sync
+    module: mcp_prompt_opt.mcp_server
+    params:
+      returns: Dict
+  load_json_or_ndjson:
+    type: sync
+    module: mcp_prompt_opt.overnight_opt
+    args: [path]
+    params:
+      returns: List[Dict]
+  main:
+    type: sync
+    module: mcp_prompt_opt.mcp_server
+  optimize:
+    type: sync
+    module: mcp_prompt_opt.mcp_server
+    args: [prompt, summary, n_new, iterations, samples_per_input, pairings]
+    params:
+      returns: Dict
+  overnight_run:
+    type: async
+    module: mcp_prompt_opt.overnight_opt
+
+variables:
+  API_KEY:
+    type: env
+    params:
+      caller: [os.getenv]
+      path: [mcp_prompt_opt._client]
+  BASE_URL:
+    type: env
+    params:
+      caller: [os.getenv]
+      path: [mcp_prompt_opt._client]
+  FAST_ITERATIONS:
+    type: env
+    params:
+      caller: [os.getenv]
+      path: [mcp_prompt_opt.mcp_server]
+  FAST_MUTANTS_PER_SURVIVOR:
+    type: env
+    params:
+      caller: [os.getenv]
+      path: [mcp_prompt_opt.mcp_server]
+  FAST_PAIRINGS:
+    type: env
+    params:
+      caller: [os.getenv]
+      path: [mcp_prompt_opt.mcp_server]
+  FAST_SAMPLES_PER_INPUT:
+    type: env
+    params:
+      caller: [os.getenv]
+      path: [mcp_prompt_opt.mcp_server]
+  FAST_SURVIVORS:
+    type: env
+    params:
+      caller: [os.getenv]
+      path: [mcp_prompt_opt.mcp_server]
+  LEADERBOARD_PATH:
+    type: env
+    params:
+      caller: [os.getenv]
+      path: [mcp_prompt_opt.overnight_opt]
+  LIBRARY_PATH:
+    type: env
+    params:
+      caller: [os.getenv]
+      path: [mcp_prompt_opt.overnight_opt]
+  MODEL_NAME:
+    type: env
+    params:
+      caller: [os.getenv]
+      path: [mcp_prompt_opt._prompt_factory]
+  OPENAI_API_KEY:
+    type: env
+    params:
+      caller: [os.getenv]
+      path: [mcp_prompt_opt._client]
+  PROMPT_LEADERBOARD:
+    type: env
+    params:
+      caller: [os.getenv]
+      path: [mcp_prompt_opt.mcp_server]
+  PROMPT_LIBRARY:
+    type: env
+    params:
+      caller: [os.getenv]
+      path: [mcp_prompt_opt.mcp_server]
+  TARGET_ELO:
+    type: env
+    params:
+      caller: [os.getenv]
+      path: [mcp_prompt_opt.overnight_opt]
+  TARGET_WINS:
+    type: env
+    params:
+      caller: [os.getenv]
+      path: [mcp_prompt_opt.overnight_opt]
+
+files:
+  LEADERBOARD_PATH:
+    type: variable
+    actions: [read, write]
+    params:
+      caller: [os.path.dirname, open]
+  LIBRARY_PATH:
+    type: variable
+    actions: [read, write]
+    params:
+      caller: [os.path.dirname, open]
+  path:
+    type: variable
+    actions: [read]
+    params:
+      caller: [open, os.path.exists]
+  variants.json:
+    type: literal
+    actions: [write]
+    params:
+      caller: [open]
+      alias: [f]
